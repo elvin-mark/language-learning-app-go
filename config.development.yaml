@@ -1,0 +1,12 @@
+server:
+  port: 8081
+
+llm:
+  type: local
+  model: llama
+  baseUrl: http://localhost:8080
+
+database:
+  filepath: resources/test.db
+
+log_level: debug

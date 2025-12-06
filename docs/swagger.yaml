@@ -1,0 +1,148 @@
+definitions:
+  dto.GenerateLessonRequest:
+    properties:
+      lang:
+        type: string
+      userId:
+        type: integer
+    type: object
+  dto.GeneraterExerciseRequest:
+    properties:
+      lang:
+        type: string
+      lessonId:
+        type: integer
+      practicePattern:
+        type: string
+    type: object
+  storage.Exercise:
+    properties:
+      exerciseID:
+        type: integer
+      feedback:
+        type: string
+      grade:
+        type: integer
+      lessonID:
+        type: integer
+      questionData:
+        type: string
+      subType:
+        type: string
+      type:
+        type: string
+      userID:
+        type: integer
+      userResponse:
+        type: string
+    type: object
+  storage.Lesson:
+    properties:
+      content:
+        type: string
+      grammarFocus:
+        type: string
+      language:
+        type: string
+      lessonID:
+        type: integer
+      newVocabulary:
+        description: JSON array
+        items:
+          type: string
+        type: array
+      userID:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /agents/exercises:
+    post:
+      consumes:
+      - application/json
+      description: Get a new Exercise based on the input lesson
+      parameters:
+      - description: Exercise Request object to be generated
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GeneraterExerciseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.Exercise'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Practice Exercises
+      tags:
+      - agents
+  /agents/lessons:
+    post:
+      consumes:
+      - application/json
+      description: Get a new Language Lesson based on the user current status
+      parameters:
+      - description: Lesson Request object to be generated
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GenerateLessonRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.Lesson'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Lesson
+      tags:
+      - agents
+  /health:
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of the server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Show the status of the server.
+      tags:
+      - health
+swagger: "2.0"

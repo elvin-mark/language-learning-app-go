@@ -1,0 +1,228 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/agents/exercises": {
+            "post": {
+                "description": "Get a new Exercise based on the input lesson",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "agents"
+                ],
+                "summary": "Get Practice Exercises",
+                "parameters": [
+                    {
+                        "description": "Exercise Request object to be generated",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GeneraterExerciseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/storage.Exercise"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/agents/lessons": {
+            "post": {
+                "description": "Get a new Language Lesson based on the user current status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "agents"
+                ],
+                "summary": "Get Lesson",
+                "parameters": [
+                    {
+                        "description": "Lesson Request object to be generated",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GenerateLessonRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/storage.Lesson"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "description": "get the status of the server.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Show the status of the server.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.GenerateLessonRequest": {
+            "type": "object",
+            "properties": {
+                "lang": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.GeneraterExerciseRequest": {
+            "type": "object",
+            "properties": {
+                "lang": {
+                    "type": "string"
+                },
+                "lessonId": {
+                    "type": "integer"
+                },
+                "practicePattern": {
+                    "type": "string"
+                }
+            }
+        },
+        "storage.Exercise": {
+            "type": "object",
+            "properties": {
+                "exerciseID": {
+                    "type": "integer"
+                },
+                "feedback": {
+                    "type": "string"
+                },
+                "grade": {
+                    "type": "integer"
+                },
+                "lessonID": {
+                    "type": "integer"
+                },
+                "questionData": {
+                    "type": "string"
+                },
+                "subType": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "integer"
+                },
+                "userResponse": {
+                    "type": "string"
+                }
+            }
+        },
+        "storage.Lesson": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "grammarFocus": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "lessonID": {
+                    "type": "integer"
+                },
+                "newVocabulary": {
+                    "description": "JSON array",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "userID": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
