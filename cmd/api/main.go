@@ -52,25 +52,23 @@ func main() {
 	defer db.Close()
 
 	// Create user repository, service, and handler
-	grammarMasteryRepository := storage.GrammarMasteryRepository{
-		DB: db,
-	}
-	vocabMasteryRepository := storage.VocabularyMasteryRepository{
-		DB: db,
-	}
-	lessonRepository := storage.LessonRepository{
-		DB: db,
-	}
-	exerciseRepository := storage.ExerciseRepository{
-		DB: db,
-	}
+	grammarMasteryRepository := storage.NewGrammarMasteryRepository(db)
+	vocabMasteryRepository := storage.NewVocabularyMasteryRepository(db)
+	lessonRepository := storage.NewLessonRepository(db)
+	exerciseRepository := storage.NewExerciseRepository(db)
 
 	lessonAgent := agents.NewLessonAgent(llmCore, lessonRepository, vocabMasteryRepository, grammarMasteryRepository)
 	practiceAgent := agents.NewPracticeAgent(llmCore, lessonRepository, exerciseRepository)
 
 	agentsService := services.NewAgentService(lessonAgent, practiceAgent)
+	lessonsService := services.NewLessonService(lessonRepository)
+	grammarService := services.NewGrammarService(grammarMasteryRepository)
+	vocabularyService := services.NewVocabularyService(vocabMasteryRepository)
 
 	angentsHandler := handlers.NewAgentHandler(agentsService)
+	lessonsHandler := handlers.NewLessonHandler(lessonsService)
+	grammarHandler := handlers.NewGrammarHandler(grammarService)
+	vocabularyHandler := handlers.NewVocabularyHandler(vocabularyService)
 
 	// Create router
 	r := chi.NewRouter()
@@ -107,6 +105,15 @@ func main() {
 		r.Use(middleware.BasicAuth)
 		r.Post("/lessons", angentsHandler.GenerateLessonHandler)
 		r.Post("/exercises", angentsHandler.GenerateExerciseHandler)
+	})
+
+	r.Route("/resources", func(r chi.Router) {
+		r.Use(middleware.BasicAuth)
+		r.Get("/lessons", lessonsHandler.GetLessonsHandler)
+		r.Get("/lessons/search", lessonsHandler.GetLessonsByGrammarHandler)
+		r.Get("/grammar", grammarHandler.GetGrammarPatternsHandler)
+		r.Get("/grammar/search", grammarHandler.GetGrammarPatternsByPatternHandler)
+		r.Get("/vocabulary", vocabularyHandler.GetVocabularyHandler)
 	})
 
 	// Start server

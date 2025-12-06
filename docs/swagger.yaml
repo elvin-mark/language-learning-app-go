@@ -36,6 +36,28 @@ definitions:
       userResponse:
         type: string
     type: object
+  storage.GrammarMastery:
+    properties:
+      language:
+        type: string
+      lastReviewed:
+        type: string
+      masteryID:
+        type: integer
+      masteryScore:
+        type: number
+      pattern:
+        type: string
+      timesIncorrect:
+        type: integer
+      userID:
+        type: integer
+      weaknessFlags:
+        description: JSON array
+        items:
+          type: string
+        type: array
+    type: object
   storage.Lesson:
     properties:
       content:
@@ -53,6 +75,25 @@ definitions:
         type: array
       userID:
         type: integer
+    type: object
+  storage.VocabularyMastery:
+    properties:
+      language:
+        type: string
+      lastReviewed:
+        type: string
+      masteryID:
+        type: integer
+      masteryScore:
+        type: number
+      timesCorrect:
+        type: integer
+      timesIncorrect:
+        type: integer
+      userID:
+        type: integer
+      word:
+        type: string
     type: object
 info:
   contact: {}
@@ -145,4 +186,255 @@ paths:
       summary: Show the status of the server.
       tags:
       - health
+  /resources/grammar:
+    get:
+      consumes:
+      - application/json
+      description: Get paginated grammar patterns for a user and language
+      parameters:
+      - description: User ID
+        in: query
+        name: userId
+        required: true
+        type: integer
+      - description: Language
+        in: query
+        name: language
+        required: true
+        type: string
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Page size (default 20)
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.GrammarMastery'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Grammar Patterns
+      tags:
+      - grammar
+  /resources/grammar/search:
+    get:
+      consumes:
+      - application/json
+      description: Get paginated grammar patterns for a user and language filtered
+        by pattern (LIKE search)
+      parameters:
+      - description: User ID
+        in: query
+        name: userId
+        required: true
+        type: integer
+      - description: Language
+        in: query
+        name: language
+        required: true
+        type: string
+      - description: Grammar pattern to filter
+        in: query
+        name: pattern
+        required: true
+        type: string
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Page size (default 20)
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.GrammarMastery'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Search Grammar Patterns
+      tags:
+      - grammar
+  /resources/lessons:
+    get:
+      consumes:
+      - application/json
+      description: Get paginated lessons for a user and language
+      parameters:
+      - description: User ID
+        in: query
+        name: userId
+        required: true
+        type: integer
+      - description: Language
+        in: query
+        name: language
+        required: true
+        type: string
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Page size (default 20)
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.Lesson'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Lessons
+      tags:
+      - lessons
+  /resources/lessons/search:
+    get:
+      consumes:
+      - application/json
+      description: Get paginated lessons for a user, language, and grammar pattern
+      parameters:
+      - description: User ID
+        in: query
+        name: userId
+        required: true
+        type: integer
+      - description: Language
+        in: query
+        name: language
+        required: true
+        type: string
+      - description: Grammar pattern to filter
+        in: query
+        name: grammarPattern
+        required: true
+        type: string
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Page size (default 20)
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.Lesson'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Lessons by Grammar
+      tags:
+      - lessons
+  /resources/vocabulary:
+    get:
+      consumes:
+      - application/json
+      description: Get paginated vocabulary for a user and language
+      parameters:
+      - description: User ID
+        in: query
+        name: userId
+        required: true
+        type: integer
+      - description: Language
+        in: query
+        name: language
+        required: true
+        type: string
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Page size (default 20)
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.VocabularyMastery'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Vocabulary
+      tags:
+      - vocabulary
 swagger: "2.0"
