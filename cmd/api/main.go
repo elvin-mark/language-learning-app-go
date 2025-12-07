@@ -14,8 +14,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
-	"runtime"
 	"syscall"
 	"time"
 
@@ -84,9 +82,7 @@ func main() {
 	r.Use(chiMiddleware.Timeout(60 * time.Second))
 
 	// ===== Static files ====
-	_, b, _, _ := runtime.Caller(0)
-	basepath := filepath.Dir(b)
-	staticDir := http.Dir(filepath.Join(basepath, "resources/static"))
+	staticDir := http.Dir("resources/static")
 	r.Handle("/ui/*", http.StripPrefix("/ui/", http.FileServer(staticDir)))
 
 	// ===== Redirects ====
