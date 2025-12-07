@@ -25,15 +25,24 @@ migrate:
 	@echo "Running database migrations..."
 	@go run cmd/migrate/main.go
 
+# Docker
+docker: build
+	@docker build -t tools/language-learning-app .
+
+run-docker:
+	@docker run -it --name language-learning-app -p 8081:8081 tools/language-learning-app
+
 help:
 	@echo "Usage: make [target]"
 	@echo ""
 	@echo "Targets:"
-	@echo "  build    Build the application"
-	@echo "  run      Run the application"
-	@echo "  test     Run the tests"
-	@echo "  clean    Clean the build artifacts"
-	@echo "  migrate  Run database migrations"
+	@echo "  build       Build the application"
+	@echo "  run         Run the application"
+	@echo "  test        Run the tests"
+	@echo "  clean       Clean the build artifacts"
+	@echo "  migrate     Run database migrations"
+	@echo "  docker      Build docker image"
+	@echo "  run-docker  Run docker image" 
 	@echo "  help     Display this help message"
 
 .DEFAULT_GOAL := help
