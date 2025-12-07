@@ -4,6 +4,11 @@ BINARY_NAME=language-learning-app
 
 all: build
 
+check:
+	@go fmt ./...
+	@golangci-lint run -v ./...
+	@govulncheck ./...
+
 build:
 	@swag init --generalInfo cmd/api/main.go --output docs
 	@echo "Building the application..."
@@ -36,6 +41,7 @@ help:
 	@echo "Usage: make [target]"
 	@echo ""
 	@echo "Targets:"
+	@echo "  check       Run checks for the code base"
 	@echo "  build       Build the application"
 	@echo "  run         Run the application"
 	@echo "  test        Run the tests"
