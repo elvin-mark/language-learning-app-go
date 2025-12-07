@@ -27,11 +27,11 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
-// @title Language Learning App
-// @version 1.0
-// @description This is an api for the language learning app
-// @host localhost:8080
-// @BasePath /
+// @title			Language Learning App
+// @version		1.0
+// @description	This is an api for the language learning app
+// @host			localhost:8080
+// @BasePath		/
 func main() {
 	// Load configuration
 	cfg, err := config.LoadConfig()

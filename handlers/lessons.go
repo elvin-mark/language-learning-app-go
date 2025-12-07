@@ -20,19 +20,20 @@ func NewLessonHandler(service services.LessonService) *LessonHandler {
 // ============== METHODS ==============
 
 // GetLessonsHandler godoc
-// @Summary Get Lessons
-// @Description Get paginated lessons for a user and language
-// @Tags lessons
-// @Accept json
-// @Produce json
-// @Param userId query int true "User ID"
-// @Param language query string true "Language"
-// @Param page query int false "Page number (default 1)"
-// @Param pageSize query int false "Page size (default 20)"
-// @Success 200 {array} storage.Lesson
-// @Failure 400 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /resources/lessons [get]
+//
+//	@Summary		Get Lessons
+//	@Description	Get paginated lessons for a user and language
+//	@Tags			lessons
+//	@Accept			json
+//	@Produce		json
+//	@Param			userId		query		int		true	"User ID"
+//	@Param			language	query		string	true	"Language"
+//	@Param			page		query		int		false	"Page number (default 1)"
+//	@Param			pageSize	query		int		false	"Page size (default 20)"
+//	@Success		200			{array}		storage.Lesson
+//	@Failure		400			{object}	map[string]string
+//	@Failure		500			{object}	map[string]string
+//	@Router			/resources/lessons [get]
 func (h *LessonHandler) GetLessonsHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 
@@ -73,20 +74,21 @@ func (h *LessonHandler) GetLessonsHandler(w http.ResponseWriter, r *http.Request
 }
 
 // GetLessonsByGrammarHandler godoc
-// @Summary Get Lessons by Grammar
-// @Description Get paginated lessons for a user, language, and grammar pattern
-// @Tags lessons
-// @Accept json
-// @Produce json
-// @Param userId query int true "User ID"
-// @Param language query string true "Language"
-// @Param grammarPattern query string true "Grammar pattern to filter"
-// @Param page query int false "Page number (default 1)"
-// @Param pageSize query int false "Page size (default 20)"
-// @Success 200 {array} storage.Lesson
-// @Failure 400 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /resources/lessons/search [get]
+//
+//	@Summary		Get Lessons by Grammar
+//	@Description	Get paginated lessons for a user, language, and grammar pattern
+//	@Tags			lessons
+//	@Accept			json
+//	@Produce		json
+//	@Param			userId			query		int		true	"User ID"
+//	@Param			language		query		string	true	"Language"
+//	@Param			grammarPattern	query		string	true	"Grammar pattern to filter"
+//	@Param			page			query		int		false	"Page number (default 1)"
+//	@Param			pageSize		query		int		false	"Page size (default 20)"
+//	@Success		200				{array}		storage.Lesson
+//	@Failure		400				{object}	map[string]string
+//	@Failure		500				{object}	map[string]string
+//	@Router			/resources/lessons/search [get]
 func (h *LessonHandler) GetLessonsByGrammarHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 

@@ -21,19 +21,20 @@ func NewVocabularyHandler(service services.VocabularyService) *VocabularyHandler
 // ============== METHODS ==============
 
 // GetVocabularyHandler godoc
-// @Summary Get Vocabulary
-// @Description Get paginated vocabulary for a user and language
-// @Tags vocabulary
-// @Accept json
-// @Produce json
-// @Param userId query int true "User ID"
-// @Param language query string true "Language"
-// @Param page query int false "Page number (default 1)"
-// @Param pageSize query int false "Page size (default 20)"
-// @Success 200 {array} storage.VocabularyMastery
-// @Failure 400 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /resources/vocabulary [get]
+//
+//	@Summary		Get Vocabulary
+//	@Description	Get paginated vocabulary for a user and language
+//	@Tags			vocabulary
+//	@Accept			json
+//	@Produce		json
+//	@Param			userId		query		int		true	"User ID"
+//	@Param			language	query		string	true	"Language"
+//	@Param			page		query		int		false	"Page number (default 1)"
+//	@Param			pageSize	query		int		false	"Page size (default 20)"
+//	@Success		200			{array}		storage.VocabularyMastery
+//	@Failure		400			{object}	map[string]string
+//	@Failure		500			{object}	map[string]string
+//	@Router			/resources/vocabulary [get]
 func (h *VocabularyHandler) GetVocabularyHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 

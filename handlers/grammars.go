@@ -21,19 +21,20 @@ func NewGrammarHandler(service services.GrammarService) *GrammarHandler {
 // ============== METHODS ==============
 
 // GetGrammarPatternsHandler godoc
-// @Summary Get Grammar Patterns
-// @Description Get paginated grammar patterns for a user and language
-// @Tags grammar
-// @Accept json
-// @Produce json
-// @Param userId query int true "User ID"
-// @Param language query string true "Language"
-// @Param page query int false "Page number (default 1)"
-// @Param pageSize query int false "Page size (default 20)"
-// @Success 200 {array} storage.GrammarMastery
-// @Failure 400 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /resources/grammar [get]
+//
+//	@Summary		Get Grammar Patterns
+//	@Description	Get paginated grammar patterns for a user and language
+//	@Tags			grammar
+//	@Accept			json
+//	@Produce		json
+//	@Param			userId		query		int		true	"User ID"
+//	@Param			language	query		string	true	"Language"
+//	@Param			page		query		int		false	"Page number (default 1)"
+//	@Param			pageSize	query		int		false	"Page size (default 20)"
+//	@Success		200			{array}		storage.GrammarMastery
+//	@Failure		400			{object}	map[string]string
+//	@Failure		500			{object}	map[string]string
+//	@Router			/resources/grammar [get]
 func (h *GrammarHandler) GetGrammarPatternsHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 
@@ -74,20 +75,21 @@ func (h *GrammarHandler) GetGrammarPatternsHandler(w http.ResponseWriter, r *htt
 }
 
 // GetGrammarPatternsByPatternHandler godoc
-// @Summary Search Grammar Patterns
-// @Description Get paginated grammar patterns for a user and language filtered by pattern (LIKE search)
-// @Tags grammar
-// @Accept json
-// @Produce json
-// @Param userId query int true "User ID"
-// @Param language query string true "Language"
-// @Param pattern query string true "Grammar pattern to filter"
-// @Param page query int false "Page number (default 1)"
-// @Param pageSize query int false "Page size (default 20)"
-// @Success 200 {array} storage.GrammarMastery
-// @Failure 400 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /resources/grammar/search [get]
+//
+//	@Summary		Search Grammar Patterns
+//	@Description	Get paginated grammar patterns for a user and language filtered by pattern (LIKE search)
+//	@Tags			grammar
+//	@Accept			json
+//	@Produce		json
+//	@Param			userId		query		int		true	"User ID"
+//	@Param			language	query		string	true	"Language"
+//	@Param			pattern		query		string	true	"Grammar pattern to filter"
+//	@Param			page		query		int		false	"Page number (default 1)"
+//	@Param			pageSize	query		int		false	"Page size (default 20)"
+//	@Success		200			{array}		storage.GrammarMastery
+//	@Failure		400			{object}	map[string]string
+//	@Failure		500			{object}	map[string]string
+//	@Router			/resources/grammar/search [get]
 func (h *GrammarHandler) GetGrammarPatternsByPatternHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 
