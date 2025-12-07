@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   dto.GenerateLessonRequest:
     properties:
@@ -95,8 +96,12 @@ definitions:
       word:
         type: string
     type: object
+host: localhost:8080
 info:
   contact: {}
+  description: This is an api for the language learning app
+  title: Language Learning App
+  version: "1.0"
 paths:
   /agents/exercises:
     post:

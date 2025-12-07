@@ -1,8 +1,13 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is an api for the language learning app",
+        "title": "Language Learning App",
+        "contact": {},
+        "version": "1.0"
     },
+    "host": "localhost:8080",
+    "basePath": "/",
     "paths": {
         "/agents/exercises": {
             "post": {

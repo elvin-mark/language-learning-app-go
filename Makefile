@@ -5,7 +5,7 @@ BINARY_NAME=language-learning-app
 all: build
 
 build:
-	@swag init
+	@swag init --generalInfo cmd/api/main.go --output docs
 	@echo "Building the application..."
 	@mkdir -p build
 	@go build -o build/$(BINARY_NAME) cmd/api/main.go
