@@ -50,6 +50,6 @@ func (la *lessonAgentImpl) GenerateLesson(userId int, lang string, masteryScoreT
 		NewVocabulary: generatedLesson.NewVocabulary,
 	}
 
-	la.lessonRepository.Create(&lesson)
+	err = la.lessonRepository.Create(&lesson)
 	return
 }

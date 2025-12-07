@@ -44,7 +44,7 @@ func (r *grammarMasteryRepositoryImpl) GetForUser(userID int) ([]GrammarMastery,
 			return nil, err
 		}
 
-		fromJSON(flags, &gm.WeaknessFlags)
+		_ = fromJSON(flags, &gm.WeaknessFlags)
 		list = append(list, gm)
 	}
 	return list, nil
@@ -73,7 +73,7 @@ func (r *grammarMasteryRepositoryImpl) GetPaginatedForUser(userID int, lang stri
 			return nil, err
 		}
 
-		fromJSON(flags, &gm.WeaknessFlags)
+		_ = fromJSON(flags, &gm.WeaknessFlags)
 		list = append(list, gm)
 	}
 	return list, nil
@@ -141,7 +141,7 @@ func (r *grammarMasteryRepositoryImpl) SearchByPattern(userID int, lang string, 
 			return nil, err
 		}
 
-		fromJSON(flags, &gm.WeaknessFlags)
+		_ = fromJSON(flags, &gm.WeaknessFlags)
 		list = append(list, gm)
 	}
 	return list, nil
