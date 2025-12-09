@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Language Learning App</title>
+    <link rel="stylesheet" href="styles/common.css" />
+    <link rel="stylesheet" href="styles/grammar.css" />
+  </head>
+
+  <body>
+    <nav class="nav-wrapper" aria-label="Main navigation">
+      <div class="brand">
+        <div class="logo">LL</div>
+        <div>
+          <h1>Learning Space</h1>
+          <p>learn • practice • repeat</p>
+        </div>
+      </div>
+
+      <div class="menu" id="menu" aria-hidden="true">
+        <ul class="menu-list" id="menuList" role="menubar" aria-label="Primary">
+          <li><a role="menuitem" data-target="lessons">Lessons</a></li>
+          <li><a role="menuitem" data-target="vocab">Vocabulary</a></li>
+          <li><a role="menuitem" data-target="grammar">Grammar</a></li>
+          <li><a role="menuitem" data-target="practice">Practice</a></li>
+          <li><a role="menuitem" data-target="profile">Profile</a></li>
+        </ul>
+      </div>
+
+      <!-- HAMBURGER ICON (mobile only) -->
+      <button
+        id="menuToggle"
+        class="hamburger"
+        aria-expanded="false"
+        aria-label="Toggle menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+    <div id="content-wrapper">
+      <div id="content" class="section active"></div>
+    </div>
+
+    <script src="scripts/guard.js"></script>
+    <script src="scripts/router.js"></script>
+    <script src="scripts/api.js"></script>
+    <script src="scripts/grammar.js"></script>
+    <script src="scripts/vocab.js"></script>
+  </body>
+</html>

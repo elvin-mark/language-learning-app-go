@@ -28,7 +28,7 @@ import (
 // @title			Language Learning App
 // @version		1.0
 // @description	This is an api for the language learning app
-// @host			localhost:8080
+// @host			localhost:8081
 // @BasePath		/
 func main() {
 	// Load configuration
@@ -67,6 +67,7 @@ func main() {
 	lessonsHandler := handlers.NewLessonHandler(lessonsService)
 	grammarHandler := handlers.NewGrammarHandler(grammarService)
 	vocabularyHandler := handlers.NewVocabularyHandler(vocabularyService)
+	authHandler := handlers.NewAuthHandler()
 
 	// Create router
 	r := chi.NewRouter()
@@ -96,6 +97,10 @@ func main() {
 
 	// Swagger UI
 	r.Get("/swagger/*", httpSwagger.Handler(httpSwagger.URL("/swagger/doc.json")))
+
+	r.Route("/auth", func(r chi.Router) {
+		r.Post("/token", authHandler.GetAuthTokenHandler)
+	})
 
 	r.Route("/agents", func(r chi.Router) {
 		r.Use(middleware.BasicAuth)

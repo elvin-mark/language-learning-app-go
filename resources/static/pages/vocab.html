@@ -1,0 +1,16 @@
+<section id="vocabulary-section">
+  <h2>Vocabulary</h2>
+
+  <div class="vocab-controls">
+    <input type="text" id="vocabSearch" placeholder="Search vocabulary..." />
+    <button onclick="vocabularyEngine.search()">Search</button>
+  </div>
+
+  <div id="vocabList"></div>
+
+  <div class="pagination">
+    <button onclick="vocabularyEngine.prevPage()">Previous</button>
+    <span id="vocabularyCurrentPage"></span>
+    <button onclick="vocabularyEngine.nextPage()">Next</button>
+  </div>
+</section>
