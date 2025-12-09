@@ -40,7 +40,7 @@ func main() {
 	// Initialize logger
 	utils.InitLogger(cfg.LogLevel)
 
-	llmCore := llm.NewLlamaCpp(cfg.Llm.BaseUrl, cfg.Llm.Model)
+	llmCore := llm.NewLlm(cfg.Llm)
 
 	// Initialize database
 	db, err := storage.InitDb(cfg.Database.Filepath)

@@ -1,5 +1,10 @@
 package llm
 
+import (
+	"language-learning-app/config"
+	"os"
+)
+
 type ChatMessage struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
@@ -29,4 +34,11 @@ type ChatResponse struct {
 
 type Llm interface {
 	GetResponse(prompt string) (chatResponse ChatResponse, err error)
+}
+
+func NewLlm(cfg config.LlmConfig) Llm {
+	if cfg.Type == "gemini" {
+		return NewGemini(os.Getenv("GEMINI_API_KEY"))
+	}
+	return NewLlamaCpp(cfg.BaseUrl, cfg.Model)
 }
