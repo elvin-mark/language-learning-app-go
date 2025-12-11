@@ -40,11 +40,10 @@ const practiceGenerationPrompt = `You are a creative %s language teacher. Genera
 - Create a proper exercise to review %s using %s kind of exercises to make the user practice %s.
 - Make sure that the exercise require using the vocabulary: %s.
 - The type and sub_type in the output must match the goal.
-- The output should contain the following fields: %s
-- The description of the fields are: %s`
+- Generation Instruction: %s
+`
 
 func generatePracticeGenerationPrompt(lang string, practicePattern PracticePattern, lesson storage.Lesson) string {
 	words := strings.Join(lesson.NewVocabulary, ",")
-	fields := strings.Join(practicePattern.Fields, ",")
-	return fmt.Sprintf(practiceGenerationPrompt, lang, practicePattern.Type, practicePattern.SubType, lesson.GrammarFocus, words, practicePattern.Type, practicePattern.SubType, lesson.GrammarFocus, words, fields, practicePattern.FielsDescription)
+	return fmt.Sprintf(practiceGenerationPrompt, lang, practicePattern.Type, practicePattern.SubType, lesson.GrammarFocus, words, practicePattern.Type, practicePattern.SubType, lesson.GrammarFocus, words, practicePattern.Instruction)
 }
