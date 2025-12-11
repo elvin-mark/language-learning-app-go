@@ -46,5 +46,5 @@ const practiceGenerationPrompt = `You are a creative %s language teacher. Genera
 func generatePracticeGenerationPrompt(lang string, practicePattern PracticePattern, lesson storage.Lesson) string {
 	words := strings.Join(lesson.NewVocabulary, ",")
 	fields := strings.Join(practicePattern.Fields, ",")
-	return fmt.Sprintf(practiceGenerationPrompt, lang, practicePattern.Type, practicePattern.SubType, words, lesson.GrammarFocus, practicePattern.Type, practicePattern.SubType, lesson.GrammarFocus, words, fields, practicePattern.FielsDescription)
+	return fmt.Sprintf(practiceGenerationPrompt, lang, practicePattern.Type, practicePattern.SubType, lesson.GrammarFocus, words, practicePattern.Type, practicePattern.SubType, lesson.GrammarFocus, words, fields, practicePattern.FielsDescription)
 }
