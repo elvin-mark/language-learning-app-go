@@ -27,6 +27,8 @@ definitions:
     properties:
       accessToken:
         type: string
+      userId:
+        type: integer
     type: object
   storage.Exercise:
     properties:
@@ -245,11 +247,6 @@ paths:
       - application/json
       description: Get paginated grammar patterns for a user and language
       parameters:
-      - description: User ID
-        in: query
-        name: userId
-        required: true
-        type: integer
       - description: Language
         in: query
         name: language
@@ -294,11 +291,6 @@ paths:
       description: Get paginated grammar patterns for a user and language filtered
         by pattern (LIKE search)
       parameters:
-      - description: User ID
-        in: query
-        name: userId
-        required: true
-        type: integer
       - description: Language
         in: query
         name: language
@@ -347,11 +339,6 @@ paths:
       - application/json
       description: Get paginated lessons for a user and language
       parameters:
-      - description: User ID
-        in: query
-        name: userId
-        required: true
-        type: integer
       - description: Language
         in: query
         name: language
@@ -395,11 +382,6 @@ paths:
       - application/json
       description: Get paginated lessons for a user, language, and grammar pattern
       parameters:
-      - description: User ID
-        in: query
-        name: userId
-        required: true
-        type: integer
       - description: Language
         in: query
         name: language
@@ -448,11 +430,6 @@ paths:
       - application/json
       description: Get paginated vocabulary for a user and language
       parameters:
-      - description: User ID
-        in: query
-        name: userId
-        required: true
-        type: integer
       - description: Language
         in: query
         name: language

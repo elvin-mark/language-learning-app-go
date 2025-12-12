@@ -219,13 +219,6 @@ const docTemplate = `{
                 "summary": "Get Grammar Patterns",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "userId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
                         "type": "string",
                         "description": "Language",
                         "name": "language",
@@ -290,13 +283,6 @@ const docTemplate = `{
                 ],
                 "summary": "Search Grammar Patterns",
                 "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "userId",
-                        "in": "query",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Language",
@@ -370,13 +356,6 @@ const docTemplate = `{
                 "summary": "Get Lessons",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "userId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
                         "type": "string",
                         "description": "Language",
                         "name": "language",
@@ -441,13 +420,6 @@ const docTemplate = `{
                 ],
                 "summary": "Get Lessons by Grammar",
                 "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "userId",
-                        "in": "query",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Language",
@@ -520,13 +492,6 @@ const docTemplate = `{
                 ],
                 "summary": "Get Vocabulary",
                 "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "userId",
-                        "in": "query",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Language",
@@ -621,6 +586,9 @@ const docTemplate = `{
             "properties": {
                 "accessToken": {
                     "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
                 }
             }
         },

@@ -3,6 +3,7 @@ package agents
 import (
 	"language-learning-app/core/llm"
 	"language-learning-app/storage"
+	"language-learning-app/utils"
 	"strings"
 )
 
@@ -15,11 +16,13 @@ type practiceAgent struct {
 func (pa *practiceAgent) GeneratePractice(lang string, practicePattern PracticePattern, lessonId int) (generatedExercise storage.Exercise, err error) {
 	lesson, err := pa.lessonRepository.GetByID(lessonId)
 	if err != nil {
+		utils.Logger.Error(err.Error())
 		return
 	}
 	prompt := generatePracticeGenerationPrompt(lang, practicePattern, *lesson)
 	resp, err := pa.llm.GetResponse(prompt)
 	if err != nil {
+		utils.Logger.Error(err.Error())
 		return
 	}
 

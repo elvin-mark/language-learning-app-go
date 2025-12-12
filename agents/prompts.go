@@ -18,7 +18,7 @@ const lessonGenerationPrompt = `You are an expert and friendly %s language teach
 2.  **example_sentences**: Create 3-4 diverse and practical example sentences that use the grammar pattern correctly.
 3.  **new_vocabulary**: Naturally include some of these **new vocabulary words** (%s) within your example sentences.
 
-Fill the grammar_pattern and new_vocabulary fields in the output with the exact data provided.`
+Fill the grammar_pattern and new_vocabulary fields in the output with the exact data provided. Make sure to reply just with the JSON object, no need for other text.`
 
 func generateLessonGenerationPrompt(lang string, grammar storage.GrammarMastery, vocabs []storage.VocabularyMastery) string {
 	newWords := make([]string, 0)

@@ -26,7 +26,6 @@ func NewLessonHandler(service services.LessonService) *LessonHandler {
 //	@Tags			lessons
 //	@Accept			json
 //	@Produce		json
-//	@Param			userId		query		int		true	"User ID"
 //	@Param			language	query		string	true	"Language"
 //	@Param			page		query		int		false	"Page number (default 1)"
 //	@Param			pageSize	query		int		false	"Page size (default 20)"
@@ -35,9 +34,9 @@ func NewLessonHandler(service services.LessonService) *LessonHandler {
 //	@Failure		500			{object}	map[string]string
 //	@Router			/resources/lessons [get]
 func (h *LessonHandler) GetLessonsHandler(w http.ResponseWriter, r *http.Request) {
+	userIDStr := r.Header.Get("User-Id")
 	query := r.URL.Query()
 
-	userIDStr := query.Get("userId")
 	if userIDStr == "" {
 		utils.WriteJSONStatus(w, map[string]string{"error": "userId is required"}, http.StatusBadRequest)
 		return
@@ -80,7 +79,6 @@ func (h *LessonHandler) GetLessonsHandler(w http.ResponseWriter, r *http.Request
 //	@Tags			lessons
 //	@Accept			json
 //	@Produce		json
-//	@Param			userId			query		int		true	"User ID"
 //	@Param			language		query		string	true	"Language"
 //	@Param			grammarPattern	query		string	true	"Grammar pattern to filter"
 //	@Param			page			query		int		false	"Page number (default 1)"
@@ -90,9 +88,9 @@ func (h *LessonHandler) GetLessonsHandler(w http.ResponseWriter, r *http.Request
 //	@Failure		500				{object}	map[string]string
 //	@Router			/resources/lessons/search [get]
 func (h *LessonHandler) GetLessonsByGrammarHandler(w http.ResponseWriter, r *http.Request) {
+	userIDStr := r.Header.Get("User-Id")
 	query := r.URL.Query()
 
-	userIDStr := query.Get("userId")
 	if userIDStr == "" {
 		utils.WriteJSONStatus(w, map[string]string{"error": "userId is required"}, http.StatusBadRequest)
 		return

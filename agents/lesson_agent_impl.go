@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"language-learning-app/core/llm"
 	"language-learning-app/storage"
+	"language-learning-app/utils"
 	"math/rand"
 	"strings"
 )
@@ -19,10 +20,12 @@ func (la *lessonAgentImpl) GenerateLesson(userId int, lang string, masteryScoreT
 
 	grammars, err := la.grammarMasteryRepository.GetLowestBelowScore(userId, masteryScoreThreshold)
 	if err != nil {
+		utils.Logger.Error(err.Error())
 		return
 	}
 	vocabs, err := la.vocabularyMasteryRepository.GetLowestBelowScore(userId, masteryScoreThreshold)
 	if err != nil {
+		utils.Logger.Error(err.Error())
 		return
 	}
 
@@ -30,6 +33,7 @@ func (la *lessonAgentImpl) GenerateLesson(userId int, lang string, masteryScoreT
 	prompt := generateLessonGenerationPrompt(lang, randomGrammar, vocabs)
 	resp, err := la.llm.GetResponse(prompt)
 	if err != nil {
+		utils.Logger.Error(err.Error())
 		return
 	}
 
@@ -39,6 +43,7 @@ func (la *lessonAgentImpl) GenerateLesson(userId int, lang string, masteryScoreT
 
 	var generatedLesson GeneratedLesson
 	if err = json.Unmarshal([]byte(cleaned), &generatedLesson); err != nil {
+		utils.Logger.Error(err.Error())
 		return
 	}
 

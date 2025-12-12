@@ -7,6 +7,8 @@ import "time"
 // -----------------------
 type User struct {
 	UserID               int     `db:"user_id"`
+	Username             string  `db:"username"`
+	Password             string  `db:"password"`
 	CurrentLevel         string  `db:"current_level"`
 	KnownVocabCount      int     `db:"known_vocab_count"`
 	GrammarMasteredCount int     `db:"grammar_mastered_count"`

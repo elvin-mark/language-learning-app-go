@@ -27,7 +27,6 @@ func NewVocabularyHandler(service services.VocabularyService) *VocabularyHandler
 //	@Tags			vocabulary
 //	@Accept			json
 //	@Produce		json
-//	@Param			userId		query		int		true	"User ID"
 //	@Param			language	query		string	true	"Language"
 //	@Param			page		query		int		false	"Page number (default 1)"
 //	@Param			pageSize	query		int		false	"Page size (default 20)"
@@ -36,9 +35,9 @@ func NewVocabularyHandler(service services.VocabularyService) *VocabularyHandler
 //	@Failure		500			{object}	map[string]string
 //	@Router			/resources/vocabulary [get]
 func (h *VocabularyHandler) GetVocabularyHandler(w http.ResponseWriter, r *http.Request) {
+	userIDStr := r.Header.Get("User-Id")
 	query := r.URL.Query()
 
-	userIDStr := query.Get("userId")
 	if userIDStr == "" {
 		utils.WriteJSONStatus(w, map[string]string{"error": "userId is required"}, http.StatusBadRequest)
 		return

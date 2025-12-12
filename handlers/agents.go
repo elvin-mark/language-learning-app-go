@@ -6,6 +6,7 @@ import (
 	"language-learning-app/services"
 	"language-learning-app/utils"
 	"net/http"
+	"strconv"
 )
 
 // ============== STRUCTS ==============
@@ -33,14 +34,21 @@ func NewAgentHandler(service services.AgentService) *AgentHandler {
 //	@Failure		500		{object}	map[string]string
 //	@Router			/agents/lessons [post]
 func (h *AgentHandler) GenerateLessonHandler(w http.ResponseWriter, r *http.Request) {
+	userId := r.Header.Get("User-Id")
 	var req dto.GenerateLessonRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		utils.WriteJSONStatus(w, map[string]string{"error": "Invalid request body"}, http.StatusBadRequest)
 		return
 	}
-	lesson, err := h.service.GenerateLesson(req)
+	tmp, err := strconv.Atoi(userId)
 	if err != nil {
 		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to get users"}, http.StatusInternalServerError)
+		return
+	}
+	req.UserId = tmp
+	lesson, err := h.service.GenerateLesson(req)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate lesson"}, http.StatusInternalServerError)
 		return
 	}
 

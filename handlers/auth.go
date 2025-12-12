@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	dto "language-learning-app/dto/auth"
 	models "language-learning-app/models/auth"
+	"language-learning-app/services"
 	"language-learning-app/utils"
 	"net/http"
-	"os"
 )
 
 type AuthHandler interface {
@@ -15,10 +15,13 @@ type AuthHandler interface {
 }
 
 type authHandlerImpl struct {
+	userService services.UserService
 }
 
-func NewAuthHandler() AuthHandler {
-	return &authHandlerImpl{}
+func NewAuthHandler(userService services.UserService) AuthHandler {
+	return &authHandlerImpl{
+		userService: userService,
+	}
 }
 
 // ============== METHODS ==============
@@ -42,8 +45,14 @@ func (h *authHandlerImpl) GetAuthTokenHandler(w http.ResponseWriter, r *http.Req
 		utils.WriteJSONStatus(w, map[string]string{"error": "Invalid request body"}, http.StatusBadRequest)
 		return
 	}
-	if req.Username == os.Getenv("ADMIN_USERNAME") && req.Password == os.Getenv("ADMIN_PASSWORD") {
+	user, err := h.userService.GetUserByUsername(req.Username)
+	if err != nil || user == nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Failed authentication"}, http.StatusInternalServerError)
+		return
+	}
+	if req.Password == user.Password {
 		res.AccessToken = base64.StdEncoding.EncodeToString([]byte(req.Username + ":" + req.Password))
+		res.UserId = user.UserID
 		utils.WriteJSON(w, res)
 		return
 	}

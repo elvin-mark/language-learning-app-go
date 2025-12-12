@@ -5,6 +5,8 @@ PRAGMA foreign_keys = ON;
 -- ===========================
 CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
     current_level TEXT,
     known_vocab_count INTEGER DEFAULT 0,
     grammar_mastered_count INTEGER DEFAULT 0,

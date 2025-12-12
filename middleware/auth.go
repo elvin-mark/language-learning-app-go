@@ -1,24 +1,23 @@
 package middleware
 
 import (
+	"language-learning-app/services"
 	"net/http"
-	"os"
+	"strconv"
 )
 
-// BasicAuth is a middleware that provides basic authentication.
-func BasicAuth(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		user, pass, ok := r.BasicAuth()
-		if !ok || !checkCredentials(user, pass) {
-			w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			return
-		}
-		next.ServeHTTP(w, r)
-	})
-}
-
-func checkCredentials(user, pass string) bool {
-	// Sample logic for checking credentials
-	return user == os.Getenv("ADMIN_USERNAME") && pass == os.Getenv("ADMIN_PASSWORD")
+func NewBasicAuth(userService services.UserService) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			username, password, ok := r.BasicAuth()
+			user, err := userService.GetUserByUsername(username)
+			if !ok || err != nil || user == nil || user.Password != password {
+				w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				return
+			}
+			r.Header.Set("User-Id", strconv.FormatInt(int64(user.UserID), 10))
+			next.ServeHTTP(w, r)
+		})
+	}
 }

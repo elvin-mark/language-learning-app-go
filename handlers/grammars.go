@@ -27,7 +27,6 @@ func NewGrammarHandler(service services.GrammarService) *GrammarHandler {
 //	@Tags			grammar
 //	@Accept			json
 //	@Produce		json
-//	@Param			userId		query		int		true	"User ID"
 //	@Param			language	query		string	true	"Language"
 //	@Param			page		query		int		false	"Page number (default 1)"
 //	@Param			pageSize	query		int		false	"Page size (default 20)"
@@ -36,9 +35,9 @@ func NewGrammarHandler(service services.GrammarService) *GrammarHandler {
 //	@Failure		500			{object}	map[string]string
 //	@Router			/resources/grammar [get]
 func (h *GrammarHandler) GetGrammarPatternsHandler(w http.ResponseWriter, r *http.Request) {
+	userIDStr := r.Header.Get("User-Id")
 	query := r.URL.Query()
 
-	userIDStr := query.Get("userId")
 	if userIDStr == "" {
 		utils.WriteJSONStatus(w, map[string]string{"error": "userId is required"}, http.StatusBadRequest)
 		return
@@ -81,7 +80,6 @@ func (h *GrammarHandler) GetGrammarPatternsHandler(w http.ResponseWriter, r *htt
 //	@Tags			grammar
 //	@Accept			json
 //	@Produce		json
-//	@Param			userId		query		int		true	"User ID"
 //	@Param			language	query		string	true	"Language"
 //	@Param			pattern		query		string	true	"Grammar pattern to filter"
 //	@Param			page		query		int		false	"Page number (default 1)"
@@ -91,9 +89,9 @@ func (h *GrammarHandler) GetGrammarPatternsHandler(w http.ResponseWriter, r *htt
 //	@Failure		500			{object}	map[string]string
 //	@Router			/resources/grammar/search [get]
 func (h *GrammarHandler) GetGrammarPatternsByPatternHandler(w http.ResponseWriter, r *http.Request) {
+	userIDStr := r.Header.Get("User-Id")
 	query := r.URL.Query()
 
-	userIDStr := query.Get("userId")
 	if userIDStr == "" {
 		utils.WriteJSONStatus(w, map[string]string{"error": "userId is required"}, http.StatusBadRequest)
 		return

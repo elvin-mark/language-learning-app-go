@@ -9,6 +9,7 @@ import (
 type UserRepository interface {
 	Create(user *User) error
 	GetByID(id int) (*User, error)
+	GetByUsername(username string) (*User, error)
 }
 
 func NewUserRepository(db *sql.DB) UserRepository {

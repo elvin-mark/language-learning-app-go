@@ -54,6 +54,7 @@ func main() {
 	vocabMasteryRepository := storage.NewVocabularyMasteryRepository(db)
 	lessonRepository := storage.NewLessonRepository(db)
 	exerciseRepository := storage.NewExerciseRepository(db)
+	userRepository := storage.NewUserRepository(db)
 
 	lessonAgent := agents.NewLessonAgent(llmCore, lessonRepository, vocabMasteryRepository, grammarMasteryRepository)
 	practiceAgent := agents.NewPracticeAgent(llmCore, lessonRepository, exerciseRepository)
@@ -62,12 +63,13 @@ func main() {
 	lessonsService := services.NewLessonService(lessonRepository)
 	grammarService := services.NewGrammarService(grammarMasteryRepository)
 	vocabularyService := services.NewVocabularyService(vocabMasteryRepository)
+	userService := services.NewUserService(userRepository)
 
 	angentsHandler := handlers.NewAgentHandler(agentsService)
 	lessonsHandler := handlers.NewLessonHandler(lessonsService)
 	grammarHandler := handlers.NewGrammarHandler(grammarService)
 	vocabularyHandler := handlers.NewVocabularyHandler(vocabularyService)
-	authHandler := handlers.NewAuthHandler()
+	authHandler := handlers.NewAuthHandler(userService)
 
 	// Create router
 	r := chi.NewRouter()
@@ -102,14 +104,16 @@ func main() {
 		r.Post("/token", authHandler.GetAuthTokenHandler)
 	})
 
+	basicAuth := middleware.NewBasicAuth(userService)
+
 	r.Route("/agents", func(r chi.Router) {
-		r.Use(middleware.BasicAuth)
+		r.Use(basicAuth)
 		r.Post("/lessons", angentsHandler.GenerateLessonHandler)
 		r.Post("/exercises", angentsHandler.GenerateExerciseHandler)
 	})
 
 	r.Route("/resources", func(r chi.Router) {
-		r.Use(middleware.BasicAuth)
+		r.Use(basicAuth)
 		r.Get("/lessons", lessonsHandler.GetLessonsHandler)
 		r.Get("/lessons/search", lessonsHandler.GetLessonsByGrammarHandler)
 		r.Get("/grammar", grammarHandler.GetGrammarPatternsHandler)
