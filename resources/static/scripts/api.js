@@ -45,14 +45,12 @@ class LanguageLearningAPI {
 
   // ---- Agents ----
 
-  getExercises(data) {
-    // { lang, lessonId, practicePattern }
-    return this.post("/agents/exercises", data);
+  getExercises({ lang, lessonId, practicePattern }) {
+    return this.post("/agents/exercises", { lang, lessonId, practicePattern });
   }
 
-  getLesson(data) {
-    // { lang, userId }
-    return this.post("/agents/lessons", data);
+  getLesson({ lang, userId }) {
+    return this.post("/agents/lessons", { lang, userId });
   }
 
   // ---- Grammar ----

@@ -13,6 +13,7 @@ async function login() {
   } else {
     res.json().then((data) => {
       localStorage.setItem("token", data.AccessToken);
+      localStorage.setItem("userId", data.UserId);
       window.location.href = "/";
     });
   }

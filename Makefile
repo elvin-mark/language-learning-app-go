@@ -10,6 +10,7 @@ check:
 	@govulncheck ./...
 
 build:
+	@echo "Generating swagger docs"
 	@swag init --generalInfo cmd/api/main.go --output docs
 	@echo "Building the application..."
 	@mkdir -p build

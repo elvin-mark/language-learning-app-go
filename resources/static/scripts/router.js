@@ -21,9 +21,11 @@ document.querySelectorAll(".menu-list a").forEach((item) => {
 
     // Show selected section
     document.getElementById("content").innerHTML = html;
-
-    // Close menu on mobile
+    if (target == "lessons") {
+      lessonsEngine.fetch();
+    }
     if (window.innerWidth < 700) {
+      // Close menu on mobile
       menu.classList.remove("open");
       toggle.classList.remove("open");
     }
