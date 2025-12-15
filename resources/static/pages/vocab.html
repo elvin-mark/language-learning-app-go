@@ -1,16 +1,25 @@
-<section id="vocabulary-section">
+<div>
   <h2>Vocabulary</h2>
 
-  <div class="vocab-controls">
-    <input type="text" id="vocabSearch" placeholder="Search vocabulary..." />
-    <button onclick="vocabularyEngine.search()">Search</button>
+  <div class="section-controls">
+    <div class="section-search-box">
+      <input type="text" id="vocabSearch" placeholder="Search word..." />
+      <button onclick="vocabEngine.onClickSearch()">Search</button>
+      <select id="vocabLanguage" class="section-dropdown">
+        <option>Korean</option>
+        <option>Japanese</option>
+      </select>
+    </div>
   </div>
 
-  <div id="vocabList"></div>
-
-  <div class="pagination">
-    <button onclick="vocabularyEngine.prevPage()">Previous</button>
-    <span id="vocabularyCurrentPage"></span>
-    <button onclick="vocabularyEngine.nextPage()">Next</button>
+  <div class="section-main-layout">
+    <div id="vocabList" class="section-card-list"></div>
+    <div class="section-detail-panel" id="lessonContent"></div>
   </div>
-</section>
+
+  <div class="section-pagination">
+    <button onclick="vocabEngine.prevPage()">Prev</button>
+    <span id="vocabCurrentPage">1</span>
+    <button onclick="vocabEngine.nextPage()">Next</button>
+  </div>
+</div>

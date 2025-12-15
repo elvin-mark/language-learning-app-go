@@ -15,116 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/agents/exercises": {
-            "post": {
-                "description": "Get a new Exercise based on the input lesson",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "agents"
-                ],
-                "summary": "Get Practice Exercises",
-                "parameters": [
-                    {
-                        "description": "Exercise Request object to be generated",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.GeneraterExerciseRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/storage.Exercise"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/agents/lessons": {
-            "post": {
-                "description": "Get a new Language Lesson based on the user current status",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "agents"
-                ],
-                "summary": "Get Lesson",
-                "parameters": [
-                    {
-                        "description": "Lesson Request object to be generated",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.GenerateLessonRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/storage.Lesson"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/auth/token": {
             "post": {
                 "description": "Given the username and password, validate it and return an authToken",
@@ -180,6 +70,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/exercise/translation/generate": {
+            "post": {
+                "description": "Get a new Translation Exercise based on the input lesson",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exercise"
+                ],
+                "summary": "Get Translation Exercise",
+                "parameters": [
+                    {
+                        "description": "Exercise Request object to be generated",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GeneraterTranslationExerciseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/agents.GeneratedTranslationExercise"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/health": {
             "get": {
                 "description": "get the status of the server.",
@@ -206,7 +148,7 @@ const docTemplate = `{
         },
         "/resources/grammar": {
             "get": {
-                "description": "Get paginated grammar patterns for a user and language",
+                "description": "Get paginated grammar patterns for a user",
                 "consumes": [
                     "application/json"
                 ],
@@ -218,13 +160,6 @@ const docTemplate = `{
                 ],
                 "summary": "Get Grammar Patterns",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Language",
-                        "name": "language",
-                        "in": "query",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "Page number (default 1)",
@@ -244,7 +179,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/storage.GrammarMastery"
+                                "$ref": "#/definitions/storage.UserGrammar"
                             }
                         }
                     },
@@ -285,13 +220,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Language",
-                        "name": "language",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
                         "description": "Grammar pattern to filter",
                         "name": "pattern",
                         "in": "query",
@@ -314,10 +242,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/storage.GrammarMastery"
-                            }
+                            "$ref": "#/definitions/storage.UserGrammar"
                         }
                     },
                     "400": {
@@ -343,7 +268,7 @@ const docTemplate = `{
         },
         "/resources/lessons": {
             "get": {
-                "description": "Get paginated lessons for a user and language",
+                "description": "Get paginated lessons for a user",
                 "consumes": [
                     "application/json"
                 ],
@@ -356,13 +281,6 @@ const docTemplate = `{
                 "summary": "Get Lessons",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Language",
-                        "name": "language",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
                         "type": "integer",
                         "description": "Page number (default 1)",
                         "name": "page",
@@ -381,7 +299,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/storage.Lesson"
+                                "$ref": "#/definitions/storage.UserLesson"
                             }
                         }
                     },
@@ -406,9 +324,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/resources/lessons/search": {
-            "get": {
-                "description": "Get paginated lessons for a user, language, and grammar pattern",
+        "/resources/lessons/generate": {
+            "post": {
+                "description": "Get a new Language Lesson based on the user current status",
                 "consumes": [
                     "application/json"
                 ],
@@ -418,42 +336,14 @@ const docTemplate = `{
                 "tags": [
                     "lessons"
                 ],
-                "summary": "Get Lessons by Grammar",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Language",
-                        "name": "language",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Grammar pattern to filter",
-                        "name": "grammarPattern",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Page number (default 1)",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Page size (default 20)",
-                        "name": "pageSize",
-                        "in": "query"
-                    }
-                ],
+                "summary": "Generate New Lesson",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/storage.Lesson"
+                                "$ref": "#/definitions/storage.UserLesson"
                             }
                         }
                     },
@@ -478,9 +368,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/resources/vocabulary": {
+        "/resources/words": {
             "get": {
-                "description": "Get paginated vocabulary for a user and language",
+                "description": "Get paginated words for a user",
                 "consumes": [
                     "application/json"
                 ],
@@ -490,15 +380,8 @@ const docTemplate = `{
                 "tags": [
                     "vocabulary"
                 ],
-                "summary": "Get Vocabulary",
+                "summary": "Get Words",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Language",
-                        "name": "language",
-                        "in": "query",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "Page number (default 1)",
@@ -518,7 +401,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/storage.VocabularyMastery"
+                                "$ref": "#/definitions/storage.UserWord"
                             }
                         }
                     },
@@ -545,6 +428,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "agents.GeneratedTranslationExercise": {
+            "type": "object",
+            "properties": {
+                "sentences": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "dto.GenerateAuthTokenRequest": {
             "type": "object",
             "properties": {
@@ -556,28 +450,11 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.GenerateLessonRequest": {
+        "dto.GeneraterTranslationExerciseRequest": {
             "type": "object",
             "properties": {
-                "lang": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "dto.GeneraterExerciseRequest": {
-            "type": "object",
-            "properties": {
-                "lang": {
-                    "type": "string"
-                },
                 "lessonId": {
                     "type": "integer"
-                },
-                "practicePattern": {
-                    "type": "string"
                 }
             }
         },
@@ -592,120 +469,80 @@ const docTemplate = `{
                 }
             }
         },
-        "storage.Exercise": {
+        "storage.UserGrammar": {
             "type": "object",
             "properties": {
-                "exerciseID": {
+                "id": {
                     "type": "integer"
                 },
-                "feedback": {
-                    "type": "string"
-                },
-                "grade": {
-                    "type": "integer"
-                },
-                "lessonID": {
-                    "type": "integer"
-                },
-                "questionData": {
-                    "type": "string"
-                },
-                "subType": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "integer"
-                },
-                "userResponse": {
-                    "type": "string"
-                }
-            }
-        },
-        "storage.GrammarMastery": {
-            "type": "object",
-            "properties": {
                 "language": {
                     "type": "string"
                 },
                 "lastReviewed": {
                     "type": "string"
                 },
-                "masteryID": {
-                    "type": "integer"
-                },
-                "masteryScore": {
-                    "type": "number"
-                },
                 "pattern": {
                     "type": "string"
                 },
-                "timesIncorrect": {
-                    "type": "integer"
+                "score": {
+                    "type": "number"
                 },
-                "userID": {
+                "userId": {
                     "type": "integer"
-                },
-                "weaknessFlags": {
-                    "description": "JSON array",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 }
             }
         },
-        "storage.Lesson": {
+        "storage.UserLesson": {
             "type": "object",
             "properties": {
                 "content": {
                     "type": "string"
                 },
-                "grammarFocus": {
-                    "type": "string"
+                "grammarId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "language": {
                     "type": "string"
                 },
-                "lessonID": {
+                "sampleSentences": {
+                    "type": "string"
+                },
+                "userId": {
                     "type": "integer"
                 },
-                "newVocabulary": {
-                    "description": "JSON array",
+                "wordsId": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "integer"
                     }
                 },
-                "userID": {
-                    "type": "integer"
+                "wordsMeaning": {
+                    "type": "string"
                 }
             }
         },
-        "storage.VocabularyMastery": {
+        "storage.UserWord": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "integer"
+                },
                 "language": {
                     "type": "string"
                 },
                 "lastReviewed": {
                     "type": "string"
                 },
-                "masteryID": {
-                    "type": "integer"
-                },
-                "masteryScore": {
+                "score": {
                     "type": "number"
                 },
-                "timesCorrect": {
-                    "type": "integer"
+                "type": {
+                    "type": "string"
                 },
-                "timesIncorrect": {
-                    "type": "integer"
-                },
-                "userID": {
+                "userId": {
                     "type": "integer"
                 },
                 "word": {

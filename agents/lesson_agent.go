@@ -2,18 +2,14 @@ package agents
 
 import (
 	"language-learning-app/core/llm"
-	"language-learning-app/storage"
 )
 
 type LessonAgent interface {
-	GenerateLesson(userId int, lang string, masteryScoreThreshold float64) (lesson storage.Lesson, err error)
+	GenerateLesson(targetLanguage string, grammarPattern string, words []string) (generatedLesson GeneratedLesson, err error)
 }
 
-func NewLessonAgent(llm llm.Llm, lessonRepository storage.LessonRepository, vocabularyMasteryRepository storage.VocabularyMasteryRepository, grammarMasteryRepository storage.GrammarMasteryRepository) LessonAgent {
+func NewLessonAgent(llm llm.Llm) LessonAgent {
 	return &lessonAgentImpl{
-		llm:                         llm,
-		lessonRepository:            lessonRepository,
-		vocabularyMasteryRepository: vocabularyMasteryRepository,
-		grammarMasteryRepository:    grammarMasteryRepository,
+		llm: llm,
 	}
 }

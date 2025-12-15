@@ -1,8 +1,8 @@
-package storage
+package utils
 
 import "encoding/json"
 
-func toJSON(v interface{}) (string, error) {
+func ToJSON(v interface{}) (string, error) {
 	data, err := json.Marshal(v)
 	if err != nil {
 		return "", err
@@ -10,6 +10,6 @@ func toJSON(v interface{}) (string, error) {
 	return string(data), nil
 }
 
-func fromJSON(str string, v interface{}) error {
+func FromJSON(str string, v interface{}) error {
 	return json.Unmarshal([]byte(str), v)
 }

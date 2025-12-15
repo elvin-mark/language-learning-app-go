@@ -10,21 +10,9 @@ import (
 	"net/http"
 )
 
-type AuthHandler interface {
-	GetAuthTokenHandler(w http.ResponseWriter, r *http.Request)
-}
-
 type authHandlerImpl struct {
 	userService services.UserService
 }
-
-func NewAuthHandler(userService services.UserService) AuthHandler {
-	return &authHandlerImpl{
-		userService: userService,
-	}
-}
-
-// ============== METHODS ==============
 
 // GetAuthTokenHandler godoc
 //
@@ -52,7 +40,7 @@ func (h *authHandlerImpl) GetAuthTokenHandler(w http.ResponseWriter, r *http.Req
 	}
 	if req.Password == user.Password {
 		res.AccessToken = base64.StdEncoding.EncodeToString([]byte(req.Username + ":" + req.Password))
-		res.UserId = user.UserID
+		res.UserId = user.Id
 		utils.WriteJSON(w, res)
 		return
 	}

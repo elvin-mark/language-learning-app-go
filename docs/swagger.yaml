@@ -1,5 +1,12 @@
 basePath: /
 definitions:
+  agents.GeneratedTranslationExercise:
+    properties:
+      sentences:
+        items:
+          type: string
+        type: array
+    type: object
   dto.GenerateAuthTokenRequest:
     properties:
       password:
@@ -7,21 +14,10 @@ definitions:
       username:
         type: string
     type: object
-  dto.GenerateLessonRequest:
+  dto.GeneraterTranslationExerciseRequest:
     properties:
-      lang:
-        type: string
-      userId:
-        type: integer
-    type: object
-  dto.GeneraterExerciseRequest:
-    properties:
-      lang:
-        type: string
       lessonId:
         type: integer
-      practicePattern:
-        type: string
     type: object
   models.AuthToken:
     properties:
@@ -30,82 +26,55 @@ definitions:
       userId:
         type: integer
     type: object
-  storage.Exercise:
+  storage.UserGrammar:
     properties:
-      exerciseID:
+      id:
         type: integer
-      feedback:
-        type: string
-      grade:
-        type: integer
-      lessonID:
-        type: integer
-      questionData:
-        type: string
-      subType:
-        type: string
-      type:
-        type: string
-      userID:
-        type: integer
-      userResponse:
-        type: string
-    type: object
-  storage.GrammarMastery:
-    properties:
       language:
         type: string
       lastReviewed:
         type: string
-      masteryID:
-        type: integer
-      masteryScore:
-        type: number
       pattern:
         type: string
-      timesIncorrect:
+      score:
+        type: number
+      userId:
         type: integer
-      userID:
-        type: integer
-      weaknessFlags:
-        description: JSON array
-        items:
-          type: string
-        type: array
     type: object
-  storage.Lesson:
+  storage.UserLesson:
     properties:
       content:
         type: string
-      grammarFocus:
-        type: string
+      grammarId:
+        type: integer
+      id:
+        type: integer
       language:
         type: string
-      lessonID:
+      sampleSentences:
+        type: string
+      userId:
         type: integer
-      newVocabulary:
-        description: JSON array
+      wordsId:
         items:
-          type: string
+          type: integer
         type: array
-      userID:
-        type: integer
+      wordsMeaning:
+        type: string
     type: object
-  storage.VocabularyMastery:
+  storage.UserWord:
     properties:
+      id:
+        type: integer
       language:
         type: string
       lastReviewed:
         type: string
-      masteryID:
-        type: integer
-      masteryScore:
+      score:
         type: number
-      timesCorrect:
-        type: integer
-      timesIncorrect:
-        type: integer
-      userID:
+      type:
+        type: string
+      userId:
         type: integer
       word:
         type: string
@@ -117,78 +86,6 @@ info:
   title: Language Learning App
   version: "1.0"
 paths:
-  /agents/exercises:
-    post:
-      consumes:
-      - application/json
-      description: Get a new Exercise based on the input lesson
-      parameters:
-      - description: Exercise Request object to be generated
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/dto.GeneraterExerciseRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/storage.Exercise'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Get Practice Exercises
-      tags:
-      - agents
-  /agents/lessons:
-    post:
-      consumes:
-      - application/json
-      description: Get a new Language Lesson based on the user current status
-      parameters:
-      - description: Lesson Request object to be generated
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/dto.GenerateLessonRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/storage.Lesson'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Get Lesson
-      tags:
-      - agents
   /auth/token:
     post:
       consumes:
@@ -225,6 +122,40 @@ paths:
       summary: Get Auth Token
       tags:
       - auth
+  /exercise/translation/generate:
+    post:
+      consumes:
+      - application/json
+      description: Get a new Translation Exercise based on the input lesson
+      parameters:
+      - description: Exercise Request object to be generated
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GeneraterTranslationExerciseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/agents.GeneratedTranslationExercise'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Translation Exercise
+      tags:
+      - exercise
   /health:
     get:
       consumes:
@@ -245,13 +176,8 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get paginated grammar patterns for a user and language
+      description: Get paginated grammar patterns for a user
       parameters:
-      - description: Language
-        in: query
-        name: language
-        required: true
-        type: string
       - description: Page number (default 1)
         in: query
         name: page
@@ -267,7 +193,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/storage.GrammarMastery'
+              $ref: '#/definitions/storage.UserGrammar'
             type: array
         "400":
           description: Bad Request
@@ -291,11 +217,6 @@ paths:
       description: Get paginated grammar patterns for a user and language filtered
         by pattern (LIKE search)
       parameters:
-      - description: Language
-        in: query
-        name: language
-        required: true
-        type: string
       - description: Grammar pattern to filter
         in: query
         name: pattern
@@ -315,9 +236,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/storage.GrammarMastery'
-            type: array
+            $ref: '#/definitions/storage.UserGrammar'
         "400":
           description: Bad Request
           schema:
@@ -337,13 +256,8 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get paginated lessons for a user and language
+      description: Get paginated lessons for a user
       parameters:
-      - description: Language
-        in: query
-        name: language
-        required: true
-        type: string
       - description: Page number (default 1)
         in: query
         name: page
@@ -359,7 +273,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/storage.Lesson'
+              $ref: '#/definitions/storage.UserLesson'
             type: array
         "400":
           description: Bad Request
@@ -376,30 +290,11 @@ paths:
       summary: Get Lessons
       tags:
       - lessons
-  /resources/lessons/search:
-    get:
+  /resources/lessons/generate:
+    post:
       consumes:
       - application/json
-      description: Get paginated lessons for a user, language, and grammar pattern
-      parameters:
-      - description: Language
-        in: query
-        name: language
-        required: true
-        type: string
-      - description: Grammar pattern to filter
-        in: query
-        name: grammarPattern
-        required: true
-        type: string
-      - description: Page number (default 1)
-        in: query
-        name: page
-        type: integer
-      - description: Page size (default 20)
-        in: query
-        name: pageSize
-        type: integer
+      description: Get a new Language Lesson based on the user current status
       produces:
       - application/json
       responses:
@@ -407,7 +302,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/storage.Lesson'
+              $ref: '#/definitions/storage.UserLesson'
             type: array
         "400":
           description: Bad Request
@@ -421,20 +316,15 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Get Lessons by Grammar
+      summary: Generate New Lesson
       tags:
       - lessons
-  /resources/vocabulary:
+  /resources/words:
     get:
       consumes:
       - application/json
-      description: Get paginated vocabulary for a user and language
+      description: Get paginated words for a user
       parameters:
-      - description: Language
-        in: query
-        name: language
-        required: true
-        type: string
       - description: Page number (default 1)
         in: query
         name: page
@@ -450,7 +340,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/storage.VocabularyMastery'
+              $ref: '#/definitions/storage.UserWord'
             type: array
         "400":
           description: Bad Request
@@ -464,7 +354,7 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Get Vocabulary
+      summary: Get Words
       tags:
       - vocabulary
 swagger: "2.0"

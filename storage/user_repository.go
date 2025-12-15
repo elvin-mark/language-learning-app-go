@@ -4,8 +4,6 @@ import (
 	"database/sql"
 )
 
-// -------------------- USERS STATUS REPO --------------------
-
 type UserRepository interface {
 	Create(user *User) error
 	GetByID(id int) (*User, error)

@@ -1,8 +1,11 @@
 package agents
 
 type GeneratedLesson struct {
-	GrammarPattern   string   `json:"grammar_pattern"`
-	NewVocabulary    []string `json:"new_vocabulary"`
-	ExplanationText  string   `json:"explanation_text"`
-	ExampleSentences []string `json:"example_sentences"`
+	Content         string `json:"content"`
+	SampleSentences string `json:"sample_sentences"`
+	WordsMeaning    string `json:"words_meaning"`
+}
+
+type GeneratedTranslationExercise struct {
+	Sentences []string `json:"sentences"`
 }

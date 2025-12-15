@@ -50,25 +50,24 @@ func main() {
 	defer db.Close()
 
 	// Create user repository, service, and handler
-	grammarMasteryRepository := storage.NewGrammarMasteryRepository(db)
-	vocabMasteryRepository := storage.NewVocabularyMasteryRepository(db)
-	lessonRepository := storage.NewLessonRepository(db)
-	exerciseRepository := storage.NewExerciseRepository(db)
+	userGrammarRepository := storage.NewUserGrammarRepository(db)
+	userWordRepository := storage.NewUserWordRepository(db)
+	userLessonRepository := storage.NewUserLessonRepository(db)
 	userRepository := storage.NewUserRepository(db)
 
-	lessonAgent := agents.NewLessonAgent(llmCore, lessonRepository, vocabMasteryRepository, grammarMasteryRepository)
-	practiceAgent := agents.NewPracticeAgent(llmCore, lessonRepository, exerciseRepository)
+	lessonAgent := agents.NewLessonAgent(llmCore)
+	exerciseAgent := agents.NewExerciseAgent(llmCore)
 
-	agentsService := services.NewAgentService(lessonAgent, practiceAgent)
-	lessonsService := services.NewLessonService(lessonRepository)
-	grammarService := services.NewGrammarService(grammarMasteryRepository)
-	vocabularyService := services.NewVocabularyService(vocabMasteryRepository)
+	exerciseService := services.NewExerciseService(exerciseAgent)
+	userLessonsService := services.NewUserLessonService(userLessonRepository, lessonAgent, userGrammarRepository, userWordRepository)
+	userGrammarService := services.NewUserGrammarService(userGrammarRepository)
+	userWordService := services.NewUserWordService(userWordRepository)
 	userService := services.NewUserService(userRepository)
 
-	angentsHandler := handlers.NewAgentHandler(agentsService)
-	lessonsHandler := handlers.NewLessonHandler(lessonsService)
-	grammarHandler := handlers.NewGrammarHandler(grammarService)
-	vocabularyHandler := handlers.NewVocabularyHandler(vocabularyService)
+	exerciseHandler := handlers.NewExerciseHandler(exerciseService, userService)
+	userLessonsHandler := handlers.NewUserLessonHandler(userLessonsService, userService)
+	userGrammarHandler := handlers.NewUserGrammarHandler(userGrammarService, userService)
+	userWordHandler := handlers.NewUserWordHandler(userWordService, userService)
 	authHandler := handlers.NewAuthHandler(userService)
 
 	// Create router
@@ -106,19 +105,14 @@ func main() {
 
 	basicAuth := middleware.NewBasicAuth(userService)
 
-	r.Route("/agents", func(r chi.Router) {
-		r.Use(basicAuth)
-		r.Post("/lessons", angentsHandler.GenerateLessonHandler)
-		r.Post("/exercises", angentsHandler.GenerateExerciseHandler)
-	})
-
 	r.Route("/resources", func(r chi.Router) {
 		r.Use(basicAuth)
-		r.Get("/lessons", lessonsHandler.GetLessonsHandler)
-		r.Get("/lessons/search", lessonsHandler.GetLessonsByGrammarHandler)
-		r.Get("/grammar", grammarHandler.GetGrammarPatternsHandler)
-		r.Get("/grammar/search", grammarHandler.GetGrammarPatternsByPatternHandler)
-		r.Get("/vocabulary", vocabularyHandler.GetVocabularyHandler)
+		r.Post("/exercise/translation/generate", exerciseHandler.GenerateTranslationExerciseHandler)
+		r.Get("/lessons", userLessonsHandler.GetLessonsHandler)
+		r.Post("/lessons/generate", userLessonsHandler.GenerateLessonHandler)
+		r.Get("/grammar", userGrammarHandler.GetGrammarPatternsHandler)
+		r.Get("/grammar/search", userGrammarHandler.GetGrammarPatternsByPatternHandler)
+		r.Get("/words", userWordHandler.GetWordsHandler)
 	})
 
 	// Start server

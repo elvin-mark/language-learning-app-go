@@ -4,92 +4,66 @@ PRAGMA foreign_keys = ON;
 -- Table: users
 -- ===========================
 CREATE TABLE IF NOT EXISTS users (
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    current_level TEXT,
-    known_vocab_count INTEGER DEFAULT 0,
-    grammar_mastered_count INTEGER DEFAULT 0,
-    most_recent_weak_area TEXT
+    preferred_language TEXT NOT NULL DEFAULT 'English',
+    target_language TEXT NOT NULL DEFAULT 'Korean'
 );
 
 -- ===========================
--- Table: grammar_mastery
--- Track user's mastery per grammar pattern
+-- Table: user_grammar
+-- Track user's grammar per grammar pattern
 -- ===========================
-CREATE TABLE IF NOT EXISTS grammar_mastery (
-    mastery_id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS user_grammar (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     language TEXT NOT NULL,
     pattern TEXT NOT NULL,
-    mastery_score REAL DEFAULT 0.0,
+    score INTEGER DEFAULT 0,
     last_reviewed DATETIME DEFAULT CURRENT_TIMESTAMP,
-    weakness_flags TEXT DEFAULT '[]',
-    times_incorrect INTEGER DEFAULT 0,
 
     UNIQUE(user_id, pattern),
 
-    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS idx_grammar_user ON grammar_mastery(user_id);
+CREATE INDEX IF NOT EXISTS idx_grammar_user ON user_grammar(user_id);
 
 -- ===========================
--- Table: vocabulary_mastery
--- Track user's mastery per vocabulary word
+-- Table: user_words
+-- Track user's words per vocabulary word
 -- ===========================
-CREATE TABLE IF NOT EXISTS vocabulary_mastery (
-    mastery_id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS user_words (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     language TEXT NOT NULL,
+    type TEXT NOT NULL, -- VERB, NOUN, ADJ, ADV
     word TEXT NOT NULL,
-    mastery_score REAL DEFAULT 0.0,
+    score INTEGER DEFAULT 0,
     last_reviewed DATETIME DEFAULT CURRENT_TIMESTAMP,
-    times_correct INTEGER DEFAULT 0,
-    times_incorrect INTEGER DEFAULT 0,
-
     UNIQUE(user_id, word),
 
-    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS idx_vocab_user ON vocabulary_mastery(user_id);
+CREATE INDEX IF NOT EXISTS idx_vocab_user ON user_words(user_id);
 
 -- ===========================
 -- Table: lessons
 -- Lessons generated for a user
 -- ===========================
-CREATE TABLE IF NOT EXISTS lessons (
-    lesson_id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS user_lessons (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     language TEXT NOT NULL,
-    grammar_focus TEXT,
+    grammar_id INTEGER NOT NULL,
+    words_id TEXT DEFAULT '[]',
     content TEXT,
-    new_vocabulary TEXT DEFAULT '[]',
+    sample_sentences TEXT,
+    words_meaning TEXT,
 
-    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS idx_lessons_user ON lessons(user_id);
-
--- ===========================
--- Table: exercises
--- Exercises belonging to a user and optionally a lesson
--- ===========================
-CREATE TABLE IF NOT EXISTS exercises (
-    exercise_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    lesson_id INTEGER,
-    type TEXT,
-    sub_type TEXT,
-    question_data TEXT,
-    user_response TEXT,
-    grade INTEGER,
-    feedback TEXT,
-
-    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY(lesson_id) REFERENCES lessons(lesson_id) ON DELETE SET NULL
-);
-
-CREATE INDEX IF NOT EXISTS idx_exercises_user ON exercises(user_id);
-CREATE INDEX IF NOT EXISTS idx_exercises_lesson ON exercises(lesson_id);
+CREATE INDEX IF NOT EXISTS idx_lessons_user ON user_lessons(id);

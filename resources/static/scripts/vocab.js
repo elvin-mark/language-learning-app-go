@@ -1,81 +1,115 @@
-let vocabPage = 1;
-const vocabPageSize = 10;
-
-class VocabularyEngine {
+class VocabEngine {
+  page = 1;
+  lastSearchTerm = "";
+  pageSize = 10;
+  items = [];
   constructor() {}
 
-  async fetch(page = 1) {
+  async fetch(page = 1, lang = "Korean") {
     const data = await api.getVocabulary({
-      userId: 1,
-      language: "Korean",
+      userId: localStorage.getItem("userId"),
+      language: lang,
       page: page,
-      pageSize: 10,
+      pageSize: this.pageSize,
     });
     this.render(data);
+    this.renderContent(0);
   }
 
-  async search(pattern, page = 1) {
+  async search(pattern, page = 1, lang = "Korean") {
     if (!pattern) {
       lastSearchTerm = "";
-      return this.fetch(page);
+      return this.fetch(page, lang);
     }
-    const data = await api.getVocabulary({
-      userId: 1,
-      language: "Korean",
+    const data = await api.searchVocabulary({
+      userId: localStorage.getItem("userId"),
+      language: lang,
+      grammarPattern: pattern,
       page: page,
-      pageSize: 10,
+      pageSize: this.pageSize,
     });
     this.render(data);
+    this.renderContent(0);
   }
 
-  render(items) {
-    const container = document.getElementById("vocabList");
+  async renderContent(idx) {
+    const container = document.getElementById("vocabContent");
     container.innerHTML = "";
 
-    if (!items.length) {
-      container.innerHTML = "<p>No vocabulary found.</p>";
+    if (this.items.length < 1) {
       return;
     }
 
-    items.forEach((v) => {
-      const div = document.createElement("div");
-      div.className = "vocab-item";
-      div.innerHTML = `
-        <h3>${v.Word}</h3>
-        <p><strong>Language:</strong> ${v.Language.toUpperCase()}</p>
-      `;
-      container.appendChild(div);
+    let item = this.items[idx];
+    if (!item) {
+      return;
+    }
+
+    container.innerHTML = `
+    <h1>${item.Word}</h1>
+    `;
+  }
+
+  generateCard(idx, item) {
+    return `
+    <div class="card">
+        <div class="card-body">
+        <h3 class="card-title">${item.Language}</h3>
+        <p class="card-text">${item.Word}</p>
+        <button class="card-btn" onclick="vocabEngine.renderContent(${idx})">Learn More</button>
+        </div>
+    </div>
+`;
+  }
+
+  async render(items) {
+    this.items = items;
+    const container = document.getElementById("vocabList");
+    container.innerHTML = "";
+
+    if (!items || items.length === 0) {
+      container.innerHTML = "<p>No results found.</p>";
+      return;
+    }
+
+    let list = "";
+    items.forEach((g, idx) => {
+      list += this.generateCard(idx, g);
     });
+    container.innerHTML = list;
   }
 
   nextPage() {
-    vocabPage++;
-    document.getElementById("vocabularyCurrentPage").textContent = vocabPage;
+    this.page++;
+    document.getElementById("vocabCurrentPage").textContent = this.page;
+    let lang = document.getElementById("vocabLanguage").value;
 
     if (lastSearchTerm) {
-      this.search(lastSearchTerm, vocabPage);
+      this.search(lastSearchTerm, this.page, lang);
     } else {
-      this.fetch(vocabPage);
+      this.fetch(this.page, lang);
     }
   }
 
   prevPage() {
-    if (vocabPage > 1) vocabPage--;
-    document.getElementById("vocabularyCurrentPage").textContent = vocabPage;
+    if (this.page > 1) this.page--;
+    document.getElementById("vocabCurrentPage").textContent = this.page;
+    let lang = document.getElementById("vocabLanguage").value;
 
     if (lastSearchTerm) {
-      this.search(lastSearchTerm, vocabPage);
+      this.search(lastSearchTerm, this.page, lang);
     } else {
-      this.grammar(vocabPage);
+      this.fetch(this.page, lang);
     }
   }
 
   onClickSearch() {
-    const value = document.getElementById("vocabularySearch").value.trim();
-    vocabPage = 1;
-    document.getElementById("vocabularyCurrentPage").textContent = 1;
-    this.search(value, vocabPage);
+    const value = document.getElementById("vocabSearch").value.trim();
+    this.page = 1;
+    document.getElementById("vocabCurrentPage").textContent = 1;
+    let lang = document.getElementById("vocabLanguage").value;
+    this.search(value, this.page, lang);
   }
 }
 
-var vocabularyEngine = new VocabularyEngine();
+var vocabEngine = new VocabEngine();

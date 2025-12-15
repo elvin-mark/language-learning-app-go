@@ -23,6 +23,8 @@ document.querySelectorAll(".menu-list a").forEach((item) => {
     document.getElementById("content").innerHTML = html;
     if (target == "lessons") {
       lessonsEngine.fetch();
+    } else if (target == "vocab") {
+      vocabEngine.fetch();
     }
     if (window.innerWidth < 700) {
       // Close menu on mobile

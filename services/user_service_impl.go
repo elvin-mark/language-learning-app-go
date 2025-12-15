@@ -15,6 +15,14 @@ func NewUserService(userRepository storage.UserRepository) UserService {
 	}
 }
 
+func (us *userServiceImpl) GetUserById(userId int) (user *storage.User, err error) {
+	user, err = us.userRepository.GetByID(userId)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+	}
+	return
+}
+
 func (us *userServiceImpl) GetUserByUsername(username string) (user *storage.User, err error) {
 	user, err = us.userRepository.GetByUsername(username)
 	if err != nil {

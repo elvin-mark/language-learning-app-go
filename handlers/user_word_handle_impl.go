@@ -8,33 +8,25 @@ import (
 	"language-learning-app/utils"
 )
 
-// ============== STRUCTS ==============
-
-type VocabularyHandler struct {
-	service services.VocabularyService
+type userWordHandlerImpl struct {
+	userWordService services.UserWordService
+	userService     services.UserService
 }
 
-func NewVocabularyHandler(service services.VocabularyService) *VocabularyHandler {
-	return &VocabularyHandler{service: service}
-}
-
-// ============== METHODS ==============
-
-// GetVocabularyHandler godoc
+// GetWordsHandler godoc
 //
-//	@Summary		Get Vocabulary
-//	@Description	Get paginated vocabulary for a user and language
+//	@Summary		Get Words
+//	@Description	Get paginated words for a user
 //	@Tags			vocabulary
 //	@Accept			json
 //	@Produce		json
-//	@Param			language	query		string	true	"Language"
 //	@Param			page		query		int		false	"Page number (default 1)"
 //	@Param			pageSize	query		int		false	"Page size (default 20)"
-//	@Success		200			{array}		storage.VocabularyMastery
+//	@Success		200			{array}		storage.UserWord
 //	@Failure		400			{object}	map[string]string
 //	@Failure		500			{object}	map[string]string
-//	@Router			/resources/vocabulary [get]
-func (h *VocabularyHandler) GetVocabularyHandler(w http.ResponseWriter, r *http.Request) {
+//	@Router			/resources/words [get]
+func (h *userWordHandlerImpl) GetWordsHandler(w http.ResponseWriter, r *http.Request) {
 	userIDStr := r.Header.Get("User-Id")
 	query := r.URL.Query()
 
@@ -48,9 +40,9 @@ func (h *VocabularyHandler) GetVocabularyHandler(w http.ResponseWriter, r *http.
 		return
 	}
 
-	lang := query.Get("language")
-	if lang == "" {
-		utils.WriteJSONStatus(w, map[string]string{"error": "language is required"}, http.StatusBadRequest)
+	user, err := h.userService.GetUserById(userID)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
 		return
 	}
 
@@ -64,7 +56,7 @@ func (h *VocabularyHandler) GetVocabularyHandler(w http.ResponseWriter, r *http.
 		pageSize = 20
 	}
 
-	words, err := h.service.GetVocabulary(userID, lang, page-1, pageSize)
+	words, err := h.userWordService.GetWords(userID, user.TargetLanguage, page-1, pageSize)
 	if err != nil {
 		utils.WriteJSONStatus(w, map[string]string{"error": "failed to get vocabulary"}, http.StatusInternalServerError)
 		return

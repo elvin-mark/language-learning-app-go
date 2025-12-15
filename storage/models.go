@@ -6,66 +6,48 @@ import "time"
 // Users
 // -----------------------
 type User struct {
-	UserID               int     `db:"user_id"`
-	Username             string  `db:"username"`
-	Password             string  `db:"password"`
-	CurrentLevel         string  `db:"current_level"`
-	KnownVocabCount      int     `db:"known_vocab_count"`
-	GrammarMasteredCount int     `db:"grammar_mastered_count"`
-	MostRecentWeakArea   *string `db:"most_recent_weak_area"`
+	Id                int    `db:"id"`
+	Username          string `db:"username"`
+	Password          string `db:"password"`
+	PreferredLanguage string `db:"preferred_language"`
+	TargetLanguage    string `db:"target_language"`
 }
 
 // -----------------------
-// Grammar Mastery
+// User Grammar
 // -----------------------
-type GrammarMastery struct {
-	MasteryID      int       `db:"mastery_id"`
-	UserID         int       `db:"user_id"`
-	Language       string    `db:"language"`
-	Pattern        string    `db:"pattern"`
-	MasteryScore   float64   `db:"mastery_score"`
-	LastReviewed   time.Time `db:"last_reviewed"`
-	WeaknessFlags  []string  `db:"weakness_flags"` // JSON array
-	TimesIncorrect int       `db:"times_incorrect"`
+type UserGrammar struct {
+	Id           int       `db:"id"`
+	UserId       int       `db:"user_id"`
+	Language     string    `db:"language"`
+	Pattern      string    `db:"pattern"`
+	Score        float64   `db:"score"`
+	LastReviewed time.Time `db:"last_reviewed"`
 }
 
 // -----------------------
-// Vocabulary Mastery
+// User Words
 // -----------------------
-type VocabularyMastery struct {
-	MasteryID      int       `db:"mastery_id"`
-	UserID         int       `db:"user_id"`
-	Language       string    `db:"language"`
-	Word           string    `db:"word"`
-	MasteryScore   float64   `db:"mastery_score"`
-	LastReviewed   time.Time `db:"last_reviewed"`
-	TimesCorrect   int       `db:"times_correct"`
-	TimesIncorrect int       `db:"times_incorrect"`
+type UserWord struct {
+	Id           int       `db:"id"`
+	UserId       int       `db:"user_id"`
+	Language     string    `db:"language"`
+	Type         string    `db:"type"`
+	Word         string    `db:"word"`
+	Score        float64   `db:"score"`
+	LastReviewed time.Time `db:"last_reviewed"`
 }
 
 // -----------------------
-// Lessons
+// User Lessons
 // -----------------------
-type Lesson struct {
-	LessonID      int      `db:"lesson_id"`
-	UserID        int      `db:"user_id"`
-	Language      string   `db:"language"`
-	GrammarFocus  string   `db:"grammar_focus"`
-	Content       string   `db:"content"`
-	NewVocabulary []string `db:"new_vocabulary"` // JSON array
-}
-
-// -----------------------
-// Exercises
-// -----------------------
-type Exercise struct {
-	ExerciseID   int     `db:"exercise_id"`
-	UserID       int     `db:"user_id"`
-	LessonID     *int    `db:"lesson_id"`
-	Type         string  `db:"type"`
-	SubType      string  `db:"sub_type"`
-	QuestionData string  `db:"question_data"`
-	UserResponse string  `db:"user_response"`
-	Grade        *int    `db:"grade"`
-	Feedback     *string `db:"feedback"`
+type UserLesson struct {
+	Id              int    `db:"id"`
+	UserId          int    `db:"user_id"`
+	Language        string `db:"language"`
+	GrammarId       int    `db:"grammar_id"`
+	WordsId         []int  `db:"words_id"`
+	Content         string `db:"content"`
+	SampleSentences string `db:"sample_sentences"`
+	WordsMeaning    string `db:"words_meaning"`
 }

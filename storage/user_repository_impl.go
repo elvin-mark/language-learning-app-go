@@ -5,33 +5,30 @@ import (
 	"errors"
 )
 
-// -------------------- USERS STATUS REPO --------------------
-
 type userRepositoryImpl struct {
 	DB *sql.DB
 }
 
 func (r *userRepositoryImpl) Create(user *User) error {
 	res, err := r.DB.Exec(`
-        INSERT INTO users (username, password, current_level, known_vocab_count, grammar_mastered_count, most_recent_weak_area)
+        INSERT INTO users (username, password, preferred_language, target_language)
         VALUES (?, ?, ?, ?)`,
-		user.Username, user.Password, user.CurrentLevel, user.KnownVocabCount, user.GrammarMasteredCount, user.MostRecentWeakArea)
+		user.Username, user.Password, user.PreferredLanguage, user.TargetLanguage)
 	if err != nil {
 		return err
 	}
 	id, _ := res.LastInsertId()
-	user.UserID = int(id)
+	user.Id = int(id)
 	return nil
 }
 
 func (r *userRepositoryImpl) GetByID(id int) (*User, error) {
 	var u User
 	row := r.DB.QueryRow(`
-        SELECT user_id, username, password, current_level, known_vocab_count, grammar_mastered_count, most_recent_weak_area
-        FROM users WHERE user_id = ?`, id)
+        SELECT id, username, password, preferred_language, target_language
+        FROM users WHERE id = ?`, id)
 
-	if err := row.Scan(&u.UserID, &u.Username, &u.Password, &u.CurrentLevel, &u.KnownVocabCount,
-		&u.GrammarMasteredCount, &u.MostRecentWeakArea); err != nil {
+	if err := row.Scan(&u.Id, &u.Username, &u.Password, &u.PreferredLanguage, &u.TargetLanguage); err != nil {
 
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
@@ -44,10 +41,9 @@ func (r *userRepositoryImpl) GetByID(id int) (*User, error) {
 func (r *userRepositoryImpl) GetByUsername(username string) (*User, error) {
 	var u User
 	row := r.DB.QueryRow(`
-        SELECT user_id, username, password, current_level, known_vocab_count, grammar_mastered_count, most_recent_weak_area
+        SELECT id, username, password, preferred_language, target_language
         FROM users WHERE username = ?`, username)
-	if err := row.Scan(&u.UserID, &u.Username, &u.Password, &u.CurrentLevel, &u.KnownVocabCount,
-		&u.GrammarMasteredCount, &u.MostRecentWeakArea); err != nil {
+	if err := row.Scan(&u.Id, &u.Username, &u.Password, &u.PreferredLanguage, &u.TargetLanguage); err != nil {
 
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil

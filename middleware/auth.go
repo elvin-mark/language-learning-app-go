@@ -16,7 +16,7 @@ func NewBasicAuth(userService services.UserService) func(next http.Handler) http
 				http.Error(w, "Unauthorized", http.StatusUnauthorized)
 				return
 			}
-			r.Header.Set("User-Id", strconv.FormatInt(int64(user.UserID), 10))
+			r.Header.Set("User-Id", strconv.FormatInt(int64(user.Id), 10))
 			next.ServeHTTP(w, r)
 		})
 	}

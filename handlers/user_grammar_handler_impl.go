@@ -8,33 +8,25 @@ import (
 	"language-learning-app/utils"
 )
 
-// ============== STRUCTS ==============
-
-type GrammarHandler struct {
-	service services.GrammarService
+type userGrammarHandlerImpl struct {
+	userGrammarService services.UserGrammarService
+	userService        services.UserService
 }
-
-func NewGrammarHandler(service services.GrammarService) *GrammarHandler {
-	return &GrammarHandler{service: service}
-}
-
-// ============== METHODS ==============
 
 // GetGrammarPatternsHandler godoc
 //
 //	@Summary		Get Grammar Patterns
-//	@Description	Get paginated grammar patterns for a user and language
+//	@Description	Get paginated grammar patterns for a user
 //	@Tags			grammar
 //	@Accept			json
 //	@Produce		json
-//	@Param			language	query		string	true	"Language"
 //	@Param			page		query		int		false	"Page number (default 1)"
 //	@Param			pageSize	query		int		false	"Page size (default 20)"
-//	@Success		200			{array}		storage.GrammarMastery
+//	@Success		200			{array}		storage.UserGrammar
 //	@Failure		400			{object}	map[string]string
 //	@Failure		500			{object}	map[string]string
 //	@Router			/resources/grammar [get]
-func (h *GrammarHandler) GetGrammarPatternsHandler(w http.ResponseWriter, r *http.Request) {
+func (h *userGrammarHandlerImpl) GetGrammarPatternsHandler(w http.ResponseWriter, r *http.Request) {
 	userIDStr := r.Header.Get("User-Id")
 	query := r.URL.Query()
 
@@ -48,9 +40,9 @@ func (h *GrammarHandler) GetGrammarPatternsHandler(w http.ResponseWriter, r *htt
 		return
 	}
 
-	lang := query.Get("language")
-	if lang == "" {
-		utils.WriteJSONStatus(w, map[string]string{"error": "language is required"}, http.StatusBadRequest)
+	user, err := h.userService.GetUserById(userID)
+	if err != nil || user == nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
 		return
 	}
 
@@ -64,7 +56,7 @@ func (h *GrammarHandler) GetGrammarPatternsHandler(w http.ResponseWriter, r *htt
 		pageSize = 20
 	}
 
-	grammars, err := h.service.GetGrammarPatterns(userID, lang, page-1, pageSize)
+	grammars, err := h.userGrammarService.GetGrammarPatterns(userID, user.TargetLanguage, page-1, pageSize)
 	if err != nil {
 		utils.WriteJSONStatus(w, map[string]string{"error": "failed to get grammar patterns"}, http.StatusInternalServerError)
 		return
@@ -80,15 +72,14 @@ func (h *GrammarHandler) GetGrammarPatternsHandler(w http.ResponseWriter, r *htt
 //	@Tags			grammar
 //	@Accept			json
 //	@Produce		json
-//	@Param			language	query		string	true	"Language"
 //	@Param			pattern		query		string	true	"Grammar pattern to filter"
 //	@Param			page		query		int		false	"Page number (default 1)"
 //	@Param			pageSize	query		int		false	"Page size (default 20)"
-//	@Success		200			{array}		storage.GrammarMastery
+//	@Success		200			{object}		storage.UserGrammar
 //	@Failure		400			{object}	map[string]string
 //	@Failure		500			{object}	map[string]string
 //	@Router			/resources/grammar/search [get]
-func (h *GrammarHandler) GetGrammarPatternsByPatternHandler(w http.ResponseWriter, r *http.Request) {
+func (h *userGrammarHandlerImpl) GetGrammarPatternsByPatternHandler(w http.ResponseWriter, r *http.Request) {
 	userIDStr := r.Header.Get("User-Id")
 	query := r.URL.Query()
 
@@ -102,9 +93,9 @@ func (h *GrammarHandler) GetGrammarPatternsByPatternHandler(w http.ResponseWrite
 		return
 	}
 
-	lang := query.Get("language")
-	if lang == "" {
-		utils.WriteJSONStatus(w, map[string]string{"error": "language is required"}, http.StatusBadRequest)
+	user, err := h.userService.GetUserById(userID)
+	if err != nil || user == nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
 		return
 	}
 
@@ -124,7 +115,7 @@ func (h *GrammarHandler) GetGrammarPatternsByPatternHandler(w http.ResponseWrite
 		pageSize = 20
 	}
 
-	grammars, err := h.service.GetGrammarPatternsByPattern(userID, lang, pattern, page-1, pageSize)
+	grammars, err := h.userGrammarService.GetGrammarPatternsByPattern(userID, user.TargetLanguage, pattern, page-1, pageSize)
 	if err != nil {
 		utils.WriteJSONStatus(w, map[string]string{"error": "failed to search grammar patterns"}, http.StatusInternalServerError)
 		return
