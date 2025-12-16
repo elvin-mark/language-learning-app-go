@@ -61,6 +61,19 @@ definitions:
       userId:
         type: integer
     type: object
+  storage.User:
+    properties:
+      id:
+        type: integer
+      password:
+        type: string
+      preferredLanguage:
+        type: string
+      targetLanguage:
+        type: string
+      username:
+        type: string
+    type: object
   storage.UserGrammar:
     properties:
       id:
@@ -496,4 +509,33 @@ paths:
       summary: Get Words
       tags:
       - vocabulary
+  /user/profile:
+    get:
+      consumes:
+      - application/json
+      description: Get user profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get User Profile
+      tags:
+      - user
 swagger: "2.0"
