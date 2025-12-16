@@ -5,6 +5,7 @@ import (
 )
 
 type ExerciseAgent interface {
+	GradeUsage(targetLanguage, sentence string, wordOrGrammarPattern string) (grade UsageGrade, err error)
 	GenerateTranslationExercise(preferredLanguage, targetLanguage string, grammarPattern string, words []string) (generatedExercise GeneratedTranslationExercise, err error)
 }
 

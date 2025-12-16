@@ -58,7 +58,7 @@ func main() {
 	lessonAgent := agents.NewLessonAgent(llmCore)
 	exerciseAgent := agents.NewExerciseAgent(llmCore)
 
-	exerciseService := services.NewExerciseService(exerciseAgent)
+	exerciseService := services.NewExerciseService(exerciseAgent, userLessonRepository, userGrammarRepository, userWordRepository)
 	userLessonsService := services.NewUserLessonService(userLessonRepository, lessonAgent, userGrammarRepository, userWordRepository)
 	userGrammarService := services.NewUserGrammarService(userGrammarRepository)
 	userWordService := services.NewUserWordService(userWordRepository)
@@ -107,6 +107,7 @@ func main() {
 
 	r.Route("/resources", func(r chi.Router) {
 		r.Use(basicAuth)
+		r.Post("/exercise/usage/grade", exerciseHandler.GradeUsageHandler)
 		r.Post("/exercise/translation/generate", exerciseHandler.GenerateTranslationExerciseHandler)
 		r.Get("/lessons", userLessonsHandler.GetLessonsHandler)
 		r.Post("/lessons/generate", userLessonsHandler.GenerateLessonHandler)

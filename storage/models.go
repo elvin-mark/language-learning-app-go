@@ -21,7 +21,7 @@ type UserGrammar struct {
 	UserId       int       `db:"user_id"`
 	Language     string    `db:"language"`
 	Pattern      string    `db:"pattern"`
-	Score        float64   `db:"score"`
+	Score        int       `db:"score"`
 	LastReviewed time.Time `db:"last_reviewed"`
 }
 
@@ -34,7 +34,7 @@ type UserWord struct {
 	Language     string    `db:"language"`
 	Type         string    `db:"type"`
 	Word         string    `db:"word"`
-	Score        float64   `db:"score"`
+	Score        int       `db:"score"`
 	LastReviewed time.Time `db:"last_reviewed"`
 }
 

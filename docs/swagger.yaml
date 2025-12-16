@@ -7,6 +7,13 @@ definitions:
           type: string
         type: array
     type: object
+  agents.UsageGrade:
+    properties:
+      feedback:
+        type: string
+      score:
+        type: integer
+    type: object
   dto.GenerateAuthTokenRequest:
     properties:
       password:
@@ -18,6 +25,13 @@ definitions:
     properties:
       lessonId:
         type: integer
+    type: object
+  dto.GradeUsageRequest:
+    properties:
+      grammarPatternOrWord:
+        type: string
+      sentece:
+        type: string
     type: object
   models.AuthToken:
     properties:
@@ -37,7 +51,7 @@ definitions:
       pattern:
         type: string
       score:
-        type: number
+        type: integer
       userId:
         type: integer
     type: object
@@ -71,7 +85,7 @@ definitions:
       lastReviewed:
         type: string
       score:
-        type: number
+        type: integer
       type:
         type: string
       userId:
@@ -122,7 +136,23 @@ paths:
       summary: Get Auth Token
       tags:
       - auth
-  /exercise/translation/generate:
+  /health:
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of the server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Show the status of the server.
+      tags:
+      - health
+  /resources/exercise/translation/generate:
     post:
       consumes:
       - application/json
@@ -156,22 +186,40 @@ paths:
       summary: Get Translation Exercise
       tags:
       - exercise
-  /health:
-    get:
+  /resources/exercise/usage/grade:
+    post:
       consumes:
-      - '*/*'
-      description: get the status of the server.
+      - application/json
+      description: Grade the usage of the language in a sentence
+      parameters:
+      - description: Grade Usage Request
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GradeUsageRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            additionalProperties: true
+            $ref: '#/definitions/agents.UsageGrade'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
             type: object
-      summary: Show the status of the server.
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Grade Usage of language
       tags:
-      - health
+      - exercise
   /resources/grammar:
     get:
       consumes:

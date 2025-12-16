@@ -31,6 +31,7 @@ func (ls *userLessonServiceImpl) GenerateLesson(user *storage.User) (lesson stor
 	}
 	if len(grammars) < 1 {
 		err = fmt.Errorf("no grammars below score")
+		utils.Logger.Error(err.Error())
 		return
 	}
 
@@ -41,6 +42,7 @@ func (ls *userLessonServiceImpl) GenerateLesson(user *storage.User) (lesson stor
 	}
 	if len(words) < 1 {
 		err = fmt.Errorf("no words below score")
+		utils.Logger.Error(err.Error())
 		return
 	}
 
@@ -58,14 +60,26 @@ func (ls *userLessonServiceImpl) GenerateLesson(user *storage.User) (lesson stor
 		return
 	}
 
+	sampleSentencesJSON, err := utils.ToJSON(generatedLesson.SampleSentences)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+
+	wordsMeaning, err := utils.ToJSON(generatedLesson.WordsMeaning)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+
 	lesson = storage.UserLesson{
 		UserId:          user.Id,
 		Language:        user.TargetLanguage,
 		GrammarId:       randomGrammar.Id,
 		WordsId:         wordsId,
 		Content:         generatedLesson.Content,
-		SampleSentences: generatedLesson.SampleSentences,
-		WordsMeaning:    generatedLesson.WordsMeaning,
+		SampleSentences: sampleSentencesJSON,
+		WordsMeaning:    wordsMeaning,
 	}
 
 	err = ls.userLessonRepository.Create(&lesson)

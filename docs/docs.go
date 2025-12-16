@@ -70,7 +70,31 @@ const docTemplate = `{
                 }
             }
         },
-        "/exercise/translation/generate": {
+        "/health": {
+            "get": {
+                "description": "get the status of the server.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Show the status of the server.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/resources/exercise/translation/generate": {
             "post": {
                 "description": "Get a new Translation Exercise based on the input lesson",
                 "consumes": [
@@ -122,25 +146,53 @@ const docTemplate = `{
                 }
             }
         },
-        "/health": {
-            "get": {
-                "description": "get the status of the server.",
+        "/resources/exercise/usage/grade": {
+            "post": {
+                "description": "Grade the usage of the language in a sentence",
                 "consumes": [
-                    "*/*"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "health"
+                    "exercise"
                 ],
-                "summary": "Show the status of the server.",
+                "summary": "Grade Usage of language",
+                "parameters": [
+                    {
+                        "description": "Grade Usage Request",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GradeUsageRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
+                            "$ref": "#/definitions/agents.UsageGrade"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
                             "type": "object",
-                            "additionalProperties": true
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -439,6 +491,17 @@ const docTemplate = `{
                 }
             }
         },
+        "agents.UsageGrade": {
+            "type": "object",
+            "properties": {
+                "feedback": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.GenerateAuthTokenRequest": {
             "type": "object",
             "properties": {
@@ -455,6 +518,17 @@ const docTemplate = `{
             "properties": {
                 "lessonId": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.GradeUsageRequest": {
+            "type": "object",
+            "properties": {
+                "grammarPatternOrWord": {
+                    "type": "string"
+                },
+                "sentece": {
+                    "type": "string"
                 }
             }
         },
@@ -485,7 +559,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "score": {
-                    "type": "number"
+                    "type": "integer"
                 },
                 "userId": {
                     "type": "integer"
@@ -537,7 +611,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "score": {
-                    "type": "number"
+                    "type": "integer"
                 },
                 "type": {
                     "type": "string"

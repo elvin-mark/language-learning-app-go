@@ -6,6 +6,7 @@ import (
 )
 
 type ExerciseHandler interface {
+	GradeUsageHandler(w http.ResponseWriter, r *http.Request)
 	GenerateTranslationExerciseHandler(w http.ResponseWriter, r *http.Request)
 }
 

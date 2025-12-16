@@ -23,6 +23,7 @@ func (la *lessonAgentImpl) GenerateLesson(targetLanguage string, grammarPattern 
 	cleaned = strings.TrimSuffix(cleaned, "```")
 	cleaned = strings.TrimSpace(cleaned)
 
+	utils.Logger.Debug("Response from LLM: " + cleaned)
 	if err = json.Unmarshal([]byte(cleaned), &generatedLesson); err != nil {
 		utils.Logger.Error(err.Error())
 		return
