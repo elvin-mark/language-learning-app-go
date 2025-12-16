@@ -68,6 +68,7 @@ func main() {
 	userLessonsHandler := handlers.NewUserLessonHandler(userLessonsService, userService)
 	userGrammarHandler := handlers.NewUserGrammarHandler(userGrammarService, userService)
 	userWordHandler := handlers.NewUserWordHandler(userWordService, userService)
+	userHandler := handlers.NewUserHandler(userService)
 	authHandler := handlers.NewAuthHandler(userService)
 
 	// Create router
@@ -104,6 +105,11 @@ func main() {
 	})
 
 	basicAuth := middleware.NewBasicAuth(userService)
+
+	r.Route("/user", func(r chi.Router) {
+		r.Use(basicAuth)
+		r.Get("/profile", userHandler.GetUserProfileHandler)
+	})
 
 	r.Route("/resources", func(r chi.Router) {
 		r.Use(basicAuth)
