@@ -55,3 +55,23 @@ func generateTranslationExercisePrompt(preferredLanguage, targetLanguage string,
 	vocab := strings.Join(words, ",")
 	return fmt.Sprintf(translationExerciseGenerationPrompt, targetLanguage, preferredLanguage, grammarPattern, vocab, preferredLanguage, targetLanguage)
 }
+
+const readingComprehensionExerciseGenerationPrompt = `You are a creative %s language teacher. Generate a short passage with questions so the user can practice the grammar pattern and vocabulary in this lesson. Your response should be a JSON object.
+
+**Exercise Goal:**
+- **Grammar Pattern**: %s
+- **Vocabulary**: %s
+
+**Instructions:**
+- Create a short passage (short text) in %s language that helps the user to practice the grammar pattern and vocabulary of this lesson. Also generates some questions regarding the text so the user can reply and practice the use of the language.
+
+**Response:**
+- short_text: a short passage of any topic that is more likely to use the grammar pattern and vocabulary
+- questions: an array of strings in which each string is a question regarding the short_text
+
+Make sure to reply just with the JSON object, no need for other text.`
+
+func generateReadingComprehensionExercisePrompt(targetLanguage string, grammarPattern string, words []string) string {
+	vocab := strings.Join(words, ",")
+	return fmt.Sprintf(readingComprehensionExerciseGenerationPrompt, targetLanguage, grammarPattern, vocab, targetLanguage)
+}

@@ -20,8 +20,8 @@ type userWordHandlerImpl struct {
 //	@Tags			vocabulary
 //	@Accept			json
 //	@Produce		json
-//	@Param			page		query		int		false	"Page number (default 1)"
-//	@Param			pageSize	query		int		false	"Page size (default 20)"
+//	@Param			page		query		int	false	"Page number (default 1)"
+//	@Param			pageSize	query		int	false	"Page size (default 20)"
 //	@Success		200			{array}		storage.UserWord
 //	@Failure		400			{object}	map[string]string
 //	@Failure		500			{object}	map[string]string

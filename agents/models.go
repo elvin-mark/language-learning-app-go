@@ -14,3 +14,8 @@ type GeneratedLesson struct {
 type GeneratedTranslationExercise struct {
 	Sentences []string `json:"sentences"`
 }
+
+type GeneratedReadingComprehensionExercise struct {
+	ShortText string   `json:"short_text"`
+	Questions []string `json:"questions"`
+}

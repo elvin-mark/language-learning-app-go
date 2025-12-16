@@ -94,6 +94,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/resources/exercise/reading-comprehension/generate": {
+            "post": {
+                "description": "Get a new reading comprehension Exercise based on the input lesson",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exercise"
+                ],
+                "summary": "Get Reading Comprehension Exercise",
+                "parameters": [
+                    {
+                        "description": "Exercise Request object to be generated",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GenerateReadingComprehensionExerciseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/agents.GeneratedReadingComprehensionExercise"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/resources/exercise/translation/generate": {
             "post": {
                 "description": "Get a new Translation Exercise based on the input lesson",
@@ -535,6 +587,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "agents.GeneratedReadingComprehensionExercise": {
+            "type": "object",
+            "properties": {
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "short_text": {
+                    "type": "string"
+                }
+            }
+        },
         "agents.GeneratedTranslationExercise": {
             "type": "object",
             "properties": {
@@ -565,6 +631,14 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.GenerateReadingComprehensionExerciseRequest": {
+            "type": "object",
+            "properties": {
+                "lessonId": {
+                    "type": "integer"
                 }
             }
         },

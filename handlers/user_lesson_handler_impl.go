@@ -19,8 +19,8 @@ type userLessonHandlerImpl struct {
 //	@Tags			lessons
 //	@Accept			json
 //	@Produce		json
-//	@Param			page		query		int		false	"Page number (default 1)"
-//	@Param			pageSize	query		int		false	"Page size (default 20)"
+//	@Param			page		query		int	false	"Page number (default 1)"
+//	@Param			pageSize	query		int	false	"Page size (default 20)"
 //	@Success		200			{array}		storage.UserLesson
 //	@Failure		400			{object}	map[string]string
 //	@Failure		500			{object}	map[string]string
@@ -71,9 +71,9 @@ func (h *userLessonHandlerImpl) GetLessonsHandler(w http.ResponseWriter, r *http
 //	@Tags			lessons
 //	@Accept			json
 //	@Produce		json
-//	@Success		200		{array}		storage.UserLesson
-//	@Failure		400		{object}	map[string]string
-//	@Failure		500		{object}	map[string]string
+//	@Success		200	{array}		storage.UserLesson
+//	@Failure		400	{object}	map[string]string
+//	@Failure		500	{object}	map[string]string
 //	@Router			/resources/lessons/generate [post]
 func (h *userLessonHandlerImpl) GenerateLessonHandler(w http.ResponseWriter, r *http.Request) {
 	userIdStr := r.Header.Get("User-Id")

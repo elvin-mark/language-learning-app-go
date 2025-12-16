@@ -20,8 +20,8 @@ type userGrammarHandlerImpl struct {
 //	@Tags			grammar
 //	@Accept			json
 //	@Produce		json
-//	@Param			page		query		int		false	"Page number (default 1)"
-//	@Param			pageSize	query		int		false	"Page size (default 20)"
+//	@Param			page		query		int	false	"Page number (default 1)"
+//	@Param			pageSize	query		int	false	"Page size (default 20)"
 //	@Success		200			{array}		storage.UserGrammar
 //	@Failure		400			{object}	map[string]string
 //	@Failure		500			{object}	map[string]string
@@ -75,7 +75,7 @@ func (h *userGrammarHandlerImpl) GetGrammarPatternsHandler(w http.ResponseWriter
 //	@Param			pattern		query		string	true	"Grammar pattern to filter"
 //	@Param			page		query		int		false	"Page number (default 1)"
 //	@Param			pageSize	query		int		false	"Page size (default 20)"
-//	@Success		200			{object}		storage.UserGrammar
+//	@Success		200			{object}	storage.UserGrammar
 //	@Failure		400			{object}	map[string]string
 //	@Failure		500			{object}	map[string]string
 //	@Router			/resources/grammar/search [get]

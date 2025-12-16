@@ -53,3 +53,24 @@ func (pa *exerciseAgent) GenerateTranslationExercise(preferredLanguage, targetLa
 
 	return
 }
+
+func (pa *exerciseAgent) GenerateReadingComprehensionExercise(targetLanguage string, grammarPattern string, words []string) (generatedExercise GeneratedReadingComprehensionExercise, err error) {
+	prompt := generateReadingComprehensionExercisePrompt(targetLanguage, grammarPattern, words)
+	resp, err := pa.llm.GetResponse(prompt)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+
+	cleaned := strings.TrimPrefix(resp.Choices[0].Message.Content, "```json")
+	cleaned = strings.TrimSuffix(cleaned, "```")
+	cleaned = strings.TrimSpace(cleaned)
+
+	utils.Logger.Debug("Response from LLM: " + cleaned)
+	if err = json.Unmarshal([]byte(cleaned), &generatedExercise); err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+
+	return
+}

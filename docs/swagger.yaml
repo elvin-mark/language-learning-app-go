@@ -1,5 +1,14 @@
 basePath: /
 definitions:
+  agents.GeneratedReadingComprehensionExercise:
+    properties:
+      questions:
+        items:
+          type: string
+        type: array
+      short_text:
+        type: string
+    type: object
   agents.GeneratedTranslationExercise:
     properties:
       sentences:
@@ -20,6 +29,11 @@ definitions:
         type: string
       username:
         type: string
+    type: object
+  dto.GenerateReadingComprehensionExerciseRequest:
+    properties:
+      lessonId:
+        type: integer
     type: object
   dto.GenerateTranslationExerciseRequest:
     properties:
@@ -159,6 +173,40 @@ paths:
       summary: Show the status of the server.
       tags:
       - health
+  /resources/exercise/reading-comprehension/generate:
+    post:
+      consumes:
+      - application/json
+      description: Get a new reading comprehension Exercise based on the input lesson
+      parameters:
+      - description: Exercise Request object to be generated
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GenerateReadingComprehensionExerciseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/agents.GeneratedReadingComprehensionExercise'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Reading Comprehension Exercise
+      tags:
+      - exercise
   /resources/exercise/translation/generate:
     post:
       consumes:
