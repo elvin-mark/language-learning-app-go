@@ -193,3 +193,93 @@ func (h *exerciseHandlerImpl) GenerateReadingComprehensionExerciseHandler(w http
 
 	utils.WriteJSON(w, exercise)
 }
+
+// GenerateDialogueInitExerciseHandler godoc
+//
+//	@Summary		Init Dialogue Exercise
+//	@Description	Init dialogue Exercise based on the input lesson
+//	@Tags			exercise
+//	@Accept			json
+//	@Produce		json
+//	@Param			user	body		dto.GenerateDialogueInitExerciseRequest	true	"Exercise Request object to be generated"
+//	@Success		200		{object}	agents.GeneratedDialogueInitExercise
+//	@Failure		400		{object}	map[string]string
+//	@Failure		500		{object}	map[string]string
+//	@Router			/resources/exercise/dialogue/init [post]
+func (h *exerciseHandlerImpl) GenerateDialogueInitExerciseHandler(w http.ResponseWriter, r *http.Request) {
+	var req dto.GenerateDialogueInitExerciseRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Invalid request body"}, http.StatusBadRequest)
+		return
+	}
+
+	userIDStr := r.Header.Get("User-Id")
+	if userIDStr == "" {
+		utils.WriteJSONStatus(w, map[string]string{"error": "userId is required"}, http.StatusBadRequest)
+		return
+	}
+	userID, err := strconv.Atoi(userIDStr)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
+		return
+	}
+
+	user, err := h.userService.GetUserById(userID)
+	if err != nil || user == nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
+		return
+	}
+
+	exercise, err := h.exerciseService.GenerateDialogueInitExercise(user, req.LessonId)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate translation exercise"}, http.StatusInternalServerError)
+		return
+	}
+
+	utils.WriteJSON(w, exercise)
+}
+
+// GenerateDialogueContinuationExerciseHandler godoc
+//
+//	@Summary		Continue with Dialogue Exercise
+//	@Description	Continue with dialogue Exercise based on the input lesson
+//	@Tags			exercise
+//	@Accept			json
+//	@Produce		json
+//	@Param			user	body		dto.GenerateDialogueContinuationExerciseRequest	true	"Exercise Request object to be generated"
+//	@Success		200		{object}	agents.GeneratedDialogueContinuationExercise
+//	@Failure		400		{object}	map[string]string
+//	@Failure		500		{object}	map[string]string
+//	@Router			/resources/exercise/dialogue/continue [post]
+func (h *exerciseHandlerImpl) GenerateDialogueContinuationExerciseHandler(w http.ResponseWriter, r *http.Request) {
+	var req dto.GenerateDialogueContinuationExerciseRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Invalid request body"}, http.StatusBadRequest)
+		return
+	}
+
+	userIDStr := r.Header.Get("User-Id")
+	if userIDStr == "" {
+		utils.WriteJSONStatus(w, map[string]string{"error": "userId is required"}, http.StatusBadRequest)
+		return
+	}
+	userID, err := strconv.Atoi(userIDStr)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
+		return
+	}
+
+	user, err := h.userService.GetUserById(userID)
+	if err != nil || user == nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
+		return
+	}
+
+	exercise, err := h.exerciseService.GenerateDialogueContinuationExercise(user, req.LessonId, req.History)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate translation exercise"}, http.StatusInternalServerError)
+		return
+	}
+
+	utils.WriteJSON(w, exercise)
+}

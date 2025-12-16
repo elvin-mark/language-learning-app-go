@@ -19,3 +19,12 @@ type GeneratedReadingComprehensionExercise struct {
 	ShortText string   `json:"short_text"`
 	Questions []string `json:"questions"`
 }
+
+type GeneratedDialogueInitExercise struct {
+	Situation string `json:"situation"`
+	Init      string `json:"init"`
+}
+
+type GeneratedDialogueContinuationExercise struct {
+	Next string `json:"next"`
+}

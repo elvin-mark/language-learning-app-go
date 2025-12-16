@@ -1,5 +1,17 @@
 basePath: /
 definitions:
+  agents.GeneratedDialogueContinuationExercise:
+    properties:
+      next:
+        type: string
+    type: object
+  agents.GeneratedDialogueInitExercise:
+    properties:
+      init:
+        type: string
+      situation:
+        type: string
+    type: object
   agents.GeneratedReadingComprehensionExercise:
     properties:
       questions:
@@ -29,6 +41,18 @@ definitions:
         type: string
       username:
         type: string
+    type: object
+  dto.GenerateDialogueContinuationExerciseRequest:
+    properties:
+      history:
+        type: string
+      lessonId:
+        type: integer
+    type: object
+  dto.GenerateDialogueInitExerciseRequest:
+    properties:
+      lessonId:
+        type: integer
     type: object
   dto.GenerateReadingComprehensionExerciseRequest:
     properties:
@@ -186,6 +210,74 @@ paths:
       summary: Show the status of the server.
       tags:
       - health
+  /resources/exercise/dialogue/continue:
+    post:
+      consumes:
+      - application/json
+      description: Continue with dialogue Exercise based on the input lesson
+      parameters:
+      - description: Exercise Request object to be generated
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GenerateDialogueContinuationExerciseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/agents.GeneratedDialogueContinuationExercise'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Continue with Dialogue Exercise
+      tags:
+      - exercise
+  /resources/exercise/dialogue/init:
+    post:
+      consumes:
+      - application/json
+      description: Init dialogue Exercise based on the input lesson
+      parameters:
+      - description: Exercise Request object to be generated
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GenerateDialogueInitExerciseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/agents.GeneratedDialogueInitExercise'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Init Dialogue Exercise
+      tags:
+      - exercise
   /resources/exercise/reading-comprehension/generate:
     post:
       consumes:

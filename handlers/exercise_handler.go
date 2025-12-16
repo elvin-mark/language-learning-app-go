@@ -10,6 +10,8 @@ type ExerciseHandler interface {
 	GenerateTranslationExerciseHandler(w http.ResponseWriter, r *http.Request)
 	GradeTranslationExerciseHandler(w http.ResponseWriter, r *http.Request)
 	GenerateReadingComprehensionExerciseHandler(w http.ResponseWriter, r *http.Request)
+	GenerateDialogueInitExerciseHandler(w http.ResponseWriter, r *http.Request)
+	GenerateDialogueContinuationExerciseHandler(w http.ResponseWriter, r *http.Request)
 }
 
 func NewExerciseHandler(exerciseService services.ExerciseService, userService services.UserService) ExerciseHandler {

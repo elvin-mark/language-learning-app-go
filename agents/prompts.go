@@ -75,3 +75,45 @@ func generateReadingComprehensionExercisePrompt(targetLanguage string, grammarPa
 	vocab := strings.Join(words, ",")
 	return fmt.Sprintf(readingComprehensionExerciseGenerationPrompt, targetLanguage, grammarPattern, vocab, targetLanguage)
 }
+
+const dialogueInitGenerationPrompt = `You are a creative %s language teacher. Generate a situation in which the user can engage in dialogue in which it can use the grammar pattern and vocabulary in this lesson.
+
+**Exercise Goal:**
+- **Grammar Pattern**: %s
+- **Vocabulary**: %s
+
+**Instructions:**
+- Create a situation in which the user will need to interact with a couple questions and answers so the user can practice the grammar pattern and vocabulary.
+
+**Response:**
+- situation: Detail description of the situation so the user can understand the context
+- init: First sentence or question so the conversation can start
+
+Make sure to reply just with the JSON object, no need for other text.`
+
+func generateDialogueInitExercisePrompt(targetLanguage string, grammarPattern string, words []string) string {
+	vocab := strings.Join(words, ",")
+	return fmt.Sprintf(dialogueInitGenerationPrompt, targetLanguage, grammarPattern, vocab)
+}
+
+const dialogueContinuationGenerationPrompt = `You are a creative %s language teacher. Continue with this dialogue in which the user is trying to use the grammar pattern and vocabulary in this lesson.
+
+**Exercise Goal:**
+- **Grammar Pattern**: %s
+- **Vocabulary**: %s
+
+**Instructions:**
+- Create a proper response or/and ask some question so the user keep engaged in this dialogue and facilitate the usage of the grammar pattern and vocabulary in the user's response
+
+**Dialogue History:**
+%s
+
+**Response:**
+- next: Next sentence or question so the conversation can continue. If you consider that this dialogue is long enough you can end it properly in this sentence.
+
+Make sure to reply just with the JSON object, no need for other text.`
+
+func generateDialogueContinuationExercisePrompt(targetLanguage string, grammarPattern string, words []string, history string) string {
+	vocab := strings.Join(words, ",")
+	return fmt.Sprintf(dialogueContinuationGenerationPrompt, targetLanguage, grammarPattern, vocab, history)
+}

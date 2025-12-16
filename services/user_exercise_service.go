@@ -10,6 +10,8 @@ type ExerciseService interface {
 	GenerateTranslationExercise(user *storage.User, lessonId int) (exercise agents.GeneratedTranslationExercise, err error)
 	GradeTranslationExercise(user *storage.User, lessonId int, sentence string) (grade []agents.UsageGrade, err error)
 	GenerateReadingComprehensionExercise(user *storage.User, lessonId int) (exercise agents.GeneratedReadingComprehensionExercise, err error)
+	GenerateDialogueInitExercise(user *storage.User, lessonId int) (exercise agents.GeneratedDialogueInitExercise, err error)
+	GenerateDialogueContinuationExercise(user *storage.User, lessonId int, history string) (exercise agents.GeneratedDialogueContinuationExercise, err error)
 }
 
 func NewExerciseService(exerciseAgent agents.ExerciseAgent, userLessonRepository storage.UserLessonRepository, userGrammarRepository storage.UserGrammarRepository, userWordRepository storage.UserWordRepository) ExerciseService {

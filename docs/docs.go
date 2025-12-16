@@ -94,6 +94,110 @@ const docTemplate = `{
                 }
             }
         },
+        "/resources/exercise/dialogue/continue": {
+            "post": {
+                "description": "Continue with dialogue Exercise based on the input lesson",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exercise"
+                ],
+                "summary": "Continue with Dialogue Exercise",
+                "parameters": [
+                    {
+                        "description": "Exercise Request object to be generated",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GenerateDialogueContinuationExerciseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/agents.GeneratedDialogueContinuationExercise"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/resources/exercise/dialogue/init": {
+            "post": {
+                "description": "Init dialogue Exercise based on the input lesson",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exercise"
+                ],
+                "summary": "Init Dialogue Exercise",
+                "parameters": [
+                    {
+                        "description": "Exercise Request object to be generated",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GenerateDialogueInitExerciseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/agents.GeneratedDialogueInitExercise"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/resources/exercise/reading-comprehension/generate": {
             "post": {
                 "description": "Get a new reading comprehension Exercise based on the input lesson",
@@ -631,6 +735,25 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "agents.GeneratedDialogueContinuationExercise": {
+            "type": "object",
+            "properties": {
+                "next": {
+                    "type": "string"
+                }
+            }
+        },
+        "agents.GeneratedDialogueInitExercise": {
+            "type": "object",
+            "properties": {
+                "init": {
+                    "type": "string"
+                },
+                "situation": {
+                    "type": "string"
+                }
+            }
+        },
         "agents.GeneratedReadingComprehensionExercise": {
             "type": "object",
             "properties": {
@@ -675,6 +798,25 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.GenerateDialogueContinuationExerciseRequest": {
+            "type": "object",
+            "properties": {
+                "history": {
+                    "type": "string"
+                },
+                "lessonId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.GenerateDialogueInitExerciseRequest": {
+            "type": "object",
+            "properties": {
+                "lessonId": {
+                    "type": "integer"
                 }
             }
         },
