@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
-	dto "language-learning-app/dto/agents"
+	dto "language-learning-app/dto/exercise"
 	"language-learning-app/services"
 	"language-learning-app/utils"
 	"net/http"
@@ -66,13 +66,13 @@ func (h *exerciseHandlerImpl) GradeUsageHandler(w http.ResponseWriter, r *http.R
 //	@Tags			exercise
 //	@Accept			json
 //	@Produce		json
-//	@Param			user	body		dto.GeneraterTranslationExerciseRequest	true	"Exercise Request object to be generated"
+//	@Param			user	body		dto.GenerateTranslationExerciseRequest	true	"Exercise Request object to be generated"
 //	@Success		200		{object}		agents.GeneratedTranslationExercise
 //	@Failure		400		{object}	map[string]string
 //	@Failure		500		{object}	map[string]string
 //	@Router			/resources/exercise/translation/generate [post]
 func (h *exerciseHandlerImpl) GenerateTranslationExerciseHandler(w http.ResponseWriter, r *http.Request) {
-	var req dto.GeneraterTranslationExerciseRequest
+	var req dto.GenerateTranslationExerciseRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		utils.WriteJSONStatus(w, map[string]string{"error": "Invalid request body"}, http.StatusBadRequest)
 		return
@@ -102,4 +102,49 @@ func (h *exerciseHandlerImpl) GenerateTranslationExerciseHandler(w http.Response
 	}
 
 	utils.WriteJSON(w, exercise)
+}
+
+// GradeTranslationExerciseHandler godoc
+//
+//	@Summary		Grade Translation Exercise
+//	@Description	Grade a Translation Exercise based on the input lesson
+//	@Tags			exercise
+//	@Accept			json
+//	@Produce		json
+//	@Param			user	body		dto.GradeTranslationExerciseRequest	true	"Exercise Request object to be graded"
+//	@Success		200		{array}		agents.UsageGrade
+//	@Failure		400		{object}	map[string]string
+//	@Failure		500		{object}	map[string]string
+//	@Router			/resources/exercise/translation/grade [post]
+func (h *exerciseHandlerImpl) GradeTranslationExerciseHandler(w http.ResponseWriter, r *http.Request) {
+	var req dto.GradeTranslationExerciseRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Invalid request body"}, http.StatusBadRequest)
+		return
+	}
+
+	userIDStr := r.Header.Get("User-Id")
+	if userIDStr == "" {
+		utils.WriteJSONStatus(w, map[string]string{"error": "userId is required"}, http.StatusBadRequest)
+		return
+	}
+	userID, err := strconv.Atoi(userIDStr)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
+		return
+	}
+
+	user, err := h.userService.GetUserById(userID)
+	if err != nil || user == nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
+		return
+	}
+
+	grades, err := h.exerciseService.GradeTranslationExercise(user, req.LessonId, req.Sentence)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate translation exercise"}, http.StatusInternalServerError)
+		return
+	}
+
+	utils.WriteJSON(w, grades)
 }

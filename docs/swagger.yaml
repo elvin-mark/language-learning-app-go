@@ -21,10 +21,17 @@ definitions:
       username:
         type: string
     type: object
-  dto.GeneraterTranslationExerciseRequest:
+  dto.GenerateTranslationExerciseRequest:
     properties:
       lessonId:
         type: integer
+    type: object
+  dto.GradeTranslationExerciseRequest:
+    properties:
+      lessonId:
+        type: integer
+      sentence:
+        type: string
     type: object
   dto.GradeUsageRequest:
     properties:
@@ -163,7 +170,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/dto.GeneraterTranslationExerciseRequest'
+          $ref: '#/definitions/dto.GenerateTranslationExerciseRequest'
       produces:
       - application/json
       responses:
@@ -184,6 +191,42 @@ paths:
               type: string
             type: object
       summary: Get Translation Exercise
+      tags:
+      - exercise
+  /resources/exercise/translation/grade:
+    post:
+      consumes:
+      - application/json
+      description: Grade a Translation Exercise based on the input lesson
+      parameters:
+      - description: Exercise Request object to be graded
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GradeTranslationExerciseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/agents.UsageGrade'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Grade Translation Exercise
       tags:
       - exercise
   /resources/exercise/usage/grade:

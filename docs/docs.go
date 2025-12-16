@@ -114,7 +114,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.GeneraterTranslationExerciseRequest"
+                            "$ref": "#/definitions/dto.GenerateTranslationExerciseRequest"
                         }
                     }
                 ],
@@ -123,6 +123,61 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/agents.GeneratedTranslationExercise"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/resources/exercise/translation/grade": {
+            "post": {
+                "description": "Grade a Translation Exercise based on the input lesson",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exercise"
+                ],
+                "summary": "Grade Translation Exercise",
+                "parameters": [
+                    {
+                        "description": "Exercise Request object to be graded",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GradeTranslationExerciseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/agents.UsageGrade"
+                            }
                         }
                     },
                     "400": {
@@ -513,11 +568,22 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.GeneraterTranslationExerciseRequest": {
+        "dto.GenerateTranslationExerciseRequest": {
             "type": "object",
             "properties": {
                 "lessonId": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.GradeTranslationExerciseRequest": {
+            "type": "object",
+            "properties": {
+                "lessonId": {
+                    "type": "integer"
+                },
+                "sentence": {
+                    "type": "string"
                 }
             }
         },

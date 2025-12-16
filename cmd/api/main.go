@@ -109,6 +109,7 @@ func main() {
 		r.Use(basicAuth)
 		r.Post("/exercise/usage/grade", exerciseHandler.GradeUsageHandler)
 		r.Post("/exercise/translation/generate", exerciseHandler.GenerateTranslationExerciseHandler)
+		r.Post("/exercise/translation/grade", exerciseHandler.GradeTranslationExerciseHandler)
 		r.Get("/lessons", userLessonsHandler.GetLessonsHandler)
 		r.Post("/lessons/generate", userLessonsHandler.GenerateLessonHandler)
 		r.Get("/grammar", userGrammarHandler.GetGrammarPatternsHandler)

@@ -24,6 +24,7 @@ func (pa *exerciseAgent) GradeUsage(targetLanguage, sentence string, wordOrGramm
 	cleaned = strings.TrimSuffix(cleaned, "```")
 	cleaned = strings.TrimSpace(cleaned)
 
+	utils.Logger.Debug("Response from LLM: " + cleaned)
 	if err = json.Unmarshal([]byte(cleaned), &grade); err != nil {
 		utils.Logger.Error(err.Error())
 		return
@@ -44,6 +45,7 @@ func (pa *exerciseAgent) GenerateTranslationExercise(preferredLanguage, targetLa
 	cleaned = strings.TrimSuffix(cleaned, "```")
 	cleaned = strings.TrimSpace(cleaned)
 
+	utils.Logger.Debug("Response from LLM: " + cleaned)
 	if err = json.Unmarshal([]byte(cleaned), &generatedExercise); err != nil {
 		utils.Logger.Error(err.Error())
 		return
