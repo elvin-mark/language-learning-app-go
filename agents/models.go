@@ -28,3 +28,7 @@ type GeneratedDialogueInitExercise struct {
 type GeneratedDialogueContinuationExercise struct {
 	Next string `json:"next"`
 }
+
+type ChatbotResponse struct {
+	Response string `json:"response"`
+}

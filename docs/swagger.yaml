@@ -1,5 +1,10 @@
 basePath: /
 definitions:
+  agents.ChatbotResponse:
+    properties:
+      response:
+        type: string
+    type: object
   agents.GeneratedDialogueContinuationExercise:
     properties:
       next:
@@ -63,6 +68,11 @@ definitions:
     properties:
       lessonId:
         type: integer
+    type: object
+  dto.GetChatbotResponseRequest:
+    properties:
+      question:
+        type: string
     type: object
   dto.GradeTranslationExerciseRequest:
     properties:
@@ -194,6 +204,40 @@ paths:
       summary: Get Auth Token
       tags:
       - auth
+  /chatbot/response:
+    post:
+      consumes:
+      - application/json
+      description: Get chatbot response
+      parameters:
+      - description: Get Chatbot Response Request
+        in: body
+        name: chatbot_request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GetChatbotResponseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/agents.ChatbotResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Chatbot response
+      tags:
+      - chatbot
   /health:
     get:
       consumes:

@@ -142,7 +142,7 @@ func (h *exerciseHandlerImpl) GradeTranslationExerciseHandler(w http.ResponseWri
 
 	grades, err := h.exerciseService.GradeTranslationExercise(user, req.LessonId, req.Sentence)
 	if err != nil {
-		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate translation exercise"}, http.StatusInternalServerError)
+		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to grade translation exercise"}, http.StatusInternalServerError)
 		return
 	}
 
@@ -187,7 +187,7 @@ func (h *exerciseHandlerImpl) GenerateReadingComprehensionExerciseHandler(w http
 
 	exercise, err := h.exerciseService.GenerateReadingComprehensionExercise(user, req.LessonId)
 	if err != nil {
-		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate translation exercise"}, http.StatusInternalServerError)
+		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate reading comprehension exercise"}, http.StatusInternalServerError)
 		return
 	}
 
@@ -232,7 +232,7 @@ func (h *exerciseHandlerImpl) GenerateDialogueInitExerciseHandler(w http.Respons
 
 	exercise, err := h.exerciseService.GenerateDialogueInitExercise(user, req.LessonId)
 	if err != nil {
-		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate translation exercise"}, http.StatusInternalServerError)
+		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to initialize dialogue"}, http.StatusInternalServerError)
 		return
 	}
 
@@ -277,7 +277,7 @@ func (h *exerciseHandlerImpl) GenerateDialogueContinuationExerciseHandler(w http
 
 	exercise, err := h.exerciseService.GenerateDialogueContinuationExercise(user, req.LessonId, req.History)
 	if err != nil {
-		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate translation exercise"}, http.StatusInternalServerError)
+		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate dialogue continuation"}, http.StatusInternalServerError)
 		return
 	}
 

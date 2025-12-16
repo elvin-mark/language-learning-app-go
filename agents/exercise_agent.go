@@ -13,7 +13,7 @@ type ExerciseAgent interface {
 }
 
 func NewExerciseAgent(llm llm.Llm) ExerciseAgent {
-	return &exerciseAgent{
+	return &exerciseAgentImpl{
 		llm: llm,
 	}
 }

@@ -70,6 +70,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/chatbot/response": {
+            "post": {
+                "description": "Get chatbot response",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chatbot"
+                ],
+                "summary": "Get Chatbot response",
+                "parameters": [
+                    {
+                        "description": "Get Chatbot Response Request",
+                        "name": "chatbot_request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetChatbotResponseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/agents.ChatbotResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/health": {
             "get": {
                 "description": "get the status of the server.",
@@ -735,6 +787,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "agents.ChatbotResponse": {
+            "type": "object",
+            "properties": {
+                "response": {
+                    "type": "string"
+                }
+            }
+        },
         "agents.GeneratedDialogueContinuationExercise": {
             "type": "object",
             "properties": {
@@ -833,6 +893,14 @@ const docTemplate = `{
             "properties": {
                 "lessonId": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.GetChatbotResponseRequest": {
+            "type": "object",
+            "properties": {
+                "question": {
+                    "type": "string"
                 }
             }
         },

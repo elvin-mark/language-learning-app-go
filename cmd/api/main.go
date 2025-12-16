@@ -57,12 +57,14 @@ func main() {
 
 	lessonAgent := agents.NewLessonAgent(llmCore)
 	exerciseAgent := agents.NewExerciseAgent(llmCore)
+	chatbotAgent := agents.NewChatbotAgent(llmCore)
 
 	exerciseService := services.NewExerciseService(exerciseAgent, userLessonRepository, userGrammarRepository, userWordRepository)
 	userLessonsService := services.NewUserLessonService(userLessonRepository, lessonAgent, userGrammarRepository, userWordRepository)
 	userGrammarService := services.NewUserGrammarService(userGrammarRepository)
 	userWordService := services.NewUserWordService(userWordRepository)
 	userService := services.NewUserService(userRepository)
+	chatbotService := services.NewChatbotService(chatbotAgent)
 
 	exerciseHandler := handlers.NewExerciseHandler(exerciseService, userService)
 	userLessonsHandler := handlers.NewUserLessonHandler(userLessonsService, userService)
@@ -70,6 +72,7 @@ func main() {
 	userWordHandler := handlers.NewUserWordHandler(userWordService, userService)
 	userHandler := handlers.NewUserHandler(userService)
 	authHandler := handlers.NewAuthHandler(userService)
+	chatbotHandler := handlers.NewChatbotHandler(chatbotService, userService)
 
 	// Create router
 	r := chi.NewRouter()
@@ -124,6 +127,11 @@ func main() {
 		r.Get("/grammar", userGrammarHandler.GetGrammarPatternsHandler)
 		r.Get("/grammar/search", userGrammarHandler.GetGrammarPatternsByPatternHandler)
 		r.Get("/words", userWordHandler.GetWordsHandler)
+	})
+
+	r.Route("/chatbot", func(r chi.Router) {
+		r.Use(basicAuth)
+		r.Post("/response", chatbotHandler.GetResponseHandler)
 	})
 
 	// Start server

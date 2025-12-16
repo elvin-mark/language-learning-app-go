@@ -117,3 +117,19 @@ func generateDialogueContinuationExercisePrompt(targetLanguage string, grammarPa
 	vocab := strings.Join(words, ",")
 	return fmt.Sprintf(dialogueContinuationGenerationPrompt, targetLanguage, grammarPattern, vocab, history)
 }
+
+const chatbotGenerationPrompt = `You are a creative %s language teacher. Answer to the user's question in detail and with examples.
+
+**Instructions:**
+- Create a proper response that can clear any doubts that the user has regarding the question. Give samples, scenarios, usages or anything you consider that will be helpful so the user has a clear understanding.
+
+**Question:** %s
+
+**Response:**
+- response: your response to the user's question
+
+Make sure to reply just with the JSON object, no need for other text.`
+
+func generateChatbotPrompt(targetLanguage string, question string) string {
+	return fmt.Sprintf(chatbotGenerationPrompt, targetLanguage, question)
+}

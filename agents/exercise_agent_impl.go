@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-type exerciseAgent struct {
+type exerciseAgentImpl struct {
 	llm llm.Llm
 }
 
-func (pa *exerciseAgent) GradeUsage(targetLanguage, sentence string, wordOrGrammarPattern string) (grade UsageGrade, err error) {
+func (pa *exerciseAgentImpl) GradeUsage(targetLanguage, sentence string, wordOrGrammarPattern string) (grade UsageGrade, err error) {
 	prompt := generateGradeUsagePrompt(targetLanguage, sentence, wordOrGrammarPattern)
 
 	resp, err := pa.llm.GetResponse(prompt)
@@ -33,7 +33,7 @@ func (pa *exerciseAgent) GradeUsage(targetLanguage, sentence string, wordOrGramm
 	return
 }
 
-func (pa *exerciseAgent) GenerateTranslationExercise(preferredLanguage, targetLanguage string, grammarPattern string, words []string) (generatedExercise GeneratedTranslationExercise, err error) {
+func (pa *exerciseAgentImpl) GenerateTranslationExercise(preferredLanguage, targetLanguage string, grammarPattern string, words []string) (generatedExercise GeneratedTranslationExercise, err error) {
 	prompt := generateTranslationExercisePrompt(preferredLanguage, targetLanguage, grammarPattern, words)
 	resp, err := pa.llm.GetResponse(prompt)
 	if err != nil {
@@ -54,7 +54,7 @@ func (pa *exerciseAgent) GenerateTranslationExercise(preferredLanguage, targetLa
 	return
 }
 
-func (pa *exerciseAgent) GenerateReadingComprehensionExercise(targetLanguage string, grammarPattern string, words []string) (generatedExercise GeneratedReadingComprehensionExercise, err error) {
+func (pa *exerciseAgentImpl) GenerateReadingComprehensionExercise(targetLanguage string, grammarPattern string, words []string) (generatedExercise GeneratedReadingComprehensionExercise, err error) {
 	prompt := generateReadingComprehensionExercisePrompt(targetLanguage, grammarPattern, words)
 	resp, err := pa.llm.GetResponse(prompt)
 	if err != nil {
@@ -75,7 +75,7 @@ func (pa *exerciseAgent) GenerateReadingComprehensionExercise(targetLanguage str
 	return
 }
 
-func (pa *exerciseAgent) GenerateDialogueInitExercise(targetLanguage string, grammarPattern string, words []string) (generatedExercise GeneratedDialogueInitExercise, err error) {
+func (pa *exerciseAgentImpl) GenerateDialogueInitExercise(targetLanguage string, grammarPattern string, words []string) (generatedExercise GeneratedDialogueInitExercise, err error) {
 	prompt := generateDialogueInitExercisePrompt(targetLanguage, grammarPattern, words)
 	resp, err := pa.llm.GetResponse(prompt)
 	if err != nil {
@@ -96,7 +96,7 @@ func (pa *exerciseAgent) GenerateDialogueInitExercise(targetLanguage string, gra
 	return
 }
 
-func (pa *exerciseAgent) GenerateDialogueContinuationExercise(targetLanguage string, grammarPattern string, words []string, history string) (generatedExercise GeneratedDialogueContinuationExercise, err error) {
+func (pa *exerciseAgentImpl) GenerateDialogueContinuationExercise(targetLanguage string, grammarPattern string, words []string, history string) (generatedExercise GeneratedDialogueContinuationExercise, err error) {
 	prompt := generateDialogueContinuationExercisePrompt(targetLanguage, grammarPattern, words, history)
 	resp, err := pa.llm.GetResponse(prompt)
 	if err != nil {
