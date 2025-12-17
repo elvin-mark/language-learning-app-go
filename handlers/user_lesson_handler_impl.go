@@ -21,7 +21,7 @@ type userLessonHandlerImpl struct {
 //	@Produce		json
 //	@Param			page		query		int	false	"Page number (default 1)"
 //	@Param			pageSize	query		int	false	"Page size (default 20)"
-//	@Success		200			{array}		storage.UserLesson
+//	@Success		200			{array}		models.LessonItem
 //	@Failure		400			{object}	map[string]string
 //	@Failure		500			{object}	map[string]string
 //	@Router			/resources/lessons [get]
@@ -71,7 +71,7 @@ func (h *userLessonHandlerImpl) GetLessonsHandler(w http.ResponseWriter, r *http
 //	@Tags			lessons
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{array}		storage.UserLesson
+//	@Success		200	{array}		models.LessonItem
 //	@Failure		400	{object}	map[string]string
 //	@Failure		500	{object}	map[string]string
 //	@Router			/resources/lessons/generate [post]

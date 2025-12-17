@@ -614,7 +614,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/storage.UserLesson"
+                                "$ref": "#/definitions/models.LessonItem"
                             }
                         }
                     },
@@ -658,7 +658,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/storage.UserLesson"
+                                "$ref": "#/definitions/models.LessonItem"
                             }
                         }
                     },
@@ -937,6 +937,38 @@ const docTemplate = `{
                 }
             }
         },
+        "models.LessonItem": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "grammar": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "sampleSentences": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "words": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "wordsMeaning": {
+                    "type": "string"
+                }
+            }
+        },
         "storage.User": {
             "type": "object",
             "properties": {
@@ -977,38 +1009,6 @@ const docTemplate = `{
                 },
                 "userId": {
                     "type": "integer"
-                }
-            }
-        },
-        "storage.UserLesson": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "grammarId": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "language": {
-                    "type": "string"
-                },
-                "sampleSentences": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "wordsId": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "wordsMeaning": {
-                    "type": "string"
                 }
             }
         },
