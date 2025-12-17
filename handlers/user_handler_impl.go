@@ -18,7 +18,7 @@ type userHandlerImpl struct {
 //	@Tags			user
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{array}		storage.User
+//	@Success		200	{object}	storage.User
 //	@Failure		400	{object}	map[string]string
 //	@Failure		500	{object}	map[string]string
 //	@Router			/user/profile [get]
