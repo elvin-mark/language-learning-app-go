@@ -112,6 +112,7 @@ func main() {
 	r.Route("/user", func(r chi.Router) {
 		r.Use(basicAuth)
 		r.Get("/profile", userHandler.GetUserProfileHandler)
+		r.Patch("/profile", userHandler.UpdateUserSettingsHandler)
 	})
 
 	r.Route("/resources", func(r chi.Router) {

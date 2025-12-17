@@ -36,7 +36,30 @@
 
       <div id="dashboard-section" class="container" style="display: none">
         <h2>Dashboard</h2>
-        <div id="user-info">Welcome, <span id="current-username"></span>!</div>
+        <div id="user-info">
+          <h5>Welcome, <span id="current-username"></span>!</h5>
+          <div class="settings-container">
+            <div class="dropdown-group">
+              <label for="preferred-lang">Preferred Language</label>
+              <select id="preferred-lang" name="preferred-lang">
+                <option value="English">English</option>
+                <option value="Spanish" selected>Spanish</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Korean">Korean</option>
+              </select>
+            </div>
+
+            <div class="dropdown-group">
+              <label for="target-lang">Target Language</label>
+              <select id="target-lang" name="target-lang">
+                <option value="Korean">Korean</option>
+                <option value="Japanese" selected>Japanese</option>
+                <option value="English">English</option>
+                <option value="Spanish">Spanish</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
         <section id="lessons-section">
           <h3>Your Lessons</h3>

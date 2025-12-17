@@ -92,6 +92,16 @@ startExerciseBtn.addEventListener("click", async () => {
   closeLessonDetailModal(); // Close modal after initiating exercise
 });
 
+// User profile settings
+const saveSettings = () => {
+  updateUserProfile(prefLang.value, targetLang.value).then((resp) => {
+    loadDashboardData();
+  });
+};
+
+prefLang.addEventListener("change", saveSettings);
+targetLang.addEventListener("change", saveSettings);
+
 // --- Initial Load ---
 
 document.addEventListener("DOMContentLoaded", () => {

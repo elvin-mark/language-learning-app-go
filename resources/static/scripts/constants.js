@@ -36,3 +36,7 @@ const lessonsList = document.getElementById("lessons-list");
 const vocabularyList = document.getElementById("vocabulary-list");
 const grammarList = document.getElementById("grammar-list");
 const generateLessonBtn = document.getElementById("generate-lesson-btn");
+
+// User profile
+const prefLang = document.getElementById("preferred-lang");
+const targetLang = document.getElementById("target-lang");

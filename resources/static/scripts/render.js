@@ -1,8 +1,10 @@
 // --- Rendering Functions ---
 
 function renderUserProfile(user) {
-  if (user && user.username) {
-    currentUsernameSpan.textContent = user.username;
+  if (user && user.Username) {
+    currentUsernameSpan.textContent = user.Username;
+    prefLang.value = user.PreferredLanguage;
+    targetLang.value = user.TargetLanguage;
   }
 }
 
@@ -78,7 +80,7 @@ function populateLessonDetailModal(lesson) {
   lessonDetailWordsMeaning.textContent = lesson.WordsMeaning || "N/A";
 
   // Store lesson ID on the start button for later use
-  startExerciseBtn.dataset.lessonId = lesson.id;
+  startExerciseBtn.dataset.lessonId = lesson.Id;
 }
 
 async function loadDashboardData() {

@@ -30,3 +30,19 @@ func (us *userServiceImpl) GetUserByUsername(username string) (user *storage.Use
 	}
 	return
 }
+
+func (us *userServiceImpl) UpdateUserSettings(userId int, preferredLanguage, targetLanguage string) (user *storage.User, err error) {
+	user, err = us.userRepository.GetByID(userId)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+	user.PreferredLanguage = preferredLanguage
+	user.TargetLanguage = targetLanguage
+	err = us.userRepository.Update(user)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+	return
+}

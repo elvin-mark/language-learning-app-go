@@ -88,6 +88,13 @@ definitions:
       sentece:
         type: string
     type: object
+  dto.UpdateUserSettings:
+    properties:
+      preferredLanguage:
+        type: string
+      targetLanguage:
+        type: string
+    type: object
   models.AuthToken:
     properties:
       accessToken:
@@ -656,9 +663,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/storage.User'
-            type: array
+            $ref: '#/definitions/storage.User'
         "400":
           description: Bad Request
           schema:
@@ -672,6 +677,39 @@ paths:
               type: string
             type: object
       summary: Get User Profile
+      tags:
+      - user
+    patch:
+      consumes:
+      - application/json
+      description: Update user profile settings
+      parameters:
+      - description: New User settings
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateUserSettings'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/storage.User'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update user profile settings
       tags:
       - user
 swagger: "2.0"

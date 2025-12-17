@@ -6,6 +6,7 @@ import (
 
 type UserRepository interface {
 	Create(user *User) error
+	Update(user *User) error
 	GetByID(id int) (*User, error)
 	GetByUsername(username string) (*User, error)
 }

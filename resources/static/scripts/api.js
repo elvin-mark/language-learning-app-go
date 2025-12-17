@@ -98,3 +98,10 @@ async function generateNewLesson() {
   // it generates based on user's current status implicitly.
   return apiFetch("/resources/lessons/generate", { method: "POST" });
 }
+
+async function updateUserProfile(preferredLanguage, targetLanguage) {
+  return apiFetch("/user/profile", {
+    method: "PATCH",
+    body: { preferredLanguage, targetLanguage },
+  });
+}

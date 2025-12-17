@@ -43,6 +43,7 @@
 .modal-content {
   background-color: #fefefe;
   margin: 5% auto; /* 15% from the top and centered */
+  margin-bottom: 20%;
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
@@ -118,4 +119,46 @@
 
 #start-exercise-btn:hover {
   background-color: #45a049;
+}
+
+.settings-container {
+  display: flex;
+  gap: 20px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  max-width: fit-content;
+}
+
+/* Grouping Label and Select */
+.dropdown-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dropdown-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+}
+
+/* Styled Dropdown */
+select {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Focus state for better UX */
+select:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
 }

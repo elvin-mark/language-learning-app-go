@@ -758,10 +758,57 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/storage.User"
+                            "$ref": "#/definitions/storage.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update user profile settings",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Update user profile settings",
+                "parameters": [
+                    {
+                        "description": "New User settings",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateUserSettings"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/storage.User"
                         }
                     },
                     "400": {
@@ -922,6 +969,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "sentece": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateUserSettings": {
+            "type": "object",
+            "properties": {
+                "preferredLanguage": {
+                    "type": "string"
+                },
+                "targetLanguage": {
                     "type": "string"
                 }
             }

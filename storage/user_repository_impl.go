@@ -22,6 +22,18 @@ func (r *userRepositoryImpl) Create(user *User) error {
 	return nil
 }
 
+func (r *userRepositoryImpl) Update(user *User) error {
+	_, err := r.DB.Exec(`
+        UPDATE users
+        SET username = ?,
+		    password = ?,
+		    preferred_language = ?,
+		    target_language = ?
+		WHERE id = ?;
+    `, user.Username, user.Password, user.PreferredLanguage, user.TargetLanguage, user.Id)
+	return err
+}
+
 func (r *userRepositoryImpl) GetByID(id int) (*User, error) {
 	var u User
 	row := r.DB.QueryRow(`
