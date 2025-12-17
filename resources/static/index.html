@@ -1,56 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Language Learning App</title>
-    <link rel="stylesheet" href="styles/common.css" />
-    <link rel="stylesheet" href="styles/grammar.css" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
-
   <body>
-    <nav class="nav-wrapper" aria-label="Main navigation">
-      <div class="brand">
-        <div class="logo">LL</div>
-        <div>
-          <h1>Learning Space</h1>
-          <p>learn • practice • repeat</p>
+    <header>
+      <h1>Language Learning</h1>
+      <nav id="auth-nav">
+        <button id="login-btn">Login</button>
+        <button id="logout-btn" style="display: none">Logout</button>
+      </nav>
+    </header>
+
+    <main>
+      <div id="login-section" class="container">
+        <h2>Login</h2>
+        <form id="login-form">
+          <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required />
+          </div>
+          <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <button type="submit">Login</button>
+          <p id="login-error" class="error-message"></p>
+        </form>
+      </div>
+
+      <div id="dashboard-section" class="container" style="display: none">
+        <h2>Dashboard</h2>
+        <div id="user-info">Welcome, <span id="current-username"></span>!</div>
+
+        <section id="lessons-section">
+          <h3>Your Lessons</h3>
+          <button id="generate-lesson-btn">Generate New Lesson</button>
+          <ul id="lessons-list">
+            <!-- Lessons will be loaded here -->
+          </ul>
+        </section>
+
+        <!-- Lesson Details Modal -->
+        <div id="lesson-detail-modal" class="modal" style="display: none">
+          <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="lesson-detail-title"></h3>
+            <div>
+              <strong>Language:</strong>
+              <span id="lesson-detail-language"></span>
+            </div>
+            <div>
+              <strong>Content:</strong>
+              <p id="lesson-detail-content"></p>
+            </div>
+            <div>
+              <strong>Grammar:</strong> <span id="lesson-detail-grammar"></span>
+            </div>
+            <div>
+              <strong>Sample Sentences:</strong>
+              <p id="lesson-detail-sample-sentences"></p>
+            </div>
+            <div>
+              <strong>Words:</strong>
+              <ul id="lesson-detail-words"></ul>
+            </div>
+            <div>
+              <strong>Words Meaning:</strong>
+              <p id="lesson-detail-words-meaning"></p>
+            </div>
+            <button id="start-exercise-btn">Start Exercise</button>
+          </div>
         </div>
+
+        <section id="vocabulary-section">
+          <h3>Your Vocabulary</h3>
+          <ul id="vocabulary-list">
+            <!-- Vocabulary will be loaded here -->
+          </ul>
+        </section>
+
+        <section id="grammar-section">
+          <h3>Your Grammar Patterns</h3>
+          <ul id="grammar-list">
+            <!-- Grammar will be loaded here -->
+          </ul>
+        </section>
       </div>
+    </main>
 
-      <div class="menu" id="menu" aria-hidden="true">
-        <ul class="menu-list" id="menuList" role="menubar" aria-label="Primary">
-          <li><a role="menuitem" data-target="lessons">Lessons</a></li>
-          <li><a role="menuitem" data-target="vocab">Vocabulary</a></li>
-          <li><a role="menuitem" data-target="grammar">Grammar</a></li>
-          <li><a role="menuitem" data-target="practice">Practice</a></li>
-          <li><a role="menuitem" data-target="profile">Profile</a></li>
-        </ul>
-      </div>
+    <footer>
+      <p>&copy; 2025 Language Learning App</p>
+    </footer>
 
-      <!-- HAMBURGER ICON (mobile only) -->
-      <button
-        id="menuToggle"
-        class="hamburger"
-        aria-expanded="false"
-        aria-label="Toggle menu"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </nav>
-
-    <div id="content-wrapper">
-      <div id="content" class="section active"></div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="scripts/guard.js"></script>
+    <script src="scripts/constants.js"></script>
+    <script src="scripts/global.js"></script>
+    <script src="scripts/login.js"></script>
     <script src="scripts/api.js"></script>
-    <script src="scripts/lessons.js"></script>
-    <script src="scripts/grammar.js"></script>
-    <script src="scripts/vocab.js"></script>
-    <script src="scripts/router.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/render.js"></script>
+    <script src="scripts/listeners.js"></script>
   </body>
 </html>
