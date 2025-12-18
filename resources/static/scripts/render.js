@@ -60,9 +60,22 @@ function renderGrammar(grammarPatterns) {
 function populateLessonDetailModal(lesson) {
   lessonDetailTitle.textContent = `Lesson ${lesson.Id} Details`;
   lessonDetailLanguage.textContent = lesson.Language;
-  lessonDetailContent.textContent = lesson.Content;
+
+  try {
+    lessonDetailContent.innerHTML = marked.parse(lesson.Content);
+  } catch {
+    lessonDetailContent.textContent = lesson.Content;
+  }
   lessonDetailGrammar.textContent = lesson.Grammar;
-  lessonDetailSampleSentences.textContent = lesson.SampleSentences;
+
+  try {
+    let sampleSentences = JSON.parse(lesson.SampleSentences);
+    lessonDetailSampleSentences.innerHTML = sampleSentences
+      .map((elem) => "<div>" + elem + "</div>")
+      .join("");
+  } catch {
+    lessonDetailSampleSentences.textContent = lesson.SampleSentences || "N/A";
+  }
 
   // Clear previous words
   lessonDetailWordsList.innerHTML = "";
@@ -77,7 +90,20 @@ function populateLessonDetailModal(lesson) {
     li.textContent = "No specific words listed for this lesson.";
     lessonDetailWordsList.appendChild(li);
   }
-  lessonDetailWordsMeaning.textContent = lesson.WordsMeaning || "N/A";
+
+  try {
+    let wordsMeaning = JSON.parse(lesson.WordsMeaning);
+    let wordsMeaningContent = "";
+    for (word in wordsMeaning) {
+      wordsMeaningContent += `<div>
+        <span>${word}: </span> ${wordsMeaning[word]}
+      </div>
+      `;
+    }
+    lessonDetailWordsMeaning.innerHTML = wordsMeaningContent;
+  } catch {
+    lessonDetailWordsMeaning.textContent = lesson.WordsMeaning || "N/A";
+  }
 
   // Store lesson ID on the start button for later use
   startExerciseBtn.dataset.lessonId = lesson.Id;
