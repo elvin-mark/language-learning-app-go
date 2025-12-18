@@ -144,3 +144,27 @@ func (r *userGrammarRepositoryImpl) SearchByPattern(userID int, lang string, pat
 	}
 	return list, nil
 }
+
+func (r *userGrammarRepositoryImpl) GetUserTotalGrammarPatterns(userId int, targetLanguage string) (int, error) {
+	var resp int
+	row := r.DB.QueryRow(`
+        SELECT COUNT(*)
+        FROM user_grammar WHERE user_id = ? AND language = ?`, userId, targetLanguage)
+
+	if err := row.Scan(&resp); err != nil {
+		return 0, err
+	}
+	return resp, nil
+}
+
+func (r *userGrammarRepositoryImpl) GetUserLearnedGrammarPatterns(userId int, targetLanguage string, scoreTrigger int) (int, error) {
+	var resp int
+	row := r.DB.QueryRow(`
+        SELECT COUNT(*)
+        FROM user_grammar WHERE user_id = ? AND language = ? AND score > ?`, userId, targetLanguage, scoreTrigger)
+
+	if err := row.Scan(&resp); err != nil {
+		return 0, err
+	}
+	return resp, nil
+}

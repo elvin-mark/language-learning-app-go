@@ -103,3 +103,27 @@ func (r *userWordRepositoryImpl) GetPaginated(userID int, lang string, offset, l
 
 	return list, nil
 }
+
+func (r *userWordRepositoryImpl) GetUserTotalWords(userId int, targetLanguage string) (int, error) {
+	var resp int
+	row := r.DB.QueryRow(`
+        SELECT COUNT(*)
+        FROM user_words WHERE user_id = ? AND language = ?`, userId, targetLanguage)
+
+	if err := row.Scan(&resp); err != nil {
+		return 0, err
+	}
+	return resp, nil
+}
+
+func (r *userWordRepositoryImpl) GetUserLearnedWords(userId int, targetLanguage string, scoreTrigger int) (int, error) {
+	var resp int
+	row := r.DB.QueryRow(`
+        SELECT COUNT(*)
+        FROM user_words WHERE user_id = ? AND language = ? AND score > ?`, userId, targetLanguage, scoreTrigger)
+
+	if err := row.Scan(&resp); err != nil {
+		return 0, err
+	}
+	return resp, nil
+}

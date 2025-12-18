@@ -831,6 +831,47 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/status/report": {
+            "get": {
+                "description": "Get user Status Report",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get User Status Report",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserStatusReport"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1024,6 +1065,23 @@ const docTemplate = `{
                 },
                 "wordsMeaning": {
                     "type": "string"
+                }
+            }
+        },
+        "models.UserStatusReport": {
+            "type": "object",
+            "properties": {
+                "masteredGrammarPatterns": {
+                    "type": "integer"
+                },
+                "masteredWords": {
+                    "type": "integer"
+                },
+                "totalGrammarPatterns": {
+                    "type": "integer"
+                },
+                "totalWords": {
+                    "type": "integer"
                 }
             }
         },

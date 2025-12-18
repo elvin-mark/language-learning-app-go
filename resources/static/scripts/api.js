@@ -105,3 +105,9 @@ async function updateUserProfile(preferredLanguage, targetLanguage) {
     body: { preferredLanguage, targetLanguage },
   });
 }
+
+async function getUserStatusReport() {
+  return apiFetch("/user/status/report", {
+    method: "GET",
+  });
+}

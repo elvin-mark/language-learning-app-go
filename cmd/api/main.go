@@ -63,7 +63,7 @@ func main() {
 	userLessonsService := services.NewUserLessonService(userLessonRepository, lessonAgent, userGrammarRepository, userWordRepository)
 	userGrammarService := services.NewUserGrammarService(userGrammarRepository)
 	userWordService := services.NewUserWordService(userWordRepository)
-	userService := services.NewUserService(userRepository)
+	userService := services.NewUserService(userRepository, userGrammarRepository, userWordRepository)
 	chatbotService := services.NewChatbotService(chatbotAgent)
 
 	exerciseHandler := handlers.NewExerciseHandler(exerciseService, userService)
@@ -113,6 +113,7 @@ func main() {
 		r.Use(basicAuth)
 		r.Get("/profile", userHandler.GetUserProfileHandler)
 		r.Patch("/profile", userHandler.UpdateUserSettingsHandler)
+		r.Get("/status/report", userHandler.GetUserStatusReport)
 	})
 
 	r.Route("/resources", func(r chi.Router) {

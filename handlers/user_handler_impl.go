@@ -84,3 +84,42 @@ func (h *userHandlerImpl) UpdateUserSettingsHandler(w http.ResponseWriter, r *ht
 	}
 	utils.WriteJSON(w, user)
 }
+
+// GetUserStatusReport godoc
+//
+//	@Summary		Get User Status Report
+//	@Description	Get user Status Report
+//	@Tags			user
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	models.UserStatusReport
+//	@Failure		400	{object}	map[string]string
+//	@Failure		500	{object}	map[string]string
+//	@Router			/user/status/report [get]
+func (h *userHandlerImpl) GetUserStatusReport(w http.ResponseWriter, r *http.Request) {
+	userIDStr := r.Header.Get("User-Id")
+
+	if userIDStr == "" {
+		utils.WriteJSONStatus(w, map[string]string{"error": "userId is required"}, http.StatusBadRequest)
+		return
+	}
+	userID, err := strconv.Atoi(userIDStr)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
+		return
+	}
+
+	user, err := h.userService.GetUserById(userID)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
+		return
+	}
+
+	userStatusReport, err := h.userService.GetUserStatus(user.Id, user.TargetLanguage)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "could not get user status report"}, http.StatusBadRequest)
+		return
+	}
+
+	utils.WriteJSON(w, userStatusReport)
+}

@@ -8,6 +8,22 @@ function renderUserProfile(user) {
   }
 }
 
+function renderUserStatusReport(data) {
+  if (data) {
+    const wordPercent = (data.MasteredWords / data.TotalWords) * 100;
+    const grammarPercent =
+      (data.MasteredGrammarPatterns / data.TotalGrammarPatterns) * 100;
+
+    const wordCount = `${data.MasteredWords} / ${data.TotalWords}`;
+    const grammarCount = `${data.MasteredGrammarPatterns} / ${data.TotalGrammarPatterns}`;
+
+    document.getElementById("word-fill").style.width = `${wordPercent}%`;
+    document.getElementById("grammar-fill").style.width = `${grammarPercent}%`;
+    document.getElementById("word-count").innerHTML = wordCount;
+    document.getElementById("grammar-count").innerHTML = grammarCount;
+  }
+}
+
 function renderLessons(lessons) {
   lessonsList.innerHTML = ""; // Clear existing lessons
   currentLessonsData = lessons; // Store lessons globally
@@ -107,36 +123,4 @@ function populateLessonDetailModal(lesson) {
 
   // Store lesson ID on the start button for later use
   startExerciseBtn.dataset.lessonId = lesson.Id;
-}
-
-async function loadDashboardData() {
-  try {
-    // Fetch User Profile
-    const user = await getUserProfile();
-    renderUserProfile(user);
-
-    // Fetch Lessons
-    const lessons = await getLessons();
-    renderLessons(lessons);
-
-    // Fetch Vocabulary
-    const words = await getVocabulary();
-    renderVocabulary(words);
-
-    // Fetch Grammar
-    const grammarPatterns = await getGrammar();
-    renderGrammar(grammarPatterns);
-  } catch (error) {
-    console.error("Error loading dashboard data:", error);
-    // Errors like 401 will be handled by apiFetch which calls logoutUser
-    // For other errors, show a general message if not already handled.
-    if (
-      !error.message.includes("Not authenticated") &&
-      !error.message.includes("Authentication failed")
-    ) {
-      alert(
-        "Failed to load dashboard data. Please check your connection or try logging in again."
-      );
-    }
-  }
 }

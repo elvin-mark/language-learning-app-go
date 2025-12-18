@@ -123,6 +123,17 @@ definitions:
       wordsMeaning:
         type: string
     type: object
+  models.UserStatusReport:
+    properties:
+      masteredGrammarPatterns:
+        type: integer
+      masteredWords:
+        type: integer
+      totalGrammarPatterns:
+        type: integer
+      totalWords:
+        type: integer
+    type: object
   storage.User:
     properties:
       id:
@@ -710,6 +721,33 @@ paths:
               type: string
             type: object
       summary: Update user profile settings
+      tags:
+      - user
+  /user/status/report:
+    get:
+      consumes:
+      - application/json
+      description: Get user Status Report
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserStatusReport'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get User Status Report
       tags:
       - user
 swagger: "2.0"

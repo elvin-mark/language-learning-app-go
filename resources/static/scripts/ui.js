@@ -148,6 +148,10 @@ async function loadDashboardData() {
     const user = await getUserProfile();
     renderUserProfile(user);
 
+    // Fetch User Status Report
+    const report = await getUserStatusReport();
+    renderUserStatusReport(report);
+
     // Fetch Lessons
     const lessons = await getLessons();
     renderLessons(lessons);

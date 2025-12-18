@@ -1,18 +1,15 @@
 package services
 
 import (
+	models "language-learning-app/models/user"
 	storage "language-learning-app/storage"
 	"language-learning-app/utils"
 )
 
 type userServiceImpl struct {
-	userRepository storage.UserRepository
-}
-
-func NewUserService(userRepository storage.UserRepository) UserService {
-	return &userServiceImpl{
-		userRepository: userRepository,
-	}
+	userRepository        storage.UserRepository
+	userGrammarRepository storage.UserGrammarRepository
+	userWordRepository    storage.UserWordRepository
 }
 
 func (us *userServiceImpl) GetUserById(userId int) (user *storage.User, err error) {
@@ -44,5 +41,30 @@ func (us *userServiceImpl) UpdateUserSettings(userId int, preferredLanguage, tar
 		utils.Logger.Error(err.Error())
 		return
 	}
+	return
+}
+
+func (us *userServiceImpl) GetUserStatus(userId int, targetLanguage string) (report models.UserStatusReport, err error) {
+	report.MasteredWords, err = us.userWordRepository.GetUserLearnedWords(userId, targetLanguage, 70)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+	report.TotalWords, err = us.userWordRepository.GetUserTotalWords(userId, targetLanguage)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+	report.MasteredGrammarPatterns, err = us.userGrammarRepository.GetUserLearnedGrammarPatterns(userId, targetLanguage, 70)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+	report.TotalGrammarPatterns, err = us.userGrammarRepository.GetUserTotalGrammarPatterns(userId, targetLanguage)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+
 	return
 }
