@@ -36,59 +36,77 @@
 
       <div id="dashboard-section" class="container" style="display: none">
         <h2>Dashboard</h2>
-        <div id="user-info">
-          <h5>Welcome, <span id="current-username"></span>!</h5>
-          <div class="settings-container">
-            <div class="dropdown-group">
-              <label for="preferred-lang">Preferred Language</label>
-              <select id="preferred-lang" name="preferred-lang">
-                <option value="English">English</option>
-                <option value="Spanish" selected>Spanish</option>
-                <option value="Japanese">Japanese</option>
-                <option value="Korean">Korean</option>
-              </select>
+        <div class="user-app-layout">
+          <div id="user-info">
+            <h5>Welcome, <span id="current-username"></span>!</h5>
+            <div class="settings-container">
+              <div class="dropdown-group">
+                <label for="preferred-lang">Preferred Language</label>
+                <select id="preferred-lang" name="preferred-lang">
+                  <option value="English">English</option>
+                  <option value="Spanish" selected>Spanish</option>
+                  <option value="Japanese">Japanese</option>
+                  <option value="Korean">Korean</option>
+                </select>
+              </div>
+
+              <div class="dropdown-group">
+                <label for="target-lang">Target Language</label>
+                <select id="target-lang" name="target-lang">
+                  <option value="Korean">Korean</option>
+                  <option value="Japanese" selected>Japanese</option>
+                  <option value="English">English</option>
+                  <option value="Spanish">Spanish</option>
+                </select>
+              </div>
             </div>
 
-            <div class="dropdown-group">
-              <label for="target-lang">Target Language</label>
-              <select id="target-lang" name="target-lang">
-                <option value="Korean">Korean</option>
-                <option value="Japanese" selected>Japanese</option>
-                <option value="English">English</option>
-                <option value="Spanish">Spanish</option>
-              </select>
+            <div class="stats-card">
+              <h4>Learning Progress</h4>
+
+              <div class="progress-group">
+                <div class="progress-info">
+                  <span class="label">Words Mastered</span>
+                  <span class="count" id="word-count">5 / 10</span>
+                </div>
+                <div class="progress-track">
+                  <div
+                    class="progress-fill"
+                    style="width: 50%"
+                    id="word-fill"
+                  ></div>
+                </div>
+              </div>
+
+              <div class="progress-group">
+                <div class="progress-info">
+                  <span class="label">Grammar Patterns</span>
+                  <span class="count" id="grammar-count">5 / 10</span>
+                </div>
+                <div class="progress-track">
+                  <div
+                    class="progress-fill"
+                    style="width: 50%"
+                    id="grammar-fill"
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
+          <div class="chat-panel">
+            <div class="chat-header">Chat Assistant</div>
 
-          <div class="stats-card">
-            <h4>Learning Progress</h4>
-
-            <div class="progress-group">
-              <div class="progress-info">
-                <span class="label">Words Mastered</span>
-                <span class="count" id="word-count">5 / 10</span>
-              </div>
-              <div class="progress-track">
-                <div
-                  class="progress-fill"
-                  style="width: 50%"
-                  id="word-fill"
-                ></div>
-              </div>
+            <div class="chat-messages" id="chat-messages">
+              <div class="message bot">Hello! How can I help you today?</div>
             </div>
 
-            <div class="progress-group">
-              <div class="progress-info">
-                <span class="label">Grammar Patterns</span>
-                <span class="count" id="grammar-count">5 / 10</span>
-              </div>
-              <div class="progress-track">
-                <div
-                  class="progress-fill"
-                  style="width: 50%"
-                  id="grammar-fill"
-                ></div>
-              </div>
+            <div class="chat-input">
+              <input
+                type="text"
+                id="chat-input"
+                placeholder="Type your message..."
+              />
+              <button id="send-btn">Send</button>
             </div>
           </div>
         </div>
@@ -104,7 +122,11 @@
         <!-- Lesson Details Modal -->
         <div id="lesson-detail-modal" class="modal" style="display: none">
           <div class="modal-content">
-            <span class="close-button lesson-detail-close-button" id="lesson-close-button">&times;</span>
+            <span
+              class="close-button lesson-detail-close-button"
+              id="lesson-close-button"
+              >&times;</span
+            >
             <h3 id="lesson-detail-title"></h3>
             <div>
               <strong>Language:</strong>
@@ -133,7 +155,9 @@
               <h4>Exercises:</h4>
               <div class="exercise-buttons">
                 <button id="generate-dialogue-init-btn">Dialogue</button>
-                <button id="generate-reading-comprehension-btn">Reading Comprehension</button>
+                <button id="generate-reading-comprehension-btn">
+                  Reading Comprehension
+                </button>
                 <button id="generate-translation-btn">Translation</button>
               </div>
             </div>
@@ -143,16 +167,23 @@
         <!-- Exercise Modal -->
         <div id="exercise-modal" class="modal" style="display: none">
           <div class="modal-content">
-            <span class="close-button exercise-close-button" id="exercise-close-button">&times;</span>
+            <span
+              class="close-button exercise-close-button"
+              id="exercise-close-button"
+              >&times;</span
+            >
             <h3 id="exercise-title"></h3>
             <div id="exercise-content">
               <!-- Exercise content will be loaded here -->
             </div>
-            <div id="exercise-input" style="display: none;">
-              <textarea id="exercise-answer" placeholder="Your answer..."></textarea>
+            <div id="exercise-input" style="display: none">
+              <textarea
+                id="exercise-answer"
+                placeholder="Your answer..."
+              ></textarea>
               <button id="submit-exercise-btn">Submit Answer</button>
             </div>
-            <div id="exercise-feedback" style="display: none;">
+            <div id="exercise-feedback" style="display: none">
               <h4>Feedback:</h4>
               <p id="feedback-text"></p>
               <p id="feedback-score"></p>
