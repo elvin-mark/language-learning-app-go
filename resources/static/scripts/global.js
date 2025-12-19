@@ -4,3 +4,5 @@ let currentWordsData = [];
 let currentGrammarData = [];
 
 let currentLessonId = 0;
+
+let currentExercise = {};

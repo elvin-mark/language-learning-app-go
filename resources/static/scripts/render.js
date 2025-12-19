@@ -155,7 +155,7 @@ function renderDialogueContinuationExercise(exercise) {
   feedbackScore.innerHTML = "";
 }
 
-function renderReadingComprehensionExercise(exercise, lessonId) {
+function renderReadingComprehensionExercise(exercise) {
   exerciseTitle.textContent = "Reading Comprehension Exercise";
   exerciseInput.style.display = "none"; // Hide single input area
   submitExerciseBtn.style.display = "none"; // Hide single submit button
@@ -174,23 +174,15 @@ function renderReadingComprehensionExercise(exercise, lessonId) {
         <input type="text" class="question-answer-input" placeholder="Your answer for question ${
           index + 1
         }..." />
-        <button class="check-answer-btn" data-question="${q}" data-index="${index}">Check</button>
+        <button class="check-answer-btn" data-question="${q}" data-index="${index}" onclick="gradeReadingComprehensionResponse(${index})">Check</button>
         <div class="feedback-area" id="feedback-q-${index}"></div>
       </div>
     `;
   });
   exerciseContent.innerHTML = questionsHtml;
-
-  // Add listeners for individual check buttons
-  addIndividualCheckListeners(
-    lessonId,
-    "readingComprehension",
-    exercise.questions,
-    exercise.short_text
-  );
 }
 
-function renderTranslationExercise(exercise, lessonId) {
+function renderTranslationExercise(exercise) {
   exerciseTitle.textContent = "Translation Exercise";
   exerciseInput.style.display = "none"; // Hide single input area
   submitExerciseBtn.style.display = "none"; // Hide single submit button
@@ -207,15 +199,12 @@ function renderTranslationExercise(exercise, lessonId) {
         <input type="text" class="sentence-translation-input" placeholder="Your translation for sentence ${
           index + 1
         }..." />
-        <button class="check-translation-btn" data-sentence="${s}" data-index="${index}">Check</button>
+        <button class="check-translation-btn" data-sentence="${s}" data-index="${index}" onclick="gradeTranslation(${index})">Check</button>
         <div class="feedback-area" id="feedback-s-${index}"></div>
       </div>
     `;
   });
   exerciseContent.innerHTML = sentencesHtml;
-
-  // Add listeners for individual check buttons
-  addIndividualCheckListeners(lessonId, "translation", exercise.sentences);
 }
 
 function displayExerciseFeedback(grade) {

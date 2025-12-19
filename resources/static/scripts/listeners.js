@@ -67,6 +67,8 @@ closeExerciseModalButton.addEventListener("click", closeExerciseModal);
 window.addEventListener("click", (event) => {
   if (event.target === lessonDetailModal) {
     closeLessonDetailModal();
+  }
+  if (event.target === exerciseModal) {
     closeExerciseModal();
   }
 });
@@ -92,6 +94,7 @@ generateDialogueInitBtn.addEventListener("click", async () => {
   try {
     const exercise = await generateDialogueInitExercise(currentLessonId);
     renderDialogueInitExercise(exercise);
+    currentExercise = exercise;
     openExerciseModal();
     closeLessonDetailModal(); // Close lesson detail modal after generating exercise
   } catch (error) {
@@ -141,7 +144,8 @@ generateReadingComprehensionBtn.addEventListener("click", async () => {
     const exercise = await generateReadingComprehensionExercise(
       currentLessonId
     );
-    renderReadingComprehensionExercise(exercise, currentLessonId); // Pass lessonId for grading
+    renderReadingComprehensionExercise(exercise);
+    currentExercise = exercise;
     openExerciseModal();
     closeLessonDetailModal(); // Close lesson detail modal after generating exercise
   } catch (error) {
@@ -155,6 +159,13 @@ generateReadingComprehensionBtn.addEventListener("click", async () => {
   }
 });
 
+function gradeReadingComprehensionResponse(idx) {
+  let inputs = document.getElementsByClassName("question-answer-input");
+  console.log(currentExercise.questions[idx]);
+  console.log(inputs[idx].value);
+  console.log(currentExercise.short_text);
+}
+
 generateTranslationBtn.addEventListener("click", async () => {
   if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
     alert("You need to be logged in to generate exercises.");
@@ -165,7 +176,8 @@ generateTranslationBtn.addEventListener("click", async () => {
   generateTranslationBtn.textContent = "Generating...";
   try {
     const exercise = await generateTranslationExercise(currentLessonId);
-    renderTranslationExercise(exercise, currentLessonId); // Pass lessonId for grading
+    currentExercise = exercise;
+    renderTranslationExercise(exercise); // Pass lessonId for grading
     openExerciseModal();
     closeLessonDetailModal(); // Close lesson detail modal after generating exercise
   } catch (error) {
@@ -177,79 +189,10 @@ generateTranslationBtn.addEventListener("click", async () => {
   }
 });
 
-// Function to add listeners for individual check buttons in exercises
-function addIndividualCheckListeners(
-  lessonId,
-  exerciseType,
-  items,
-  context = ""
-) {
-  // Remove existing listeners to prevent duplicates if the modal is reused
-  document
-    .querySelectorAll(".check-translation-btn, .check-answer-btn")
-    .forEach((btn) => {
-      btn.replaceWith(btn.cloneNode(true));
-    });
-
-  // Re-add listeners
-  document
-    .querySelectorAll(".check-translation-btn, .check-answer-btn")
-    .forEach((button) => {
-      button.addEventListener("click", async (event) => {
-        if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
-          alert("You need to be logged in to grade exercises.");
-          return;
-        }
-
-        const button = event.target;
-        button.disabled = true;
-        button.textContent = "Checking...";
-
-        const parentDiv = button.closest(
-          ".individual-sentence, .individual-question"
-        );
-        const inputElement = parentDiv.querySelector('input[type="text"]');
-        const feedbackArea = parentDiv.querySelector(".feedback-area");
-
-        const answer = inputElement.value;
-        const index = parseInt(button.dataset.index);
-        const originalText = button.dataset.sentence || button.dataset.question; // Get original sentence/question
-
-        if (!answer) {
-          alert("Please provide an answer.");
-          button.disabled = false;
-          button.textContent = "Check";
-          return;
-        }
-
-        try {
-          let grade;
-          if (exerciseType === "translation") {
-            grade = await gradeTranslationExercise(lessonId, answer);
-          } else if (exerciseType === "readingComprehension") {
-            // For reading comprehension, `gradeUsageExercise` might be more appropriate,
-            // assuming 'grammarPatternOrWord' can be the original question or context.
-            // For now, let's use gradeUsageExercise with the original question as context.
-            grade = await gradeUsageExercise(answer, originalText);
-          }
-
-          if (grade) {
-            feedbackArea.innerHTML = `<strong>Feedback:</strong> ${grade.feedback} <br> <strong>Score:</strong> ${grade.score}`;
-            feedbackArea.style.color = grade.score >= 70 ? "green" : "red"; // Simple styling based on score
-          } else {
-            feedbackArea.innerHTML = "No feedback received.";
-            feedbackArea.style.color = "orange";
-          }
-        } catch (error) {
-          console.error("Error grading individual exercise:", error);
-          feedbackArea.innerHTML = "Failed to grade. Try again.";
-          feedbackArea.style.color = "red";
-        } finally {
-          button.disabled = false;
-          button.textContent = "Check";
-        }
-      });
-    });
+function gradeTranslation(idx) {
+  let inputs = document.getElementsByClassName("sentence-translation-input");
+  console.log(currentExercise.sentences[idx]);
+  console.log(inputs[idx].value);
 }
 
 // --- Initial Load ---
