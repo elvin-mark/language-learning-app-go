@@ -42,7 +42,7 @@ func (pa *exerciseAgentImpl) GenerateTranslationExercise(preferredLanguage, targ
 	}
 
 	cleaned := strings.TrimPrefix(resp.Choices[0].Message.Content, "```json")
-	cleaned = strings.TrimSuffix(cleaned, "```")
+	cleaned = strings.ReplaceAll(cleaned, "```", "")
 	cleaned = strings.TrimSpace(cleaned)
 
 	utils.Logger.Debug("Response from LLM: " + cleaned)
