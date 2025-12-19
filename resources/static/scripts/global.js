@@ -2,3 +2,5 @@
 let currentLessonsData = [];
 let currentWordsData = [];
 let currentGrammarData = [];
+
+let currentLessonId = 0;

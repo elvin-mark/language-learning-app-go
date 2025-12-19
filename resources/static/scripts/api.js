@@ -111,3 +111,45 @@ async function getUserStatusReport() {
     method: "GET",
   });
 }
+
+async function generateDialogueInitExercise(lessonId) {
+  return apiFetch("/resources/exercise/dialogue/init", {
+    method: "POST",
+    body: { lessonId },
+  });
+}
+
+async function generateDialogueContinuationExercise(lessonId, history) {
+  return apiFetch("/resources/exercise/dialogue/continue", {
+    method: "POST",
+    body: { lessonId, history },
+  });
+}
+
+async function generateReadingComprehensionExercise(lessonId) {
+  return apiFetch("/resources/exercise/reading-comprehension/generate", {
+    method: "POST",
+    body: { lessonId },
+  });
+}
+
+async function generateTranslationExercise(lessonId) {
+  return apiFetch("/resources/exercise/translation/generate", {
+    method: "POST",
+    body: { lessonId },
+  });
+}
+
+async function gradeTranslationExercise(lessonId, sentence) {
+  return apiFetch("/resources/exercise/translation/grade", {
+    method: "POST",
+    body: { lessonId, sentence },
+  });
+}
+
+async function gradeUsageExercise(sentence, grammarPatternOrWord) {
+  return apiFetch("/resources/exercise/usage/grade", {
+    method: "POST",
+    body: { sentence, grammarPatternOrWord },
+  });
+}

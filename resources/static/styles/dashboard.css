@@ -212,3 +212,110 @@ select:focus {
   border-radius: 10px;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* Styles for the new Exercises section */
+#exercises-section {
+  margin-top: 2rem;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+#exercises-section h3 {
+  color: #333;
+  margin-top: 0;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.exercise-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.exercise-buttons button {
+  background-color: #2196f3; /* Blue */
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.exercise-buttons button:hover {
+  background-color: #1976d2; /* Darker blue */
+}
+
+/* Styles for the Exercise Modal specific elements */
+#exercise-modal .modal-content {
+  max-width: 800px; /* Slightly wider for exercises */
+}
+
+#exercise-content {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: #fcfcfc;
+}
+
+#exercise-content p {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+#exercise-input {
+  margin-top: 1.5rem;
+}
+
+#exercise-input textarea {
+  width: calc(100% - 20px);
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  resize: vertical; /* Allow vertical resizing */
+}
+
+#exercise-input button {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#exercise-input button:hover {
+  background-color: #45a049;
+}
+
+#exercise-feedback {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #c8e6c9; /* Light green border */
+  border-radius: 5px;
+  background-color: #e8f5e9; /* Light green background */
+}
+
+#exercise-feedback h4 {
+  margin-top: 0;
+  color: #2e7d32;
+}
+
+#exercise-feedback p {
+  margin-bottom: 0.5rem;
+}
+

@@ -120,7 +120,142 @@ function populateLessonDetailModal(lesson) {
   } catch {
     lessonDetailWordsMeaning.textContent = lesson.WordsMeaning || "N/A";
   }
+}
 
-  // Store lesson ID on the start button for later use
-  startExerciseBtn.dataset.lessonId = lesson.Id;
+function renderDialogueInitExercise(exercise) {
+  exerciseTitle.textContent = "Dialogue Initialization Exercise";
+  exerciseContent.innerHTML = `
+    <p><strong>Situation:</strong> ${exercise.situation}</p>
+    <p><strong>Start the dialogue:</strong></p>
+    <p>${exercise.init}</p>
+  `;
+  exerciseInput.style.display = "block"; // Ensure single input is visible
+  exerciseAnswer.placeholder = "Your response...";
+  submitExerciseBtn.dataset.exerciseType = "dialogueInit"; // Store exercise type for grading
+  submitExerciseBtn.style.display = "block"; // Ensure submit button is visible
+  // Reset feedback display
+  exerciseFeedback.style.display = "none";
+  feedbackText.innerHTML = "";
+  feedbackScore.innerHTML = "";
+}
+
+function renderDialogueContinuationExercise(exercise) {
+  exerciseTitle.textContent = "Dialogue Continuation Exercise";
+  exerciseContent.innerHTML = `
+    <p><strong>Continue the dialogue:</strong></p>
+    <p>${exercise.next}</p>
+  `;
+  exerciseInput.style.display = "block"; // Ensure single input is visible
+  exerciseAnswer.placeholder = "Your response...";
+  submitExerciseBtn.dataset.exerciseType = "dialogueContinue"; // Store exercise type for grading
+  submitExerciseBtn.style.display = "block"; // Ensure submit button is visible
+  // Reset feedback display
+  exerciseFeedback.style.display = "none";
+  feedbackText.innerHTML = "";
+  feedbackScore.innerHTML = "";
+}
+
+function renderReadingComprehensionExercise(exercise, lessonId) {
+  exerciseTitle.textContent = "Reading Comprehension Exercise";
+  exerciseInput.style.display = "none"; // Hide single input area
+  submitExerciseBtn.style.display = "none"; // Hide single submit button
+  exerciseFeedback.style.display = "none"; // Hide general feedback area
+
+  let questionsHtml = `
+    <p><strong>Read the following text and answer the questions:</strong></p>
+    <p>${exercise.short_text}</p>
+    <p><strong>Questions:</strong></p>
+  `;
+
+  exercise.questions.forEach((q, index) => {
+    questionsHtml += `
+      <div class="individual-question" data-question-index="${index}">
+        <p>${index + 1}. ${q}</p>
+        <input type="text" class="question-answer-input" placeholder="Your answer for question ${
+          index + 1
+        }..." />
+        <button class="check-answer-btn" data-question="${q}" data-index="${index}">Check</button>
+        <div class="feedback-area" id="feedback-q-${index}"></div>
+      </div>
+    `;
+  });
+  exerciseContent.innerHTML = questionsHtml;
+
+  // Add listeners for individual check buttons
+  addIndividualCheckListeners(
+    lessonId,
+    "readingComprehension",
+    exercise.questions,
+    exercise.short_text
+  );
+}
+
+function renderTranslationExercise(exercise, lessonId) {
+  exerciseTitle.textContent = "Translation Exercise";
+  exerciseInput.style.display = "none"; // Hide single input area
+  submitExerciseBtn.style.display = "none"; // Hide single submit button
+  exerciseFeedback.style.display = "none"; // Hide general feedback area
+
+  let sentencesHtml = `
+    <p><strong>Translate the following sentences:</strong></p>
+  `;
+
+  exercise.sentences.forEach((s, index) => {
+    sentencesHtml += `
+      <div class="individual-sentence" data-sentence-index="${index}">
+        <p>${s}</p>
+        <input type="text" class="sentence-translation-input" placeholder="Your translation for sentence ${
+          index + 1
+        }..." />
+        <button class="check-translation-btn" data-sentence="${s}" data-index="${index}">Check</button>
+        <div class="feedback-area" id="feedback-s-${index}"></div>
+      </div>
+    `;
+  });
+  exerciseContent.innerHTML = sentencesHtml;
+
+  // Add listeners for individual check buttons
+  addIndividualCheckListeners(lessonId, "translation", exercise.sentences);
+}
+
+function displayExerciseFeedback(grade) {
+  exerciseFeedback.style.display = "block";
+  feedbackText.innerHTML = `<strong>Feedback:</strong> ${grade.feedback}`;
+  feedbackScore.innerHTML = `<strong>Score:</strong> ${grade.score}`;
+}
+
+async function loadDashboardData() {
+  try {
+    // Fetch User Profile
+    const user = await getUserProfile();
+    renderUserProfile(user);
+
+    // Fetch User Status Report
+    const report = await getUserStatusReport();
+    renderUserStatusReport(report);
+
+    // Fetch Lessons
+    const lessons = await getLessons();
+    renderLessons(lessons);
+
+    // Fetch Vocabulary
+    const words = await getVocabulary();
+    renderVocabulary(words);
+
+    // Fetch Grammar
+    const grammarPatterns = await getGrammar();
+    renderGrammar(grammarPatterns);
+  } catch (error) {
+    console.error("Error loading dashboard data:", error);
+    // Errors like 401 will be handled by apiFetch which calls logoutUser
+    // For other errors, show a general message if not already handled.
+    if (
+      !error.message.includes("Not authenticated") &&
+      !error.message.includes("Authentication failed")
+    ) {
+      alert(
+        "Failed to load dashboard data. Please check your connection or try logging in again."
+      );
+    }
+  }
 }
