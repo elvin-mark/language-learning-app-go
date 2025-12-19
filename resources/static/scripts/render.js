@@ -174,8 +174,8 @@ function renderReadingComprehensionExercise(exercise) {
         <input type="text" class="question-answer-input" placeholder="Your answer for question ${
           index + 1
         }..." />
-        <button class="check-answer-btn" data-question="${q}" data-index="${index}" onclick="gradeReadingComprehensionResponse(${index})">Check</button>
-        <div class="feedback-area" id="feedback-q-${index}"></div>
+        <button class="check-answer-btn" data-question="${q}" data-index="${index}" onclick="gradeReadingComprehension(${index})">Check</button>
+        <div class="result-area" id="result-q-${index}"></div>
       </div>
     `;
   });
@@ -200,7 +200,7 @@ function renderTranslationExercise(exercise) {
           index + 1
         }..." />
         <button class="check-translation-btn" data-sentence="${s}" data-index="${index}" onclick="gradeTranslation(${index})">Check</button>
-        <div class="feedback-area" id="feedback-s-${index}"></div>
+        <div class="result-area" id="result-s-${index}"></div>
       </div>
     `;
   });

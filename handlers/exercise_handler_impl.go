@@ -194,6 +194,51 @@ func (h *exerciseHandlerImpl) GenerateReadingComprehensionExerciseHandler(w http
 	utils.WriteJSON(w, exercise)
 }
 
+// GradeReadingComprehensionResponseHandler godoc
+//
+//	@Summary		Grade Reading Comprehension Exercise
+//	@Description	Grade a Reading Comprehension Exercise based on the input lesson and user's response
+//	@Tags			exercise
+//	@Accept			json
+//	@Produce		json
+//	@Param			user	body		dto.GradeReadingComprehensionResponseRequest	true	"Exercise Request object to be graded"
+//	@Success		200		{array}		agents.UsageGrade
+//	@Failure		400		{object}	map[string]string
+//	@Failure		500		{object}	map[string]string
+//	@Router			/resources/exercise/reading-comprehension/grade [post]
+func (h *exerciseHandlerImpl) GradeReadingComprehensionResponseHandler(w http.ResponseWriter, r *http.Request) {
+	var req dto.GradeReadingComprehensionResponseRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Invalid request body"}, http.StatusBadRequest)
+		return
+	}
+
+	userIDStr := r.Header.Get("User-Id")
+	if userIDStr == "" {
+		utils.WriteJSONStatus(w, map[string]string{"error": "userId is required"}, http.StatusBadRequest)
+		return
+	}
+	userID, err := strconv.Atoi(userIDStr)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
+		return
+	}
+
+	user, err := h.userService.GetUserById(userID)
+	if err != nil || user == nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "invalid userId"}, http.StatusBadRequest)
+		return
+	}
+
+	grades, err := h.exerciseService.GradeReadingComprehensionResponse(user, req.LessonId, req.ShortText, req.Question, req.Answer)
+	if err != nil {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to grade translation exercise"}, http.StatusInternalServerError)
+		return
+	}
+
+	utils.WriteJSON(w, grades)
+}
+
 // GenerateDialogueInitExerciseHandler godoc
 //
 //	@Summary		Init Dialogue Exercise

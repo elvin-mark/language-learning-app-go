@@ -151,6 +151,18 @@ async function gradeTranslationExercise(
   });
 }
 
+async function gradeReadingComprehensionResponse(
+  lessonId,
+  shortText,
+  question,
+  answer
+) {
+  return apiFetch("/resources/exercise/reading-comprehension/grade", {
+    method: "POST",
+    body: { lessonId, shortText, question, answer },
+  });
+}
+
 async function gradeUsageExercise(sentence, grammarPatternOrWord) {
   return apiFetch("/resources/exercise/usage/grade", {
     method: "POST",

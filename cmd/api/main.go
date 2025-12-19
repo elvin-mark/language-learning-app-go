@@ -122,6 +122,7 @@ func main() {
 		r.Post("/exercise/translation/generate", exerciseHandler.GenerateTranslationExerciseHandler)
 		r.Post("/exercise/translation/grade", exerciseHandler.GradeTranslationExerciseHandler)
 		r.Post("/exercise/reading-comprehension/generate", exerciseHandler.GenerateReadingComprehensionExerciseHandler)
+		r.Post("/exercise/reading-comprehension/grade", exerciseHandler.GradeReadingComprehensionResponseHandler)
 		r.Post("/exercise/dialogue/init", exerciseHandler.GenerateDialogueInitExerciseHandler)
 		r.Post("/exercise/dialogue/continue", exerciseHandler.GenerateDialogueContinuationExerciseHandler)
 		r.Get("/lessons", userLessonsHandler.GetLessonsHandler)

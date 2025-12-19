@@ -159,11 +159,34 @@ generateReadingComprehensionBtn.addEventListener("click", async () => {
   }
 });
 
-function gradeReadingComprehensionResponse(idx) {
+function gradeReadingComprehension(idx) {
   let inputs = document.getElementsByClassName("question-answer-input");
-  console.log(currentExercise.questions[idx]);
-  console.log(inputs[idx].value);
-  console.log(currentExercise.short_text);
+  gradeReadingComprehensionResponse(
+    currentLessonId,
+    currentExercise.short_text,
+    currentExercise.questions[idx],
+    inputs[idx].value
+  ).then((data) => {
+    console.log(data);
+    let result = document.getElementById(`result-q-${idx}`);
+    let resultHtml = "";
+    data.forEach((element) => {
+      resultHtml += `<div class="result-card">
+    <div class="score">
+      <span class="score-label">Score</span>
+      <span class="score-value">${element.score}</span>
+    </div>
+
+    <div class="feedback">
+      <h3>Feedback</h3>
+      <p>
+        ${element.feedback}
+      </p>
+    </div>
+  </div>`;
+    });
+    result.innerHTML = resultHtml;
+  });
 }
 
 generateTranslationBtn.addEventListener("click", async () => {
@@ -196,8 +219,25 @@ function gradeTranslation(idx) {
     currentExercise.sentences[idx],
     inputs[idx].value
   ).then((data) => {
-    // TODO: Display the feedback and scores in the UI
     console.log(data);
+    let result = document.getElementById(`result-s-${idx}`);
+    let resultHtml = "";
+    data.forEach((element) => {
+      resultHtml += `<div class="result-card">
+    <div class="score">
+      <span class="score-label">Score</span>
+      <span class="score-value">${element.score}</span>
+    </div>
+
+    <div class="feedback">
+      <h3>Feedback</h3>
+      <p>
+        ${element.feedback}
+      </p>
+    </div>
+  </div>`;
+    });
+    result.innerHTML = resultHtml;
   });
 }
 

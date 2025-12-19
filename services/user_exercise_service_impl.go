@@ -147,6 +147,59 @@ func (es *exerciseServiceImpl) GenerateReadingComprehensionExercise(user *storag
 	return
 }
 
+func (es *exerciseServiceImpl) GradeReadingComprehensionResponse(user *storage.User, lessonId int, shortText, question, answer string) (grades []agents.UsageGrade, err error) {
+	grades = make([]agents.UsageGrade, 0)
+	lesson, err := es.userLessonRepository.GetByID(lessonId)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+	grammar, err := es.userGrammarRepository.GetByID(lesson.GrammarId)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+
+	gradeGrammarUsage, err := es.exerciseAgent.GradeUsage(user.TargetLanguage, answer, grammar.Pattern)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+	} else if gradeGrammarUsage.Score > 0 {
+		grades = append(grades, gradeGrammarUsage)
+		grammar.Score += gradeGrammarUsage.Score
+		err = es.userGrammarRepository.Upsert(grammar)
+		if err != nil {
+			utils.Logger.Error(err.Error())
+		}
+	}
+
+	for _, id := range lesson.WordsId {
+		word, err := es.userWordRepository.GetByID(id)
+		if err != nil {
+			utils.Logger.Error(err.Error())
+			continue
+		}
+		gradeWordUsage, err := es.exerciseAgent.GradeUsage(user.TargetLanguage, answer, word.Word)
+		if err != nil {
+			utils.Logger.Error(err.Error())
+		} else if gradeWordUsage.Score > 0 {
+			grades = append(grades, gradeWordUsage)
+			word.Score += gradeWordUsage.Score
+			err = es.userWordRepository.Upsert(word)
+			if err != nil {
+				utils.Logger.Error(err.Error())
+			}
+		}
+	}
+
+	responseGrade, err := es.exerciseAgent.GradeReadingComprehensionResponse(user.TargetLanguage, shortText, question, answer)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+	} else {
+		grades = append(grades, responseGrade)
+	}
+	return
+}
+
 func (es *exerciseServiceImpl) GenerateDialogueInitExercise(user *storage.User, lessonId int) (exercise agents.GeneratedDialogueInitExercise, err error) {
 	lesson, err := es.userLessonRepository.GetByID(lessonId)
 	if err != nil {

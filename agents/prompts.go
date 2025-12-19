@@ -90,6 +90,21 @@ func generateReadingComprehensionExercisePrompt(targetLanguage string, grammarPa
 	return fmt.Sprintf(readingComprehensionExerciseGenerationPrompt, targetLanguage, grammarPattern, vocab, targetLanguage)
 }
 
+const gradeGradeReadingComprehensionResponseGenerationPrompt = `You are an expert and strict %s language teacher. Your task is to grade and give a feedback to the response given by the user to a question regarding a short text. Your response should be solely a JSON object, no extra text.
+**Input:**
+- **Short Text:** %s
+- **Question:** %s
+- **User's response:** %s
+
+**Response:**
+- **score**: From 0-5, grade how well the user's response. Take into account if the response is accurate and appropiate given the text and the question.
+- **feedback**: Provide a feedback on how well the user has responsed the question and what the user should fix or improve.
+`
+
+func generateGradeReadingComprehensionResponsePrompt(language, shortText, question, answer string) string {
+	return fmt.Sprintf(gradeGradeReadingComprehensionResponseGenerationPrompt, language, shortText, question, answer)
+}
+
 const dialogueInitGenerationPrompt = `You are a creative %s language teacher. Generate a situation in which the user can engage in dialogue in which it can use the grammar pattern and vocabulary in this lesson.
 
 **Exercise Goal:**

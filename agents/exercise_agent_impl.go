@@ -97,6 +97,28 @@ func (pa *exerciseAgentImpl) GenerateReadingComprehensionExercise(targetLanguage
 	return
 }
 
+func (pa *exerciseAgentImpl) GradeReadingComprehensionResponse(targetLanguage, shortText, question, answer string) (grade UsageGrade, err error) {
+	prompt := generateGradeReadingComprehensionResponsePrompt(targetLanguage, shortText, question, answer)
+
+	resp, err := pa.llm.GetResponse(prompt)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+
+	cleaned := strings.TrimPrefix(resp.Choices[0].Message.Content, "```json")
+	cleaned = strings.TrimSuffix(cleaned, "```")
+	cleaned = strings.TrimSpace(cleaned)
+
+	utils.Logger.Debug("Response from LLM: " + cleaned)
+	if err = json.Unmarshal([]byte(cleaned), &grade); err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+
+	return
+}
+
 func (pa *exerciseAgentImpl) GenerateDialogueInitExercise(targetLanguage string, grammarPattern string, words []string) (generatedExercise GeneratedDialogueInitExercise, err error) {
 	prompt := generateDialogueInitExercisePrompt(targetLanguage, grammarPattern, words)
 	resp, err := pa.llm.GetResponse(prompt)

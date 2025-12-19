@@ -302,6 +302,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/resources/exercise/reading-comprehension/grade": {
+            "post": {
+                "description": "Grade a Reading Comprehension Exercise based on the input lesson and user's response",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exercise"
+                ],
+                "summary": "Grade Reading Comprehension Exercise",
+                "parameters": [
+                    {
+                        "description": "Exercise Request object to be graded",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GradeReadingComprehensionResponseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/agents.UsageGrade"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/resources/exercise/translation/generate": {
             "post": {
                 "description": "Get a new Translation Exercise based on the input lesson",
@@ -988,6 +1043,23 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "question": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.GradeReadingComprehensionResponseRequest": {
+            "type": "object",
+            "properties": {
+                "answer": {
+                    "type": "string"
+                },
+                "lessonId": {
+                    "type": "integer"
+                },
+                "question": {
+                    "type": "string"
+                },
+                "shortText": {
                     "type": "string"
                 }
             }
