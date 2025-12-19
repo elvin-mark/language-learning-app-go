@@ -54,6 +54,28 @@ func (pa *exerciseAgentImpl) GenerateTranslationExercise(preferredLanguage, targ
 	return
 }
 
+func (pa *exerciseAgentImpl) GradeTranslation(targetLanguage, originalSentence string, translatedSentence string) (grade UsageGrade, err error) {
+	prompt := generateGradeTranslationPrompt(targetLanguage, originalSentence, translatedSentence)
+
+	resp, err := pa.llm.GetResponse(prompt)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+
+	cleaned := strings.TrimPrefix(resp.Choices[0].Message.Content, "```json")
+	cleaned = strings.TrimSuffix(cleaned, "```")
+	cleaned = strings.TrimSpace(cleaned)
+
+	utils.Logger.Debug("Response from LLM: " + cleaned)
+	if err = json.Unmarshal([]byte(cleaned), &grade); err != nil {
+		utils.Logger.Error(err.Error())
+		return
+	}
+
+	return
+}
+
 func (pa *exerciseAgentImpl) GenerateReadingComprehensionExercise(targetLanguage string, grammarPattern string, words []string) (generatedExercise GeneratedReadingComprehensionExercise, err error) {
 	prompt := generateReadingComprehensionExercisePrompt(targetLanguage, grammarPattern, words)
 	resp, err := pa.llm.GetResponse(prompt)

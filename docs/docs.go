@@ -998,7 +998,10 @@ const docTemplate = `{
                 "lessonId": {
                     "type": "integer"
                 },
-                "sentence": {
+                "originalSentence": {
+                    "type": "string"
+                },
+                "translatedSentence": {
                     "type": "string"
                 }
             }

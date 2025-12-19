@@ -1,6 +1,7 @@
 package dto
 
 type GradeTranslationExerciseRequest struct {
-	LessonId int
-	Sentence string
+	LessonId           int
+	OriginalSentence   string
+	TranslatedSentence string
 }

@@ -78,7 +78,9 @@ definitions:
     properties:
       lessonId:
         type: integer
-      sentence:
+      originalSentence:
+        type: string
+      translatedSentence:
         type: string
     type: object
   dto.GradeUsageRequest:

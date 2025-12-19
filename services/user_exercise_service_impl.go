@@ -58,7 +58,7 @@ func (es *exerciseServiceImpl) GenerateTranslationExercise(user *storage.User, l
 	return
 }
 
-func (es *exerciseServiceImpl) GradeTranslationExercise(user *storage.User, lessonId int, sentence string) (grades []agents.UsageGrade, err error) {
+func (es *exerciseServiceImpl) GradeTranslationExercise(user *storage.User, lessonId int, originallSentence, translatedSentence string) (grades []agents.UsageGrade, err error) {
 	grades = make([]agents.UsageGrade, 0)
 	lesson, err := es.userLessonRepository.GetByID(lessonId)
 	if err != nil {
@@ -71,7 +71,7 @@ func (es *exerciseServiceImpl) GradeTranslationExercise(user *storage.User, less
 		return
 	}
 
-	gradeGrammarUsage, err := es.exerciseAgent.GradeUsage(user.TargetLanguage, sentence, grammar.Pattern)
+	gradeGrammarUsage, err := es.exerciseAgent.GradeUsage(user.TargetLanguage, translatedSentence, grammar.Pattern)
 	if err != nil {
 		utils.Logger.Error(err.Error())
 	} else if gradeGrammarUsage.Score > 0 {
@@ -89,7 +89,7 @@ func (es *exerciseServiceImpl) GradeTranslationExercise(user *storage.User, less
 			utils.Logger.Error(err.Error())
 			continue
 		}
-		gradeWordUsage, err := es.exerciseAgent.GradeUsage(user.TargetLanguage, sentence, word.Word)
+		gradeWordUsage, err := es.exerciseAgent.GradeUsage(user.TargetLanguage, translatedSentence, word.Word)
 		if err != nil {
 			utils.Logger.Error(err.Error())
 		} else if gradeWordUsage.Score > 0 {
@@ -100,6 +100,13 @@ func (es *exerciseServiceImpl) GradeTranslationExercise(user *storage.User, less
 				utils.Logger.Error(err.Error())
 			}
 		}
+	}
+
+	translationGrade, err := es.exerciseAgent.GradeTranslation(user.TargetLanguage, originallSentence, translatedSentence)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+	} else {
+		grades = append(grades, translationGrade)
 	}
 	return
 }

@@ -56,6 +56,20 @@ func generateTranslationExercisePrompt(preferredLanguage, targetLanguage string,
 	return fmt.Sprintf(translationExerciseGenerationPrompt, targetLanguage, preferredLanguage, grammarPattern, vocab, preferredLanguage, targetLanguage)
 }
 
+const gradeTranslationGenerationPrompt = `You are an expert and strict %s language teacher. Your task is to grade and give a feedback to the translation created by the user. Your response should be solely a JSON object, no extra text.
+**Input:**
+- **Original Sentence:** %s
+- **User's translation:** %s
+
+**Response:**
+- **score**: From 0-5, grade how well the user's sentence has translated the sentence.
+- **feedback**: Provide a feedback on how well the user has translated the sentence and what the user should fix or improve.
+`
+
+func generateGradeTranslationPrompt(language, originalSentence, translatedSentence string) string {
+	return fmt.Sprintf(gradeTranslationGenerationPrompt, language, originalSentence, translatedSentence)
+}
+
 const readingComprehensionExerciseGenerationPrompt = `You are a creative %s language teacher. Generate a short passage with questions so the user can practice the grammar pattern and vocabulary in this lesson. Your response should be a JSON object.
 
 **Exercise Goal:**

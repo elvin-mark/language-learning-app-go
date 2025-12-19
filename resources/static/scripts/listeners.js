@@ -191,8 +191,14 @@ generateTranslationBtn.addEventListener("click", async () => {
 
 function gradeTranslation(idx) {
   let inputs = document.getElementsByClassName("sentence-translation-input");
-  console.log(currentExercise.sentences[idx]);
-  console.log(inputs[idx].value);
+  gradeTranslationExercise(
+    currentLessonId,
+    currentExercise.sentences[idx],
+    inputs[idx].value
+  ).then((data) => {
+    // TODO: Display the feedback and scores in the UI
+    console.log(data);
+  });
 }
 
 // --- Initial Load ---

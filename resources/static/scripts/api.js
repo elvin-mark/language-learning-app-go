@@ -140,10 +140,14 @@ async function generateTranslationExercise(lessonId) {
   });
 }
 
-async function gradeTranslationExercise(lessonId, sentence) {
+async function gradeTranslationExercise(
+  lessonId,
+  originalSentence,
+  translatedSentence
+) {
   return apiFetch("/resources/exercise/translation/grade", {
     method: "POST",
-    body: { lessonId, sentence },
+    body: { lessonId, originalSentence, translatedSentence },
   });
 }
 

@@ -140,7 +140,7 @@ func (h *exerciseHandlerImpl) GradeTranslationExerciseHandler(w http.ResponseWri
 		return
 	}
 
-	grades, err := h.exerciseService.GradeTranslationExercise(user, req.LessonId, req.Sentence)
+	grades, err := h.exerciseService.GradeTranslationExercise(user, req.LessonId, req.OriginalSentence, req.TranslatedSentence)
 	if err != nil {
 		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to grade translation exercise"}, http.StatusInternalServerError)
 		return
