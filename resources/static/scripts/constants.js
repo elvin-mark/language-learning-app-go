@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "";
 const AUTH_TOKEN_KEY = "authToken";
 const USER_ID_KEY = "userId";
 const USERNAME_KEY = "username";
