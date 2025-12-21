@@ -169,3 +169,10 @@ async function gradeUsageExercise(sentence, grammarPatternOrWord) {
     body: { sentence, grammarPatternOrWord },
   });
 }
+
+async function chatbotResponse(question) {
+  return apiFetch("/chatbot/response", {
+    method: "POST",
+    body: { question },
+  });
+}

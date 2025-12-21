@@ -213,6 +213,18 @@ function displayExerciseFeedback(grade) {
   feedbackScore.innerHTML = `<strong>Score:</strong> ${grade.score}`;
 }
 
+function renderUserQuestion(question) {
+  let messagesContainer = document.getElementById("chat-messages");
+  let newMessage = marked.parse(question);
+  messagesContainer.innerHTML += `<div class="message user">${newMessage}</div>`;
+}
+
+function renderChatbotResponse(text) {
+  let messagesContainer = document.getElementById("chat-messages");
+  let newMessage = marked.parse(text);
+  messagesContainer.innerHTML += `<div class="message bot">${newMessage}</div>`;
+}
+
 async function loadDashboardData() {
   try {
     // Fetch User Profile

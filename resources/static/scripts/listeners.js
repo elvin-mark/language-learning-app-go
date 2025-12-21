@@ -241,6 +241,28 @@ function gradeTranslation(idx) {
   });
 }
 
+chatbotSendBtn.addEventListener("click", async () => {
+  if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
+    alert("You need to be logged in to generate exercises.");
+    return;
+  }
+  // Disable button to prevent multiple clicks
+  chatbotSendBtn.disabled = true;
+  chatbotSendBtn.textContent = "Generating...";
+  let userQuestion = document.getElementById("chat-input").value;
+  renderUserQuestion(userQuestion);
+  try {
+    const resp = await chatbotResponse(userQuestion);
+    renderChatbotResponse(resp.response);
+  } catch (error) {
+    console.error("Error generating response from chatbot:", error);
+    alert("Failed to generate esponse from chatbot. Please try again.");
+  } finally {
+    chatbotSendBtn.disabled = false;
+    chatbotSendBtn.textContent = "Send";
+  }
+});
+
 // --- Initial Load ---
 
 document.addEventListener("DOMContentLoaded", () => {
