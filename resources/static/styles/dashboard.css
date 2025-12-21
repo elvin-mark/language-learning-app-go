@@ -446,3 +446,14 @@ select:focus {
     width: 100%;
   }
 }
+
+.exercise-button {
+  background-color: #2196f3; /* Blue */
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}

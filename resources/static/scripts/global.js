@@ -5,4 +5,4 @@ let currentGrammarData = [];
 
 let currentLessonId = 0;
 
-let currentExercise = {};
+let currentExercise = null;

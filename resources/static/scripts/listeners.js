@@ -93,6 +93,7 @@ generateDialogueInitBtn.addEventListener("click", async () => {
   generateDialogueInitBtn.textContent = "Generating...";
   try {
     const exercise = await generateDialogueInitExercise(currentLessonId);
+    cleanExerciseModal();
     renderDialogueInitExercise(exercise);
     currentExercise = exercise;
     openExerciseModal();
@@ -120,6 +121,7 @@ submitExerciseBtn.addEventListener("click", async () => {
       currentLessonId,
       history
     );
+    cleanExerciseModal();
     renderDialogueContinuationExercise(exercise);
     openExerciseModal();
     closeLessonDetailModal(); // Close lesson detail modal after generating exercise
@@ -144,6 +146,7 @@ generateReadingComprehensionBtn.addEventListener("click", async () => {
     const exercise = await generateReadingComprehensionExercise(
       currentLessonId
     );
+    cleanExerciseModal();
     renderReadingComprehensionExercise(exercise);
     currentExercise = exercise;
     openExerciseModal();
@@ -200,6 +203,7 @@ generateTranslationBtn.addEventListener("click", async () => {
   try {
     const exercise = await generateTranslationExercise(currentLessonId);
     currentExercise = exercise;
+    cleanExerciseModal();
     renderTranslationExercise(exercise); // Pass lessonId for grading
     openExerciseModal();
     closeLessonDetailModal(); // Close lesson detail modal after generating exercise
@@ -261,6 +265,14 @@ chatbotSendBtn.addEventListener("click", async () => {
     chatbotSendBtn.disabled = false;
     chatbotSendBtn.textContent = "Send";
   }
+});
+
+continueExerciseBtn.addEventListener("click", async () => {
+  if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
+    alert("You need to be logged in to generate exercises.");
+    return;
+  }
+  openExerciseModal();
 });
 
 // --- Initial Load ---

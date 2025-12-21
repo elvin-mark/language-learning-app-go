@@ -61,12 +61,16 @@ function closeLessonDetailModal() {
 }
 
 function openExerciseModal() {
-  exerciseModal.style.display = "block";
+  if (currentExercise) {
+    exerciseModal.style.display = "block";
+  }
 }
 
 function closeExerciseModal() {
   exerciseModal.style.display = "none";
-  // Clear exercise content and feedback when closing
+}
+
+function cleanExerciseModal() {
   exerciseTitle.innerHTML = "";
   exerciseContent.innerHTML = "";
   exerciseInput.style.display = "none";

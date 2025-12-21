@@ -15,6 +15,7 @@ const loginBtn = document.getElementById("login-btn");
 const logoutBtn = document.getElementById("logout-btn");
 const currentUsernameSpan = document.getElementById("current-username");
 const chatbotSendBtn = document.getElementById("send-btn");
+const continueExerciseBtn = document.getElementById("continue-exercise-btn");
 
 // Lesson Details Modal Elements
 const lessonDetailModal = document.getElementById("lesson-detail-modal");
