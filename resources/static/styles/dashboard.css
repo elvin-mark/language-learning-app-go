@@ -457,3 +457,21 @@ select:focus {
   font-size: 0.9rem;
   transition: background-color 0.3s ease;
 }
+
+.grammar-pattern-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.generate-custom-lesson-btn {
+  background-color: #2196f3; /* Blue */
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}

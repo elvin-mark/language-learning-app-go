@@ -99,6 +99,14 @@ async function generateNewLesson() {
   return apiFetch("/resources/lessons/generate", { method: "POST" });
 }
 
+async function generateNewCustomLesson(grammarId) {
+  // Generate a custom lesson for the selected grammar
+  return apiFetch("/resources/lessons/generate", {
+    method: "POST",
+    body: { grammarId },
+  });
+}
+
 async function updateUserProfile(preferredLanguage, targetLanguage) {
   return apiFetch("/user/profile", {
     method: "PATCH",

@@ -62,10 +62,15 @@ function renderGrammar(grammarPatterns) {
   grammarList.innerHTML = ""; // Clear existing grammar
   currentGrammarData = grammarPatterns; // Store grammar globally
   if (grammarPatterns && grammarPatterns.length > 0) {
-    grammarPatterns.forEach((pattern) => {
+    grammarPatterns.forEach((pattern, idx) => {
       const li = document.createElement("li");
       // Assuming grammar object has 'pattern' and 'score' properties
-      li.textContent = `${pattern.Pattern} (Score: ${pattern.Score})`;
+      li.innerHTML = `
+  <div class="grammar-pattern-item">
+    <span>${pattern.Pattern} (Score: ${pattern.Score})</span>
+    <button onclick="generateNewCustomLessonBtnAction(${idx})" class="generate-custom-lesson-btn">Generate</button>
+  </div>
+`;
       grammarList.appendChild(li);
     });
   } else {

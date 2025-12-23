@@ -275,6 +275,40 @@ continueExerciseBtn.addEventListener("click", async () => {
   openExerciseModal();
 });
 
+async function generateNewCustomLessonBtnAction(idx) {
+  // Ensure user is logged in before proceeding
+  if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
+    alert("You need to be logged in to generate lessons.");
+    return;
+  }
+
+  let btn = document.getElementsByClassName("generate-custom-lesson-btn")[idx];
+
+  // Disable button to prevent multiple clicks
+  btn.disabled = true;
+  btn.textContent = "Generating...";
+
+  try {
+    await generateNewCustomLesson(currentGrammarData[idx].Id);
+    // After generating, refresh the lessons list to show the new lesson
+    await loadDashboardData(); // Reload all dashboard data to reflect changes
+    alert("New lesson generated successfully!");
+  } catch (error) {
+    console.error("Error generating new lesson:", error);
+    alert("Failed to generate new lesson. Please try again.");
+    // Re-enable button on error
+    btn.disabled = false;
+    btn.textContent = "Generate";
+  } finally {
+    // Re-enable button and reset text regardless of success or failure
+    // Use a slight delay to ensure the UI updates after alert closes.
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.textContent = "Generate";
+    }, 100);
+  }
+}
+
 // --- Initial Load ---
 
 document.addEventListener("DOMContentLoaded", () => {
