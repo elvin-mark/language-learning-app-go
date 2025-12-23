@@ -707,6 +707,16 @@ const docTemplate = `{
                     "lessons"
                 ],
                 "summary": "Generate New Lesson",
+                "parameters": [
+                    {
+                        "description": "Generate lesson request",
+                        "name": "lesson_request",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GenerateLessonRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1020,6 +1030,20 @@ const docTemplate = `{
             "properties": {
                 "lessonId": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.GenerateLessonRequest": {
+            "type": "object",
+            "properties": {
+                "grammarId": {
+                    "type": "integer"
+                },
+                "wordsId": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },

@@ -1,6 +1,9 @@
 package handlers
 
 import (
+	"encoding/json"
+	"io"
+	dto "language-learning-app/dto/lesson"
 	"language-learning-app/services"
 	"language-learning-app/utils"
 	"net/http"
@@ -71,11 +74,18 @@ func (h *userLessonHandlerImpl) GetLessonsHandler(w http.ResponseWriter, r *http
 //	@Tags			lessons
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{array}		models.LessonItem
-//	@Failure		400	{object}	map[string]string
-//	@Failure		500	{object}	map[string]string
+//	@Param			lesson_request	body		dto.GenerateLessonRequest	false	"Generate lesson request"
+//	@Success		200				{array}		models.LessonItem
+//	@Failure		400				{object}	map[string]string
+//	@Failure		500				{object}	map[string]string
 //	@Router			/resources/lessons/generate [post]
 func (h *userLessonHandlerImpl) GenerateLessonHandler(w http.ResponseWriter, r *http.Request) {
+	var req dto.GenerateLessonRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil && err != io.EOF {
+		utils.WriteJSONStatus(w, map[string]string{"error": "Invalid request body"}, http.StatusBadRequest)
+		return
+	}
+
 	userIdStr := r.Header.Get("User-Id")
 
 	userId, err := strconv.Atoi(userIdStr)
@@ -90,7 +100,7 @@ func (h *userLessonHandlerImpl) GenerateLessonHandler(w http.ResponseWriter, r *
 		return
 	}
 
-	lesson, err := h.userLessonService.GenerateLesson(user)
+	lesson, err := h.userLessonService.GenerateLesson(user, req.GrammarId, req.WordsId)
 	if err != nil {
 		utils.WriteJSONStatus(w, map[string]string{"error": "Failed to generate lesson"}, http.StatusInternalServerError)
 		return

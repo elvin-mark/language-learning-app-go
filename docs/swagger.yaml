@@ -59,6 +59,15 @@ definitions:
       lessonId:
         type: integer
     type: object
+  dto.GenerateLessonRequest:
+    properties:
+      grammarId:
+        type: integer
+      wordsId:
+        items:
+          type: integer
+        type: array
+    type: object
   dto.GenerateReadingComprehensionExerciseRequest:
     properties:
       lessonId:
@@ -651,6 +660,12 @@ paths:
       consumes:
       - application/json
       description: Get a new Language Lesson based on the user current status
+      parameters:
+      - description: Generate lesson request
+        in: body
+        name: lesson_request
+        schema:
+          $ref: '#/definitions/dto.GenerateLessonRequest'
       produces:
       - application/json
       responses:

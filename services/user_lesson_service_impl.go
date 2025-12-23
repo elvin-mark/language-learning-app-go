@@ -51,38 +51,59 @@ func (ls *userLessonServiceImpl) GetLessons(userId int, lang string, page, pageS
 	return
 }
 
-func (ls *userLessonServiceImpl) GenerateLesson(user *storage.User) (lesson models.LessonItem, err error) {
-	grammars, err := ls.userGrammarRepository.GetLowestBelowScore(user.Id, 70)
-	if err != nil {
-		utils.Logger.Error(err.Error())
-		return
-	}
-	if len(grammars) < 1 {
-		err = fmt.Errorf("no grammars below score")
-		utils.Logger.Error(err.Error())
-		return
-	}
+func (ls *userLessonServiceImpl) GenerateLesson(user *storage.User, grammarId int, wordsId []int) (lesson models.LessonItem, err error) {
+	var pickedGrammar *storage.UserGrammar
+	if grammarId > 0 {
+		pickedGrammar, err = ls.userGrammarRepository.GetByID(grammarId)
+		if err != nil {
+			utils.Logger.Error(err.Error())
+			return lesson, err
+		}
+	} else {
+		grammars, err := ls.userGrammarRepository.GetLowestBelowScore(user.Id, 70)
+		if err != nil {
+			utils.Logger.Error(err.Error())
+			return lesson, err
+		}
+		if len(grammars) < 1 {
+			err = fmt.Errorf("no grammars below score")
+			utils.Logger.Error(err.Error())
+			return lesson, err
+		}
+		pickedGrammar = &grammars[rand.Intn(len(grammars))]
 
-	words, err := ls.userWordRepository.GetLowestBelowScore(user.Id, 70)
-	if err != nil {
-		utils.Logger.Error(err.Error())
-		return
 	}
-	if len(words) < 1 {
-		err = fmt.Errorf("no words below score")
-		utils.Logger.Error(err.Error())
-		return
-	}
-
-	randomGrammar := grammars[rand.Intn(len(grammars))]
 
 	wordsList := make([]string, 0)
-	wordsId := make([]int, 0)
-	for _, word := range words {
-		wordsList = append(wordsList, word.Word)
-		wordsId = append(wordsId, word.Id)
+	if len(wordsId) > 0 {
+		for _, wordId := range wordsId {
+			word, err := ls.userWordRepository.GetByID(wordId)
+			if err != nil {
+				utils.Logger.Error(err.Error())
+				continue
+			}
+			wordsList = append(wordsList, word.Word)
+		}
+	} else {
+		wordsId = make([]int, 0)
+		words, err := ls.userWordRepository.GetLowestBelowScore(user.Id, 70)
+		if err != nil {
+			utils.Logger.Error(err.Error())
+			return lesson, err
+		}
+		if len(words) < 1 {
+			err = fmt.Errorf("no words below score")
+			utils.Logger.Error(err.Error())
+			return lesson, err
+		}
+
+		for _, word := range words {
+			wordsList = append(wordsList, word.Word)
+			wordsId = append(wordsId, word.Id)
+		}
 	}
-	generatedLesson, err := ls.lessonAgent.GenerateLesson(user.TargetLanguage, randomGrammar.Pattern, wordsList)
+
+	generatedLesson, err := ls.lessonAgent.GenerateLesson(user.TargetLanguage, pickedGrammar.Pattern, wordsList)
 	if err != nil {
 		utils.Logger.Error(err.Error())
 		return
@@ -103,7 +124,7 @@ func (ls *userLessonServiceImpl) GenerateLesson(user *storage.User) (lesson mode
 	lessonEntity := storage.UserLesson{
 		UserId:          user.Id,
 		Language:        user.TargetLanguage,
-		GrammarId:       randomGrammar.Id,
+		GrammarId:       pickedGrammar.Id,
 		WordsId:         wordsId,
 		Content:         generatedLesson.Content,
 		SampleSentences: sampleSentencesJSON,
@@ -116,7 +137,7 @@ func (ls *userLessonServiceImpl) GenerateLesson(user *storage.User) (lesson mode
 		Id:              lessonEntity.Id,
 		UserId:          lessonEntity.UserId,
 		Language:        lessonEntity.Language,
-		Grammar:         randomGrammar.Pattern,
+		Grammar:         pickedGrammar.Pattern,
 		Words:           wordsList,
 		Content:         lessonEntity.Content,
 		SampleSentences: lessonEntity.SampleSentences,
