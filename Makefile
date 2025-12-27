@@ -17,6 +17,8 @@ build:
 	@mkdir -p build
 	@go build -o build/$(BINARY_NAME) cmd/api/main.go
 	@go build -o build/migrate cmd/migrate/main.go
+	@strip build/$(BINARY_NAME)
+	@strip build/migrate
 
 run: build
 	@echo "Running the application..."

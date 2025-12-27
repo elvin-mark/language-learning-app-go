@@ -12,6 +12,9 @@ COPY . .
 RUN CGO_ENABLED=1 GOOS=linux go build -o /migrate cmd/migrate/main.go
 RUN CGO_ENABLED=1 GOOS=linux go build -o /language-learning-app cmd/api/main.go
 
+RUN strip /migrate
+RUN strip /language-learning-app
+
 # ===== RUN STAGE =====
 FROM alpine:latest
 
