@@ -21,6 +21,7 @@ type exerciseHandlerImpl struct {
 //	@Tags			exercise
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			user	body		dto.GradeUsageRequest	true	"Grade Usage Request"
 //	@Success		200		{object}	agents.UsageGrade
 //	@Failure		400		{object}	map[string]string
@@ -66,6 +67,7 @@ func (h *exerciseHandlerImpl) GradeUsageHandler(w http.ResponseWriter, r *http.R
 //	@Tags			exercise
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			user	body		dto.GenerateTranslationExerciseRequest	true	"Exercise Request object to be generated"
 //	@Success		200		{object}	agents.GeneratedTranslationExercise
 //	@Failure		400		{object}	map[string]string
@@ -111,6 +113,7 @@ func (h *exerciseHandlerImpl) GenerateTranslationExerciseHandler(w http.Response
 //	@Tags			exercise
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			user	body		dto.GradeTranslationExerciseRequest	true	"Exercise Request object to be graded"
 //	@Success		200		{array}		agents.UsageGrade
 //	@Failure		400		{object}	map[string]string
@@ -156,6 +159,7 @@ func (h *exerciseHandlerImpl) GradeTranslationExerciseHandler(w http.ResponseWri
 //	@Tags			exercise
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			user	body		dto.GenerateReadingComprehensionExerciseRequest	true	"Exercise Request object to be generated"
 //	@Success		200		{object}	agents.GeneratedReadingComprehensionExercise
 //	@Failure		400		{object}	map[string]string
@@ -201,6 +205,7 @@ func (h *exerciseHandlerImpl) GenerateReadingComprehensionExerciseHandler(w http
 //	@Tags			exercise
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			user	body		dto.GradeReadingComprehensionResponseRequest	true	"Exercise Request object to be graded"
 //	@Success		200		{array}		agents.UsageGrade
 //	@Failure		400		{object}	map[string]string
@@ -246,6 +251,7 @@ func (h *exerciseHandlerImpl) GradeReadingComprehensionResponseHandler(w http.Re
 //	@Tags			exercise
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			user	body		dto.GenerateDialogueInitExerciseRequest	true	"Exercise Request object to be generated"
 //	@Success		200		{object}	agents.GeneratedDialogueInitExercise
 //	@Failure		400		{object}	map[string]string
@@ -291,6 +297,7 @@ func (h *exerciseHandlerImpl) GenerateDialogueInitExerciseHandler(w http.Respons
 //	@Tags			exercise
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			user	body		dto.GenerateDialogueContinuationExerciseRequest	true	"Exercise Request object to be generated"
 //	@Success		200		{object}	agents.GeneratedDialogueContinuationExercise
 //	@Failure		400		{object}	map[string]string

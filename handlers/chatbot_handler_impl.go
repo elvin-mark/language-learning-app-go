@@ -21,6 +21,7 @@ type chatbotHandlerImpl struct {
 //	@Tags			chatbot
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			chatbot_request	body		dto.GetChatbotResponseRequest	true	"Get Chatbot Response Request"
 //	@Success		200				{object}	agents.ChatbotResponse
 //	@Failure		400				{object}	map[string]string

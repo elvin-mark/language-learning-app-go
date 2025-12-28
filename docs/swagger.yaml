@@ -275,6 +275,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get Chatbot response
       tags:
       - chatbot
@@ -325,6 +327,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Continue with Dialogue Exercise
       tags:
       - exercise
@@ -359,6 +363,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Init Dialogue Exercise
       tags:
       - exercise
@@ -393,6 +399,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get Reading Comprehension Exercise
       tags:
       - exercise
@@ -430,6 +438,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Grade Reading Comprehension Exercise
       tags:
       - exercise
@@ -464,6 +474,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get Translation Exercise
       tags:
       - exercise
@@ -500,6 +512,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Grade Translation Exercise
       tags:
       - exercise
@@ -534,6 +548,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Grade Usage of language
       tags:
       - exercise
@@ -572,6 +588,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get Grammar Patterns
       tags:
       - grammar
@@ -614,6 +632,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Search Grammar Patterns
       tags:
       - grammar
@@ -652,6 +672,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get Lessons
       tags:
       - lessons
@@ -687,6 +709,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Generate New Lesson
       tags:
       - lessons
@@ -725,6 +749,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get Words
       tags:
       - vocabulary
@@ -752,6 +778,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get User Profile
       tags:
       - user
@@ -785,6 +813,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Update user profile settings
       tags:
       - user
@@ -812,7 +842,15 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get User Status Report
       tags:
       - user
+securityDefinitions:
+  BearerAuth:
+    description: Type 'Bearer <token>' to correctly set the JWT
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

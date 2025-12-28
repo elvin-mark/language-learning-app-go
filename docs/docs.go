@@ -72,6 +72,11 @@ const docTemplate = `{
         },
         "/chatbot/response": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get chatbot response",
                 "consumes": [
                     "application/json"
@@ -148,6 +153,11 @@ const docTemplate = `{
         },
         "/resources/exercise/dialogue/continue": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Continue with dialogue Exercise based on the input lesson",
                 "consumes": [
                     "application/json"
@@ -200,6 +210,11 @@ const docTemplate = `{
         },
         "/resources/exercise/dialogue/init": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Init dialogue Exercise based on the input lesson",
                 "consumes": [
                     "application/json"
@@ -252,6 +267,11 @@ const docTemplate = `{
         },
         "/resources/exercise/reading-comprehension/generate": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a new reading comprehension Exercise based on the input lesson",
                 "consumes": [
                     "application/json"
@@ -304,6 +324,11 @@ const docTemplate = `{
         },
         "/resources/exercise/reading-comprehension/grade": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Grade a Reading Comprehension Exercise based on the input lesson and user's response",
                 "consumes": [
                     "application/json"
@@ -359,6 +384,11 @@ const docTemplate = `{
         },
         "/resources/exercise/translation/generate": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a new Translation Exercise based on the input lesson",
                 "consumes": [
                     "application/json"
@@ -411,6 +441,11 @@ const docTemplate = `{
         },
         "/resources/exercise/translation/grade": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Grade a Translation Exercise based on the input lesson",
                 "consumes": [
                     "application/json"
@@ -466,6 +501,11 @@ const docTemplate = `{
         },
         "/resources/exercise/usage/grade": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Grade the usage of the language in a sentence",
                 "consumes": [
                     "application/json"
@@ -518,6 +558,11 @@ const docTemplate = `{
         },
         "/resources/grammar": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get paginated grammar patterns for a user",
                 "consumes": [
                     "application/json"
@@ -576,6 +621,11 @@ const docTemplate = `{
         },
         "/resources/grammar/search": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get paginated grammar patterns for a user and language filtered by pattern (LIKE search)",
                 "consumes": [
                     "application/json"
@@ -638,6 +688,11 @@ const docTemplate = `{
         },
         "/resources/lessons": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get paginated lessons for a user",
                 "consumes": [
                     "application/json"
@@ -696,6 +751,11 @@ const docTemplate = `{
         },
         "/resources/lessons/generate": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a new Language Lesson based on the user current status",
                 "consumes": [
                     "application/json"
@@ -750,6 +810,11 @@ const docTemplate = `{
         },
         "/resources/words": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get paginated words for a user",
                 "consumes": [
                     "application/json"
@@ -808,6 +873,11 @@ const docTemplate = `{
         },
         "/user/profile": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get user profile",
                 "consumes": [
                     "application/json"
@@ -847,6 +917,11 @@ const docTemplate = `{
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update user profile settings",
                 "consumes": [
                     "application/json"
@@ -899,6 +974,11 @@ const docTemplate = `{
         },
         "/user/status/report": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get user Status Report",
                 "consumes": [
                     "application/json"
@@ -1252,6 +1332,14 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Type 'Bearer \u003ctoken\u003e' to correctly set the JWT",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

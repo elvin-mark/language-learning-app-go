@@ -20,6 +20,7 @@ type userHandlerImpl struct {
 //	@Tags			user
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Success		200	{object}	storage.User
 //	@Failure		400	{object}	map[string]string
 //	@Failure		500	{object}	map[string]string
@@ -53,6 +54,7 @@ func (h *userHandlerImpl) GetUserProfileHandler(w http.ResponseWriter, r *http.R
 //	@Tags			user
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			user	body		dto.UpdateUserSettings	true	"New User settings"
 //	@Success		200		{object}	storage.User
 //	@Failure		400		{object}	map[string]string
@@ -92,6 +94,7 @@ func (h *userHandlerImpl) UpdateUserSettingsHandler(w http.ResponseWriter, r *ht
 //	@Tags			user
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Success		200	{object}	models.UserStatusReport
 //	@Failure		400	{object}	map[string]string
 //	@Failure		500	{object}	map[string]string

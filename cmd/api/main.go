@@ -25,11 +25,15 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
-// @title			Language Learning App
-// @version		1.0
-// @description	This is an api for the language learning app
-// @host			localhost:8081
-// @BasePath		/
+// @title						Language Learning App
+// @version					1.0
+// @description				This is an api for the language learning app
+// @host						localhost:8081
+// @BasePath					/
+// @securityDefinitions.apikey	BearerAuth
+// @in							header
+// @name						Authorization
+// @description				Type 'Bearer <token>' to correctly set the JWT
 func main() {
 	// Load configuration
 	cfg, err := config.LoadConfig()
@@ -107,17 +111,15 @@ func main() {
 		r.Post("/token", authHandler.GetAuthTokenHandler)
 	})
 
-	basicAuth := middleware.NewBasicAuth(userService)
-
 	r.Route("/user", func(r chi.Router) {
-		r.Use(basicAuth)
+		r.Use(middleware.JWTAuth)
 		r.Get("/profile", userHandler.GetUserProfileHandler)
 		r.Patch("/profile", userHandler.UpdateUserSettingsHandler)
 		r.Get("/status/report", userHandler.GetUserStatusReport)
 	})
 
 	r.Route("/resources", func(r chi.Router) {
-		r.Use(basicAuth)
+		r.Use(middleware.JWTAuth)
 		r.Post("/exercise/usage/grade", exerciseHandler.GradeUsageHandler)
 		r.Post("/exercise/translation/generate", exerciseHandler.GenerateTranslationExerciseHandler)
 		r.Post("/exercise/translation/grade", exerciseHandler.GradeTranslationExerciseHandler)
@@ -133,7 +135,7 @@ func main() {
 	})
 
 	r.Route("/chatbot", func(r chi.Router) {
-		r.Use(basicAuth)
+		r.Use(middleware.JWTAuth)
 		r.Post("/response", chatbotHandler.GetResponseHandler)
 	})
 

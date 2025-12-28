@@ -10,7 +10,7 @@ async function apiFetch(endpoint, options = {}) {
 
   const defaultHeaders = {
     "Content-Type": "application/json",
-    Authorization: `Basic ${token}`,
+    Authorization: `Bearer ${token}`,
   };
 
   const config = {

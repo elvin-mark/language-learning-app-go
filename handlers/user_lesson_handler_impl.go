@@ -22,6 +22,7 @@ type userLessonHandlerImpl struct {
 //	@Tags			lessons
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			page		query		int	false	"Page number (default 1)"
 //	@Param			pageSize	query		int	false	"Page size (default 20)"
 //	@Success		200			{array}		models.LessonItem
@@ -74,6 +75,7 @@ func (h *userLessonHandlerImpl) GetLessonsHandler(w http.ResponseWriter, r *http
 //	@Tags			lessons
 //	@Accept			json
 //	@Produce		json
+//	@Security		BearerAuth
 //	@Param			lesson_request	body		dto.GenerateLessonRequest	false	"Generate lesson request"
 //	@Success		200				{array}		models.LessonItem
 //	@Failure		400				{object}	map[string]string

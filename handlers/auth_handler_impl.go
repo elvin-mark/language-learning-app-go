@@ -1,13 +1,14 @@
 package handlers
 
 import (
-	"encoding/base64"
 	"encoding/json"
+	"language-learning-app/auth"
 	dto "language-learning-app/dto/auth"
 	models "language-learning-app/models/auth"
 	"language-learning-app/services"
 	"language-learning-app/utils"
 	"net/http"
+	"strconv"
 )
 
 type authHandlerImpl struct {
@@ -39,8 +40,12 @@ func (h *authHandlerImpl) GetAuthTokenHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 	if req.Password == user.Password {
-		res.AccessToken = base64.StdEncoding.EncodeToString([]byte(req.Username + ":" + req.Password))
 		res.UserId = user.Id
+		res.AccessToken, err = auth.GenerateToken(strconv.FormatInt(int64(res.UserId), 10), "")
+		if err != nil {
+			utils.WriteJSONStatus(w, map[string]string{"error": "Failed token generation"}, http.StatusInternalServerError)
+			return
+		}
 		utils.WriteJSON(w, res)
 		return
 	}
