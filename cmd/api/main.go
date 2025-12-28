@@ -43,7 +43,10 @@ func main() {
 	}
 
 	// Start migration as soon as the application starts
-	migrations.Run(cfg.Database.Filepath)
+	err = migrations.Run(cfg.Database.Filepath)
+	if err != nil {
+		panic(err)
+	}
 
 	// Initialize logger
 	utils.InitLogger(cfg.LogLevel)
