@@ -8,6 +8,7 @@ import (
 	"language-learning-app/core/llm"
 	"language-learning-app/handlers"
 	"language-learning-app/middleware"
+	"language-learning-app/migrations"
 	"language-learning-app/services"
 	"language-learning-app/storage"
 	"language-learning-app/utils"
@@ -40,6 +41,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// Start migration as soon as the application starts
+	migrations.Run(cfg.Database.Filepath)
 
 	// Initialize logger
 	utils.InitLogger(cfg.LogLevel)
