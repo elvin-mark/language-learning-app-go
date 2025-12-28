@@ -1,7 +1,7 @@
 package services
 
 import (
-	"language-learning-app/agents"
+	"language-learning-app/core/agents"
 	"language-learning-app/storage"
 	"language-learning-app/utils"
 )

@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"language-learning-app/agents"
 	"language-learning-app/config"
+	"language-learning-app/core/agents"
 	"language-learning-app/core/llm"
 	"language-learning-app/handlers"
 	"language-learning-app/middleware"

@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	"language-learning-app/agents"
+	"language-learning-app/core/agents"
 	models "language-learning-app/models/lesson"
 	"language-learning-app/storage"
 	"language-learning-app/utils"
