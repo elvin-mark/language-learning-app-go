@@ -39,6 +39,7 @@ docker: build
 	@docker build -t tools/language-learning-app .
 
 run-docker:
+	@docker rm language-learning-app | echo "no container found"
 	@docker run -it --name language-learning-app -p 8081:8081 tools/language-learning-app
 
 help:
