@@ -38,6 +38,7 @@ function renderLessons(lessons) {
       li.classList.add("lesson-item"); // Add class for easier event delegation
       lessonsList.appendChild(li);
     });
+    lessonsCurrentPageLabel.innerText = currentLessonsPage;
   } else {
     lessonsList.innerHTML = "<li>No lessons available yet.</li>";
   }
@@ -53,6 +54,7 @@ function renderVocabulary(words) {
       li.textContent = `${word.Word} (Score: ${word.Score})`;
       vocabularyList.appendChild(li);
     });
+    vocabularyCurrentPageLabel.innerText = currentVocabularyPage;
   } else {
     vocabularyList.innerHTML = "<li>No vocabulary learned yet.</li>";
   }
@@ -73,6 +75,7 @@ function renderGrammar(grammarPatterns) {
 `;
       grammarList.appendChild(li);
     });
+    grammarCurrentPageLabel.innerText = currentGrammarPage;
   } else {
     grammarList.innerHTML = "<li>No grammar patterns learned yet.</li>";
   }
@@ -242,14 +245,17 @@ async function loadDashboardData() {
 
     // Fetch Lessons
     const lessons = await getLessons();
+    currentLessonPage = 0;
     renderLessons(lessons);
 
     // Fetch Vocabulary
     const words = await getVocabulary();
+    currentVocabularyPage = 1;
     renderVocabulary(words);
 
     // Fetch Grammar
     const grammarPatterns = await getGrammar();
+    currentGrammarPage = 1;
     renderGrammar(grammarPatterns);
   } catch (error) {
     console.error("Error loading dashboard data:", error);

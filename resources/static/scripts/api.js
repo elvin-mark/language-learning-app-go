@@ -78,18 +78,24 @@ async function getUserProfile() {
   }
 }
 
-async function getLessons() {
-  const lessons = await apiFetch("/resources/lessons");
+async function getLessons(page = 1, pageSize = 10) {
+  const lessons = await apiFetch(
+    `/resources/lessons?page=${page}&pageSize=${pageSize}`
+  );
   return lessons || []; // Ensure we always return an array
 }
 
-async function getVocabulary() {
-  const words = await apiFetch("/resources/words");
+async function getVocabulary(page = 1, pageSize = 10) {
+  const words = await apiFetch(
+    `/resources/words?page=${page}&pageSize=${pageSize}`
+  );
   return words || []; // Ensure we always return an array
 }
 
-async function getGrammar() {
-  const grammar = await apiFetch("/resources/grammar");
+async function getGrammar(page = 1, pageSize = 10) {
+  const grammar = await apiFetch(
+    `/resources/grammar?page=${page}&pageSize=${pageSize}`
+  );
   return grammar || []; // Ensure we always return an array
 }
 

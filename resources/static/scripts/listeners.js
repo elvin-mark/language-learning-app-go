@@ -309,6 +309,78 @@ async function generateNewCustomLessonBtnAction(idx) {
   }
 }
 
+vocabularyPreviousPageBtn.addEventListener("click", async () => {
+  if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
+    alert("You need to be logged in to generate exercises.");
+    return;
+  }
+  if (currentVocabularyPage > 1) {
+    currentVocabularyPage -= 1;
+    const words = await getVocabulary(currentVocabularyPage);
+    renderVocabulary(words);
+  }
+});
+
+vocabularyNextPageBtn.addEventListener("click", async () => {
+  if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
+    alert("You need to be logged in to generate exercises.");
+    return;
+  }
+  const words = await getVocabulary(currentVocabularyPage + 1);
+  if (words.length > 0) {
+    currentVocabularyPage += 1;
+    renderVocabulary(words);
+  }
+});
+
+grammarPreviousPageBtn.addEventListener("click", async () => {
+  if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
+    alert("You need to be logged in to generate exercises.");
+    return;
+  }
+  if (currentGrammarPage > 1) {
+    currentGrammarPage -= 1;
+    const words = await getGrammar(currentGrammarPage);
+    renderGrammar(words);
+  }
+});
+
+grammarNextPageBtn.addEventListener("click", async () => {
+  if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
+    alert("You need to be logged in to generate exercises.");
+    return;
+  }
+  const words = await getGrammar(currentGrammarPage + 1);
+  if (words.length > 0) {
+    currentGrammarPage += 1;
+    renderGrammar(words);
+  }
+});
+
+lessonsPreviousPageBtn.addEventListener("click", async () => {
+  if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
+    alert("You need to be logged in to generate exercises.");
+    return;
+  }
+  if (currentLessonsPage > 1) {
+    currentLessonsPage -= 1;
+    const words = await getLessons(currentLessonsPage);
+    renderLessons(words);
+  }
+});
+
+lessonsNextPageBtn.addEventListener("click", async () => {
+  if (!localStorage.getItem(AUTH_TOKEN_KEY)) {
+    alert("You need to be logged in to generate exercises.");
+    return;
+  }
+  const words = await getLessons(currentLessonsPage + 1);
+  if (words.length > 0) {
+    currentLessonsPage += 1;
+    renderLessons(words);
+  }
+});
+
 // --- Initial Load ---
 
 document.addEventListener("DOMContentLoaded", () => {

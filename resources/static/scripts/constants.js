@@ -16,6 +16,20 @@ const logoutBtn = document.getElementById("logout-btn");
 const currentUsernameSpan = document.getElementById("current-username");
 const chatbotSendBtn = document.getElementById("send-btn");
 const continueExerciseBtn = document.getElementById("continue-exercise-btn");
+const vocabularyPreviousPageBtn = document.getElementById(
+  "vocabulary-previous-btn"
+);
+const vocabularyNextPageBtn = document.getElementById("vocabulary-next-btn");
+const grammarPreviousPageBtn = document.getElementById("grammar-previous-btn");
+const grammarNextPageBtn = document.getElementById("grammar-next-btn");
+const lessonsPreviousPageBtn = document.getElementById("lessons-previous-btn");
+const lessonsNextPageBtn = document.getElementById("lessons-next-btn");
+
+const vocabularyCurrentPageLabel = document.getElementById(
+  "vocabulary-current-page"
+);
+const grammarCurrentPageLabel = document.getElementById("grammar-current-page");
+const lessonsCurrentPageLabel = document.getElementById("lessons-current-page");
 
 // Lesson Details Modal Elements
 const lessonDetailModal = document.getElementById("lesson-detail-modal");
